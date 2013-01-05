@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<project name="Processing Core" default="build">
+
+  <target name="clean" description="Clean out the build directories">
+    <delete dir="bin" />
+    <delete file="library/core.jar" />
+  </target>
+  
+  <target name="compile" description="Compile">
+    <taskdef name="methods" 
+	     classname="PAppletMethods" 
+	     classpath="methods/methods.jar" />
+    <methods dir="${basedir}/src/processing/core" recorder="true" />
+
+    <mkdir dir="bin" />
+    <javac source="1.6"
+	   target="1.6" 
+	   encoding="UTF-8"
+	   includeAntRuntime="false"
+	   debug="true"
+	   srcdir="src" destdir="bin"
+	   classpath="library/jogl-all.jar; library/gluegen-rt.jar" />
+    
+    <!-- Copy the jnilib to the bin folder so it's included. -->
+    <copy todir="bin/japplemenubar" 
+	  file="src/japplemenubar/libjAppleMenuBar.jnilib" />
+
+    <!-- Copy shaders to bin. (Eclipse does this automatically.) -->
+    <copy todir="bin">
+      <fileset dir="src">
+	<include name="processing/opengl/*.glsl" />
+	<include name="icon/*.png" />
+      </fileset>
+    </copy>
+  </target>		
+
+  <target name="build" depends="compile" description="Build core library">
+    <jar basedir="bin" destfile="library/core.jar" />
+  </target>
+  
+</project>
