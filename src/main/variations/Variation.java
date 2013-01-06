@@ -9,7 +9,7 @@ public abstract class Variation {
 
 	public int	            ID	                 = -1;
 
-	public static final int	NUMBER_OF_VARIATIONS	= 21;
+	public static final int	NUMBER_OF_VARIATIONS	= (25) + 1;
 
 	public Variation(final FractalGenome currentGenome) {
 		this.currentGenome = currentGenome;

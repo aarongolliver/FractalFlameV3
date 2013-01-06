@@ -1,6 +1,7 @@
 package main;
 
-import static java.lang.Math.*;
+import static java.lang.Math.log;
+import static java.lang.Math.pow;
 
 public class Histogram {
 	/**
@@ -46,8 +47,8 @@ public class Histogram {
 
 	public double	       cameraXOffset	= 0;
 	public double	       cameraYOffset	= 0;
-	public double	       cameraXShrink	= 15;
-	public double	       cameraYShrink	= 15;
+	public double	       cameraXShrink	= 10;
+	public double	       cameraYShrink	= 10;
 	final public boolean	center	     = false;
 	public boolean	       logScale	     = false;
 	public boolean	       linearScale	 = false;
@@ -119,7 +120,7 @@ public class Histogram {
 				final int index = 4 * pixels_index;
 				final double aAvg = image[index + 3] / ssSquared;
 
-				if (aAvg > 1 || !logScale) {
+				if ((aAvg > 1) || !logScale) {
 					final double rAvg = image[index + 0] / ssSquared;
 					final double gAvg = image[index + 1] / ssSquared;
 					final double bAvg = image[index + 2] / ssSquared;

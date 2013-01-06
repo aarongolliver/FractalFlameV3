@@ -6,28 +6,7 @@ import main.ColorSet;
 import main.Histogram;
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
-import main.variations.Bent14;
-import main.variations.Cosine20;
-import main.variations.Diamond11;
-import main.variations.Disc8;
-import main.variations.Ex12;
-import main.variations.Exponential18;
-import main.variations.Fisheye16;
-import main.variations.Handkerchief6;
-import main.variations.Heart7;
-import main.variations.Horseshoe4;
-import main.variations.Hyperbolic10;
-import main.variations.Julia13;
-import main.variations.Linear0;
-import main.variations.Polar5;
-import main.variations.Popcorn17;
-import main.variations.Power19;
-import main.variations.Sinusodial1;
-import main.variations.Spherical2;
-import main.variations.Spiral9;
-import main.variations.Swirl3;
 import main.variations.Variation;
-import main.variations.Waves15;
 
 public final class FractalThread extends Thread {
 	/*
@@ -67,10 +46,10 @@ public final class FractalThread extends Thread {
 
 	@Override
 	public final void run() {
-		System.out.println("Creating thread");
 		final Vec2D tmpVec = new Vec2D(0, 0);
 		final Vec2D addVec = new Vec2D(0, 0);
 		final Vec2D pAffined = new Vec2D(0, 0);
+		int iters = 0;
 		while (signal.running) {
 			addVec.set(0, 0);
 			// randomly selects the affine transformation to be applied to p
@@ -90,94 +69,31 @@ public final class FractalThread extends Thread {
 				}
 				pAffined.set(addVec);
 			}
-
-			p.set(pAffined);
+			if(genome.finalTransformToggle)
+			pAffined.set(affine(pAffined, genome.finalTransformMatrices[j]));
+			p.set(affine(pAffined, genome.finalTransformMatrices[j]));
 
 			if (Double.isInfinite(p.x) || Double.isInfinite(p.y) || Double.isNaN(p.x) || Double.isNaN(p.y)) {
 				p.x = r.nextDouble(-1, 1);
 				p.y = r.nextDouble(-1, 1);
 
 				currentColor.set(0, 0, 0);
+				iters = 0;
 			} else {
-				histogram.hit(p, currentColor);
+				if (++iters >= 50) {
+					histogram.hit(p, currentColor);
+				}
 			}
 		}
 
 	}
 
 	public FractalThread(final FractalGenome genome, final ThreadSignal signal, final Histogram histogram) {
-		this.genome = genome;
+		this.genome = new FractalGenome(genome);
 		this.signal = signal;
 		this.histogram = histogram;
-		variations = new Variation[genome.variations.size()];
-		int i = 0;
-		for (final int variation : genome.variations) {
-			switch (variation) {
-			case 0:
-				variations[i++] = new Linear0(genome);
-				break;
-			case 1:
-				variations[i++] = new Sinusodial1(genome);
-				break;
-			case 2:
-				variations[i++] = new Spherical2(genome);
-				break;
-			case 3:
-				variations[i++] = new Swirl3(genome);
-				break;
-			case 4:
-				variations[i++] = new Horseshoe4(genome);
-				break;
-			case 5:
-				variations[i++] = new Polar5(genome);
-				break;
-			case 6:
-				variations[i++] = new Handkerchief6(genome);
-				break;
-			case 7:
-				variations[i++] = new Heart7(genome);
-				break;
-			case 8:
-				variations[i++] = new Disc8(genome);
-				break;
-			case 9:
-				variations[i++] = new Spiral9(genome);
-				break;
-			case 10:
-				variations[i++] = new Hyperbolic10(genome);
-				break;
-			case 11:
-				variations[i++] = new Diamond11(genome);
-				break;
-			case 12:
-				variations[i++] = new Ex12(genome);
-				break;
-			case 13:
-				variations[i++] = new Julia13(genome);
-				break;
-			case 14:
-				variations[i++] = new Bent14(genome);
-				break;
-			case 15:
-				variations[i++] = new Waves15(genome);
-				break;
-			case 16:
-				variations[i++] = new Fisheye16(genome);
-				break;
-			case 17:
-				variations[i++] = new Popcorn17(genome);
-				break;
-			case 18:
-				variations[i++] = new Exponential18(genome);
-				break;
-			case 19:
-				variations[i++] = new Power19(genome);
-				break;
-			case 20:
-				variations[i++] = new Cosine20(genome);
-				break;
-			}
-		}
+		variations = genome.getVariationObjects(this.genome);
+
 	}
 
 	private final Vec2D affine(final Vec2D p, final double[][] a) {

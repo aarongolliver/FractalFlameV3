@@ -1,6 +1,9 @@
 package main.variations;
 
-import static java.lang.Math.*;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
 

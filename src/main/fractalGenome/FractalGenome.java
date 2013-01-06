@@ -1,48 +1,103 @@
 package main.fractalGenome;
 
-import static java.lang.Math.random;
-import static main.Utils.map;
-import static main.Utils.range;
+import static java.lang.Math.*;
+import static main.Utils.*;
 
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
 
 import main.ColorSet;
+import main.variations.Bent14;
+import main.variations.Blob23;
+import main.variations.Cosine20;
+import main.variations.Diamond11;
+import main.variations.Disc8;
+import main.variations.Ex12;
+import main.variations.Exponential18;
+import main.variations.Fan22;
+import main.variations.FanTwo25;
+import main.variations.Fisheye16;
+import main.variations.Handkerchief6;
+import main.variations.Heart7;
+import main.variations.Horseshoe4;
+import main.variations.Hyperbolic10;
+import main.variations.Julia13;
+import main.variations.Linear0;
+import main.variations.PDJ24;
+import main.variations.Polar5;
+import main.variations.Popcorn17;
+import main.variations.Power19;
+import main.variations.Rings21;
+import main.variations.Sinusodial1;
+import main.variations.Spherical2;
+import main.variations.Spiral9;
+import main.variations.Swirl3;
 import main.variations.Variation;
+import main.variations.Waves15;
 
 public final class FractalGenome {
-	final public int	      nAffineTransformatioins;
-	final public int[]	      affineProbabilities;
+	final public int	       nAffineTransformatioins;
+	final public int[]	       affineProbabilities;
 	final public double[][][]	affineMatrices;
-	public ColorSet[]	      affineColor;
-	public int	              currentMatrix	       = -1;
+	final public double[][][]	finalTransformMatrices;
 
-	public boolean	          variationToggle	   = true;
-	public TreeSet<Integer>	  variations;
-	final private int	      NUMBER_OF_VARIATIONS	= Variation.NUMBER_OF_VARIATIONS;
-	public double[]	          variationWeights;
-	private final int	      nVariations	       = (6 < NUMBER_OF_VARIATIONS) ? 6 : NUMBER_OF_VARIATIONS;
+	public ColorSet[]	       affineColor;
+	public int	               currentMatrix	= -1;
+
+	public boolean	           variationToggle	= true;
+	protected TreeSet<Integer>	variations;
+	public double[]	           variationWeights;
+	private final int	       nVariations	   = 6;
+
+	final public double[][]	   variationParameters;
+	public boolean finalTransformToggle = true;
 
 	public FractalGenome(final int minAffineTransforms, final int maxAffineTransforms) {
 		nAffineTransformatioins = resetNAffineTransformations(minAffineTransforms, maxAffineTransforms);
 		affineProbabilities = resetAffineProbabilities(nAffineTransformatioins);
 
 		affineMatrices = resetAffineMatricies(nAffineTransformatioins);
+		finalTransformMatrices = resetAffineMatricies(nAffineTransformatioins);
 		affineColor = resetAffineColor(nAffineTransformatioins);
 
+		variationParameters = resetVariationParameters();
+
 		resetVariations();
+	}
+
+	private double[][] resetVariationParameters() {
+		double[][] p = new double[Variation.NUMBER_OF_VARIATIONS + 1][4];
+		for (double[] row : p)
+			for (int i : range(row.length))
+				row[i] = map(random(), 0, 1, -1, 1);
+		return p;
+	}
+
+	public FractalGenome(final FractalGenome genome) {
+		this.nAffineTransformatioins = genome.nAffineTransformatioins;
+		this.affineProbabilities = genome.affineProbabilities;
+
+		this.affineMatrices = genome.affineMatrices;
+		this.finalTransformMatrices = genome.finalTransformMatrices;
+		this.affineColor = genome.affineColor;
+		this.variations = genome.variations;
+		this.variationWeights = genome.variationWeights;
+		this.variationParameters = genome.variationParameters;
+		this.variationToggle = genome.variationToggle;
+		this.finalTransformToggle = genome.finalTransformToggle;
 	}
 
 	private void resetVariations() {
 		variations = new TreeSet<Integer>();
 
 		while (variations.size() < nVariations) {
-			variations.add(ThreadLocalRandom.current().nextInt(NUMBER_OF_VARIATIONS));
+			variations.add(ThreadLocalRandom.current().nextInt(Variation.NUMBER_OF_VARIATIONS));
 		}
 
-		variationWeights = new double[NUMBER_OF_VARIATIONS];
-		for (int i : range(variationWeights.length)) {
+		variationWeights = new double[Variation.NUMBER_OF_VARIATIONS];
+
+		for (final int i : range(variationWeights.length)) {
 			variationWeights[i] = Math.random();
 		}
 	}
@@ -82,7 +137,7 @@ public final class FractalGenome {
 
 	private int[] resetAffineProbabilities(final int nAffineTransformatioins) {
 		final double[] affineProbabilities = new double[nAffineTransformatioins];
-		System.out.println(nAffineTransformatioins);
+
 		for (final int i : range(nAffineTransformatioins)) {
 			affineProbabilities[i] = random();
 		}
@@ -103,5 +158,93 @@ public final class FractalGenome {
 			jumpTable[jumpPosition] = nAffineTransformatioins - 1;
 		}
 		return jumpTable;
+	}
+
+	public Variation[] getVariationObjects(final FractalGenome genome) {
+		final Variation[] variations = new Variation[this.variations.size()];
+		int i = 0;
+		for (final int variation : genome.variations) {
+			switch (variation) {
+			case 0:
+				variations[i++] = new Linear0(genome);
+				break;
+			case 1:
+				variations[i++] = new Sinusodial1(genome);
+				break;
+			case 2:
+				variations[i++] = new Spherical2(genome);
+				break;
+			case 3:
+				variations[i++] = new Swirl3(genome);
+				break;
+			case 4:
+				variations[i++] = new Horseshoe4(genome);
+				break;
+			case 5:
+				variations[i++] = new Polar5(genome);
+				break;
+			case 6:
+				variations[i++] = new Handkerchief6(genome);
+				break;
+			case 7:
+				variations[i++] = new Heart7(genome);
+				break;
+			case 8:
+				variations[i++] = new Disc8(genome);
+				break;
+			case 9:
+				variations[i++] = new Spiral9(genome);
+				break;
+			case 10:
+				variations[i++] = new Hyperbolic10(genome);
+				break;
+			case 11:
+				variations[i++] = new Diamond11(genome);
+				break;
+			case 12:
+				variations[i++] = new Ex12(genome);
+				break;
+			case 13:
+				variations[i++] = new Julia13(genome);
+				break;
+			case 14:
+				variations[i++] = new Bent14(genome);
+				break;
+			case 15:
+				variations[i++] = new Waves15(genome);
+				break;
+			case 16:
+				variations[i++] = new Fisheye16(genome);
+				break;
+			case 17:
+				variations[i++] = new Popcorn17(genome);
+				break;
+			case 18:
+				variations[i++] = new Exponential18(genome);
+				break;
+			case 19:
+				variations[i++] = new Power19(genome);
+				break;
+			case 20:
+				variations[i++] = new Cosine20(genome);
+				break;
+			case 21:
+				variations[i++] = new Rings21(genome);
+				break;
+			case 22:
+				variations[i++] = new Fan22(genome);
+				break;
+			case 23:
+				variations[i++] = new Blob23(genome);
+				break;
+			case 24:
+				variations[i++] = new PDJ24(genome);
+				break;
+			case 25:
+				variations[i++] = new FanTwo25(genome);
+				break;
+			}
+		}
+		return variations;
 	}
 }

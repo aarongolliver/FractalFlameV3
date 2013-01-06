@@ -14,15 +14,15 @@ public final class Vec2D {
 	}
 
 	public final Vec2D add(final Vec2D v) {
-		this.x += v.x;
-		this.y += v.y;
+		x += v.x;
+		y += v.y;
 
 		return this;
 	}
 
 	public final Vec2D mul(final double n) {
-		this.x *= n;
-		this.y *= n;
+		x *= n;
+		y *= n;
 
 		return this;
 	}
@@ -43,7 +43,7 @@ public final class Vec2D {
 		y = v.y;
 	}
 
-	public void set(int x, int y) {
+	public void set(final int x, final int y) {
 		this.x = x;
 		this.y = y;
 	}

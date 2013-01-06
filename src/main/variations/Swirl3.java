@@ -1,6 +1,5 @@
 package main.variations;
 
-import static java.lang.Math.atan;
 import static java.lang.Math.atan2;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;

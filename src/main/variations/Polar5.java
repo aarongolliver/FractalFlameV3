@@ -1,7 +1,6 @@
 package main.variations;
 
 import static java.lang.Math.PI;
-import static java.lang.Math.atan;
 import static java.lang.Math.atan2;
 import static java.lang.Math.sqrt;
 import main.Vec2D;

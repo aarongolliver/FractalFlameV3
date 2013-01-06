@@ -1,16 +1,25 @@
 package main.variations;
 
 import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
-import static java.lang.Math.tan;
+
+import java.util.concurrent.ThreadLocalRandom;
+
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
 
-public final class Popcorn17 extends Variation {
-	public Popcorn17(final FractalGenome currentGenome) {
+public final class PDJ24 extends Variation {
+	final double	p1, p2, p3, p4;
+
+	public PDJ24(final FractalGenome currentGenome) {
 		super(currentGenome);
-		ID = 17;
+		ID = 24;
+		p1 = currentGenome.variationParameters[ID][0];
+		p2 = currentGenome.variationParameters[ID][1];
+		p3 = currentGenome.variationParameters[ID][2];
+		p4 = currentGenome.variationParameters[ID][3];
 	}
 
 	@Override
@@ -30,8 +39,8 @@ public final class Popcorn17 extends Variation {
 		final double e = currentMatrix[1][1];
 		final double f = currentMatrix[1][2];
 
-		pOut.x = x + (c * sin(tan(3 * y)));
-		pOut.y = y + (f * sin(tan(3 * x)));
+		pOut.x = sin(p1 * y) - cos(p2 * x);
+		pOut.y = sin(p3 * x) - cos(p4 * y);
 
 		return pOut;
 	}
