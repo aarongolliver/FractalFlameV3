@@ -46,15 +46,16 @@ public class Main extends PApplet {
 	}
 
 	private FractalGenome newGenome() {
-		FractalGenome fg = new FractalGenome(3, 3);
+		FractalGenome fg = new FractalGenome(6, 6);
 		fg.variationToggle = true;
 		fg.finalTransformToggle = true;
+		fg.setLogScale();
+		fg.center = true;
 		return fg;
 	}
 
 	private Histogram newHistogram() {
 		final Histogram h = new Histogram(swid, shei, ss);
-		h.setLogScale();
 		return h;
 	}
 
@@ -66,6 +67,7 @@ public class Main extends PApplet {
 			h = null;
 			System.gc();
 			h = newHistogram();
+			System.out.println("# SS\t|\t " + ss);
 		}
 
 		if ('r' == Character.toLowerCase(key)) {
@@ -75,10 +77,24 @@ public class Main extends PApplet {
 
 		if ('t' == Character.toLowerCase(key)) {
 			threads = new FractalThread[(threads.length == 8) ? 1 : 8];
+			System.out.println("# TH\t|\t " + threads.length);
 		}
 
 		if ('f' == Character.toLowerCase(key)) {
 			genome.finalTransformToggle = !genome.finalTransformToggle;
+			System.out.println("# FT\t|\t " + genome.finalTransformToggle);
+			h.reset();
+		}
+
+		if ('+' == key || '=' == key) {
+			genome.cameraXShrink /= 1.01;
+			genome.cameraYShrink /= 1.01;
+			h.reset();
+		}
+
+		if ('-' == key || '_' == key) {
+			genome.cameraXShrink *= 1.01;
+			genome.cameraYShrink *= 1.01;
 			h.reset();
 		}
 
@@ -111,7 +127,7 @@ public class Main extends PApplet {
 		if (frameCount == 1) {
 			loadPixels();
 		} else {
-			h.updatePixels(pixels);
+			h.updatePixels(pixels, genome);
 			updatePixels();
 		}
 	}

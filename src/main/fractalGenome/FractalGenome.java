@@ -43,15 +43,35 @@ public final class FractalGenome {
 	final public double[][][]	finalTransformMatrices;
 
 	public ColorSet[]	       affineColor;
-	public int	               currentMatrix	= -1;
+	public int	               currentMatrix	    = -1;
 
-	public boolean	           variationToggle	= true;
+	public boolean	           variationToggle	    = true;
 	protected TreeSet<Integer>	variations;
 	public double[]	           variationWeights;
-	private final int	       nVariations	   = 6;
+	private final int	       nVariations	        = 6;
 
 	final public double[][]	   variationParameters;
-	public boolean finalTransformToggle = true;
+	public boolean	           finalTransformToggle	= true;
+
+	static public double	   cameraXOffset	    = 0;
+	static public double	   cameraYOffset	    = 0;
+	static public double	   cameraXShrink	    = 10;
+	static public double	   cameraYShrink	    = 10;
+	static public boolean	   center	            = false;
+	static public boolean	   logScale	            = false;
+	static public boolean	   linearScale	        = false;
+
+	static public final double	gamma	            = 1;
+
+	public void setLogScale() {
+		logScale = true;
+		linearScale = false;
+	}
+
+	public void setLinearScale() {
+		logScale = false;
+		linearScale = true;
+	}
 
 	public FractalGenome(final int minAffineTransforms, final int maxAffineTransforms) {
 		nAffineTransformatioins = resetNAffineTransformations(minAffineTransforms, maxAffineTransforms);

@@ -2,6 +2,7 @@ package main;
 
 import static java.lang.Math.log;
 import static java.lang.Math.pow;
+import main.fractalGenome.FractalGenome;
 
 public class Histogram {
 	/**
@@ -45,25 +46,15 @@ public class Histogram {
 	 */
 	private final double[]	image;
 
-	public double	       cameraXOffset	= 0;
-	public double	       cameraYOffset	= 0;
-	public double	       cameraXShrink	= 10;
-	public double	       cameraYShrink	= 10;
-	final public boolean	center	     = false;
-	public boolean	       logScale	     = false;
-	public boolean	       linearScale	 = false;
+	private double	       cameraXOffset	= 0;
+	private double	       cameraYOffset	= 0;
+	private double	       cameraXShrink	= 10;
+	private double	       cameraYShrink	= 10;
+	private boolean	       center	     = true;
+	private boolean	       logScale	     = false;
+	private boolean	       linearScale	 = false;
 
 	private final double	gamma	     = 1;
-
-	public void setLogScale() {
-		logScale = true;
-		linearScale = false;
-	}
-
-	public void setLinearScale() {
-		logScale = false;
-		linearScale = true;
-	}
 
 	/**
 	 * @param swid
@@ -86,7 +77,16 @@ public class Histogram {
 		image = new double[swid * shei * 4];
 	}
 
-	public void updatePixels(final int[] pixels) {
+	public void updatePixels(final int[] pixels, FractalGenome genome) {
+		cameraXOffset = genome.cameraXOffset;
+		cameraYOffset = genome.cameraYOffset;
+		cameraXShrink = genome.cameraXShrink;
+		cameraYShrink = genome.cameraYShrink;
+		center = genome.center;
+		logScale = genome.logScale;
+		linearScale = genome.linearScale;
+
+		double gamma = genome.gamma;
 		double maxA = 0;
 
 		for (int hy = 0; hy < hhei; hy++) {
