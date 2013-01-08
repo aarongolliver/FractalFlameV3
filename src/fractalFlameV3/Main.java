@@ -7,13 +7,13 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 
 public class Main extends PApplet {
-	static boolean	fullscreen	= true;
+	static boolean	fullscreen	    = false;
 
-	int	            swid	   = 1920;
-	int	            shei	   = 1080;
-	int	            ss	       = 1;
+	int	            swid	        = 512;
+	int	            shei	        = 512;
+	int	            ss	            = 1;
 
-	int	            fr	       = 60;
+	int	            fr	            = 60;
 
 	Histogram	    h;
 	FractalGenome	genome;
@@ -22,16 +22,25 @@ public class Main extends PApplet {
 
 	double	        seed;
 
+	final int	    SYSTEM_THREADS	= Runtime.getRuntime().availableProcessors();
+
+	// by running SYSTEM_THREADS - 2 threads we can hopefully avoid making the system unusalbe while
+	// the flame is generating. There is of course a tradeoff in generation speed, which doesn't
+	// really matter to me as I have a 12 thread system.
+	final int	    maxFlameThreads	= (SYSTEM_THREADS > 3) ? SYSTEM_THREADS - 2 : 1;
+
 	public static final void main(final String args[]) {
 		if (Main.fullscreen) {
 			PApplet.main(new String[] { "--present", "fractalFlameV3.Main" });
 		} else {
-			PApplet.main(new String[] { "main.Main" });
+			PApplet.main(new String[] { "fractalFlameV3.Main" });
 		}
 	}
 
 	@Override
 	public void setup() {
+		swid = (fullscreen) ? displayWidth : swid;
+		shei = (fullscreen) ? displayHeight : shei;
 		this.size(swid, shei);
 		frameRate(fr);
 
