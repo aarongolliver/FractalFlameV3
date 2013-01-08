@@ -46,7 +46,7 @@ public class Main extends PApplet {
 	}
 
 	private FractalGenome newGenome() {
-		FractalGenome fg = new FractalGenome(3, 6);
+		FractalGenome fg = new FractalGenome(3, 10);
 		fg.variationToggle = true;
 		fg.finalTransformToggle = true;
 		fg.setLogScale();
@@ -64,7 +64,7 @@ public class Main extends PApplet {
 		stopThreads();
 
 		if ('h' == Character.toLowerCase(key)) {
-			ss = (ss == 1) ? 10 : 1;
+			ss = (ss == 1) ? 15 : 1;
 			h = null;
 			System.gc();
 			h = newHistogram();

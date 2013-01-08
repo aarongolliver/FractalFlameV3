@@ -293,7 +293,9 @@ public final class FractalGenome {
 				variations[i++] = new Perspective30(genome);
 				break;
 			case 31:
-				variations[i++] = new Noise31(genome);
+				// I disabled Noise because it's always ugly
+				//variations[i++] = new Noise31(genome);
+				variations[i++] = new Rings21(genome);
 				break;
 			default:
 				while (true)

@@ -46,6 +46,7 @@ public final class FractalThread extends Thread {
 
 	@Override
 	public final void run() {
+		this.setPriority(MIN_PRIORITY);
 		final Vec2D tmpVec = new Vec2D(0, 0);
 		final Vec2D addVec = new Vec2D(0, 0);
 		final Vec2D pAffined = new Vec2D(0, 0);

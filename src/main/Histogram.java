@@ -42,7 +42,7 @@ public class Histogram {
 	private final double[]	h;
 
 	/**
-	 * temporary array used to calculate
+	 * temporary array used to calculate the final image
 	 */
 	private final double[]	image;
 
@@ -65,6 +65,7 @@ public class Histogram {
 	 *            samples per pixel
 	 */
 	public Histogram(final int swid, final int shei, final int ss) {
+
 		this.swid = swid;
 		this.shei = shei;
 		this.ss = ss;
