@@ -54,7 +54,7 @@ public class Histogram {
 	private boolean	       logScale	     = false;
 	private boolean	       linearScale	 = false;
 
-	private final double	gamma	     = 2.2;
+	private final double	gamma	     = 1;
 
 	/**
 	 * @param swid
@@ -74,7 +74,7 @@ public class Histogram {
 		hhei = shei * ss;
 
 		h = new double[hwid * hhei * 4];
-		image = new double[swid * shei * 5];
+		image = new double[swid * shei * 6];
 	}
 
 	public void updatePixels(final int[] pixels, FractalGenome genome) {
@@ -94,7 +94,7 @@ public class Histogram {
 				final int hi = 4 * (hx + (hy * hwid));
 				final int ix = hx / ss;
 				final int iy = hy / ss;
-				final int ii = 5 * (ix + (iy * swid));
+				final int ii = 6 * (ix + (iy * swid));
 
 				final double r = h[hi + 0];
 				final double g = h[hi + 1];
@@ -106,27 +106,28 @@ public class Histogram {
 				image[ii + 2] += b;
 				image[ii + 3] += a;
 				image[ii + 4] = (image[ii + 4] > a) ? image[ii + 4] : a;
+				image[ii + 5] += (r != 0) ? 1 : 0;
 
-				maxA = (maxA > a) ? maxA : a;
+				maxA = (maxA > image[ii + 3]) ? maxA : image[ii + 3];
 			}
 		}
 
-		final double logMaxA = Math.log(maxA);
+		// final double logMaxA = Math.log(maxA);
 
 		for (int iy = 0; iy < shei; iy++) {
 			for (int ix = 0; ix < swid; ix++) {
 				final int pixels_index = (ix + (iy * swid));
-				final int index = 5 * pixels_index;
+				final int index = 6 * pixels_index;
+				final double aAvg = image[index + 3] / image[index + 5];
 				final double cellAMax = (double) image[index + 4];
-				if (cellAMax > 1) {
-					final double rAvg = image[index + 0] / ssSquared;
-					final double gAvg = image[index + 1] / ssSquared;
-					final double bAvg = image[index + 2] / ssSquared;
+				if (image[index + 5] != 0) {
+					final double rAvg = image[index + 0] / image[index + 5];
+					final double gAvg = image[index + 1] / image[index + 5];
+					final double bAvg = image[index + 2] / image[index + 5];
 					double colorScaleFactor = 1;
 					if (logScale) {
-						colorScaleFactor = pow(log(cellAMax) / logMaxA, 1.0 / gamma);
+						colorScaleFactor = pow(log(image[index + 3]) / log(maxA), 1.0 / gamma);
 					} else if (linearScale) {
-						final double aAvg = (double) image[index + 3] / ssSquared;
 						colorScaleFactor = aAvg / (maxA / ss);
 					}
 
@@ -144,6 +145,7 @@ public class Histogram {
 				image[index + 2] = 0;
 				image[index + 3] = 0;
 				image[index + 4] = 0;
+				image[index + 5] = 0;
 			}
 		}
 	}
