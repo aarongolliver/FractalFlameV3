@@ -15,7 +15,7 @@ public final class FractalThread extends Thread {
 	final ThreadLocalRandom	    r	= ThreadLocalRandom.current();
 
 	/*
-	 * the thread exits when this turns false.
+	 * the thread exits when this signal.running is false.
 	 */
 	private final ThreadSignal	signal;
 
@@ -84,7 +84,7 @@ public final class FractalThread extends Thread {
 
 				// apply the variations, multiplying each by it's variation weight
 				for (final Variation v : variations) {
-					addVec.add(v.f(p, tmpVec).mul(genome.variationWeights[v.ID]));
+					addVec.add(v.v(p, tmpVec).mul(genome.variationWeights[v.ID]));
 				}
 
 				// update the point

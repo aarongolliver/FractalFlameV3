@@ -11,7 +11,7 @@ public final class Cosine20 extends Variation {
 	}
 
 	@Override
-	public Vec2D f(final Vec2D pIn, final Vec2D pOut) {
+	public Vec2D v(final Vec2D pIn, final Vec2D pOut) {
 		final double x = pIn.x;
 		final double y = pIn.y;
 		final double rsq = (x * x) + (y * y);

@@ -15,5 +15,5 @@ public abstract class Variation {
 		this.currentGenome = currentGenome;
 	}
 
-	public abstract Vec2D f(Vec2D pIn, Vec2D pOut);
+	public abstract Vec2D v(Vec2D pIn, Vec2D pOut);
 }
