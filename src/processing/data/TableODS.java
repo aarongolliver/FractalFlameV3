@@ -225,6 +225,7 @@ public class TableODS extends Table {
 	 */
 	static protected InputStream getContentXML(final File file) {
 		try {
+			@SuppressWarnings("resource")
 			final ZipFile zip = new ZipFile(file);
 			final ZipEntry entry = zip.getEntry("content.xml");
 			return zip.getInputStream(entry);

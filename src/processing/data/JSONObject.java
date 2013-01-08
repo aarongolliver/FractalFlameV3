@@ -249,8 +249,10 @@ public class JSONObject {
 	protected JSONObject(final HashMap<String, Object> map) {
 		this.map = new HashMap<String, Object>();
 		if (map != null) {
+			@SuppressWarnings("rawtypes")
 			final Iterator i = map.entrySet().iterator();
 			while (i.hasNext()) {
+				@SuppressWarnings("rawtypes")
 				final Map.Entry e = (Map.Entry) i.next();
 				final Object value = e.getValue();
 				if (value != null) {
@@ -676,6 +678,7 @@ public class JSONObject {
 	 * 
 	 * @return An iterator of the keys.
 	 */
+	@SuppressWarnings("rawtypes")
 	public Iterator keys() {
 		// return this.keySet().iterator();
 		return map.keySet().iterator();
@@ -926,6 +929,7 @@ public class JSONObject {
 	// }
 
 	private void populateMap(final Object bean) {
+		@SuppressWarnings("rawtypes")
 		final Class klass = bean.getClass();
 
 		// If klass is a System class then set includeSuperClass to false.
@@ -1490,6 +1494,7 @@ public class JSONObject {
 		try {
 			boolean commanate = false;
 			final int length = size();
+			@SuppressWarnings("rawtypes")
 			final Iterator keys = keys();
 			writer.write('{');
 
