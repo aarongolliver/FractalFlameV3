@@ -20,14 +20,16 @@ public class Event {
 	protected int	        action;
 
 	// These correspond to the java.awt.Event modifiers (not to be confused with
-	// the newer getModifiersEx), though they're not guaranteed to in the future.
+	// the newer getModifiersEx), though they're not guaranteed to in the
+	// future.
 	static public final int	SHIFT	= 1 << 0;
 	static public final int	CTRL	= 1 << 1;
 	static public final int	META	= 1 << 2;
 	static public final int	ALT	  = 1 << 3;
 	protected int	        modifiers;
 
-	// Types of events. As with all constants in Processing, brevity's preferred.
+	// Types of events. As with all constants in Processing, brevity's
+	// preferred.
 	static public final int	KEY	  = 1;
 	static public final int	MOUSE	= 2;
 	static public final int	TOUCH	= 3;
@@ -83,18 +85,18 @@ public class Event {
 	// }
 
 	public boolean isShiftDown() {
-		return (modifiers & SHIFT) != 0;
+		return (modifiers & Event.SHIFT) != 0;
 	}
 
 	public boolean isControlDown() {
-		return (modifiers & CTRL) != 0;
+		return (modifiers & Event.CTRL) != 0;
 	}
 
 	public boolean isMetaDown() {
-		return (modifiers & META) != 0;
+		return (modifiers & Event.META) != 0;
 	}
 
 	public boolean isAltDown() {
-		return (modifiers & ALT) != 0;
+		return (modifiers & Event.ALT) != 0;
 	}
 }

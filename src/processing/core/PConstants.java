@@ -41,7 +41,7 @@ public interface PConstants {
 
 	static final String	    P3D	                          = "processing.opengl.PGraphics3D";
 
-	static final String	    OPENGL	                      = P3D;
+	static final String	    OPENGL	                      = PConstants.P3D;
 
 	static final String	    PDF	                          = "processing.pdf.PGraphicsPDF";
 
@@ -120,9 +120,9 @@ public interface PConstants {
 	 * @see PConstants#TWO_PI
 	 * @see PConstants#QUARTER_PI
 	 */
-	static final double	    HALF_PI	                      = PI / 2.0;
+	static final double	    HALF_PI	                      = PConstants.PI / 2.0;
 
-	static final double	    THIRD_PI	                  = PI / 3.0;
+	static final double	    THIRD_PI	                  = PConstants.PI / 3.0;
 
 	/**
 	 * ( begin auto-generated from QUARTER_PI.xml ) QUARTER_PI is a mathematical constant with the
@@ -135,7 +135,7 @@ public interface PConstants {
 	 * @see PConstants#TWO_PI
 	 * @see PConstants#HALF_PI
 	 */
-	static final double	    QUARTER_PI	                  = PI / 4.0;
+	static final double	    QUARTER_PI	                  = PConstants.PI / 4.0;
 
 	/**
 	 * ( begin auto-generated from TWO_PI.xml ) TWO_PI is a mathematical constant with the value
@@ -148,11 +148,11 @@ public interface PConstants {
 	 * @see PConstants#HALF_PI
 	 * @see PConstants#QUARTER_PI
 	 */
-	static final double	    TWO_PI	                      = PI * 2.0;
+	static final double	    TWO_PI	                      = PConstants.PI * 2.0;
 
-	static final double	    DEG_TO_RAD	                  = PI / 180.0;
+	static final double	    DEG_TO_RAD	                  = PConstants.PI / 180.0;
 
-	static final double	    RAD_TO_DEG	                  = 180.0 / PI;
+	static final double	    RAD_TO_DEG	                  = 180.0 / PConstants.PI;
 
 	// angle modes
 

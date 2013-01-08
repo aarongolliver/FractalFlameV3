@@ -66,7 +66,7 @@ public final class ColorSet {
 	 *            ColorSet to average the current ColorSet with
 	 */
 	public void hit(final ColorSet c) {
-		hit(c.r, c.g, c.b);
+		this.hit(c.r, c.g, c.b);
 	}
 
 	@Override

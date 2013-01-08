@@ -32,21 +32,21 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 
 	public PMatrix3D(final double m00, final double m01, final double m02, final double m10, final double m11,
 	        final double m12) {
-		set(m00, m01, m02, 0, m10, m11, m12, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.set(m00, m01, m02, 0, m10, m11, m12, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	public PMatrix3D(final double m00, final double m01, final double m02, final double m03, final double m10,
 	        final double m11, final double m12, final double m13, final double m20, final double m21, final double m22,
 	        final double m23, final double m30, final double m31, final double m32, final double m33) {
-		set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
+		this.set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
 	}
 
 	public PMatrix3D(final PMatrix matrix) {
-		set(matrix);
+		this.set(matrix);
 	}
 
 	public void reset() {
-		set(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.set(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	/**
@@ -92,17 +92,17 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 	public void set(final PMatrix matrix) {
 		if (matrix instanceof PMatrix3D) {
 			final PMatrix3D src = (PMatrix3D) matrix;
-			set(src.m00, src.m01, src.m02, src.m03, src.m10, src.m11, src.m12, src.m13, src.m20, src.m21, src.m22,
+			this.set(src.m00, src.m01, src.m02, src.m03, src.m10, src.m11, src.m12, src.m13, src.m20, src.m21, src.m22,
 			        src.m23, src.m30, src.m31, src.m32, src.m33);
 		} else {
 			final PMatrix2D src = (PMatrix2D) matrix;
-			set(src.m00, src.m01, 0, src.m02, src.m10, src.m11, 0, src.m12, 0, 0, 1, 0, 0, 0, 0, 1);
+			this.set(src.m00, src.m01, 0, src.m02, src.m10, src.m11, 0, src.m12, 0, 0, 1, 0, 0, 0, 0, 1);
 		}
 	}
 
 	public void set(final double[] source) {
 		if (source.length == 6) {
-			set(source[0], source[1], source[2], source[3], source[4], source[5]);
+			this.set(source[0], source[1], source[2], source[3], source[4], source[5]);
 
 		} else if (source.length == 16) {
 			m00 = source[0];
@@ -129,7 +129,7 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 
 	public void set(final double m00, final double m01, final double m02, final double m10, final double m11,
 	        final double m12) {
-		set(m00, m01, 0, m02, m10, m11, 0, m12, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.set(m00, m01, 0, m02, m10, m11, 0, m12, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	public void set(final double m00, final double m01, final double m02, final double m03, final double m10,
@@ -154,7 +154,7 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 	}
 
 	public void translate(final double tx, final double ty) {
-		translate(tx, ty, 0);
+		this.translate(tx, ty, 0);
 	}
 
 	// public void invTranslate(double tx, double ty) {
@@ -173,21 +173,21 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 	}
 
 	public void rotateX(final double angle) {
-		final double c = cos(angle);
-		final double s = sin(angle);
-		apply(1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1);
+		final double c = PMatrix3D.cos(angle);
+		final double s = PMatrix3D.sin(angle);
+		this.apply(1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1);
 	}
 
 	public void rotateY(final double angle) {
-		final double c = cos(angle);
-		final double s = sin(angle);
-		apply(c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1);
+		final double c = PMatrix3D.cos(angle);
+		final double s = PMatrix3D.sin(angle);
+		this.apply(c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1);
 	}
 
 	public void rotateZ(final double angle) {
-		final double c = cos(angle);
-		final double s = sin(angle);
-		apply(c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+		final double c = PMatrix3D.cos(angle);
+		final double s = PMatrix3D.sin(angle);
+		this.apply(c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	public void rotate(final double angle, double v0, double v1, double v2) {
@@ -205,24 +205,24 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 			v2 /= norm;
 		}
 
-		final double c = cos(angle);
-		final double s = sin(angle);
+		final double c = PMatrix3D.cos(angle);
+		final double s = PMatrix3D.sin(angle);
 		final double t = 1.0f - c;
 
-		apply((t * v0 * v0) + c, (t * v0 * v1) - (s * v2), (t * v0 * v2) + (s * v1), 0, (t * v0 * v1) + (s * v2), (t
-		        * v1 * v1)
-		        + c, (t * v1 * v2) - (s * v0), 0, (t * v0 * v2) - (s * v1), (t * v1 * v2) + (s * v0),
-		        (t * v2 * v2) + c, 0, 0, 0, 0, 1);
+		this.apply((t * v0 * v0) + c, (t * v0 * v1) - (s * v2), (t * v0 * v2) + (s * v1), 0, (t * v0 * v1) + (s * v2),
+		        (t * v1 * v1) + c, (t * v1 * v2) - (s * v0), 0, (t * v0 * v2) - (s * v1), (t * v1 * v2) + (s * v0), (t
+		                * v2 * v2)
+		                + c, 0, 0, 0, 0, 1);
 	}
 
 	public void scale(final double s) {
 		// apply(s, 0, 0, 0, 0, s, 0, 0, 0, 0, s, 0, 0, 0, 0, 1);
-		scale(s, s, s);
+		this.scale(s, s, s);
 	}
 
 	public void scale(final double sx, final double sy) {
 		// apply(sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-		scale(sx, sy, 1);
+		this.scale(sx, sy, 1);
 	}
 
 	public void scale(final double x, final double y, final double z) {
@@ -243,34 +243,34 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 
 	public void shearX(final double angle) {
 		final double t = Math.tan(angle);
-		apply(1, t, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.apply(1, t, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	public void shearY(final double angle) {
 		final double t = Math.tan(angle);
-		apply(1, 0, 0, 0, t, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.apply(1, 0, 0, 0, t, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	public void apply(final PMatrix source) {
 		if (source instanceof PMatrix2D) {
-			apply((PMatrix2D) source);
+			this.apply((PMatrix2D) source);
 		} else if (source instanceof PMatrix3D) {
-			apply((PMatrix3D) source);
+			this.apply((PMatrix3D) source);
 		}
 	}
 
 	public void apply(final PMatrix2D source) {
-		apply(source.m00, source.m01, 0, source.m02, source.m10, source.m11, 0, source.m12, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.apply(source.m00, source.m01, 0, source.m02, source.m10, source.m11, 0, source.m12, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	public void apply(final PMatrix3D source) {
-		apply(source.m00, source.m01, source.m02, source.m03, source.m10, source.m11, source.m12, source.m13,
+		this.apply(source.m00, source.m01, source.m02, source.m03, source.m10, source.m11, source.m12, source.m13,
 		        source.m20, source.m21, source.m22, source.m23, source.m30, source.m31, source.m32, source.m33);
 	}
 
 	public void apply(final double n00, final double n01, final double n02, final double n10, final double n11,
 	        final double n12) {
-		apply(n00, n01, 0, n02, n10, n11, 0, n12, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.apply(n00, n01, 0, n02, n10, n11, 0, n12, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	public void apply(final double n00, final double n01, final double n02, final double n03, final double n10,
@@ -316,20 +316,20 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 	}
 
 	public void preApply(final PMatrix2D left) {
-		preApply(left.m00, left.m01, 0, left.m02, left.m10, left.m11, 0, left.m12, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.preApply(left.m00, left.m01, 0, left.m02, left.m10, left.m11, 0, left.m12, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	/**
 	 * Apply another matrix to the left of this one.
 	 */
 	public void preApply(final PMatrix3D left) {
-		preApply(left.m00, left.m01, left.m02, left.m03, left.m10, left.m11, left.m12, left.m13, left.m20, left.m21,
-		        left.m22, left.m23, left.m30, left.m31, left.m32, left.m33);
+		this.preApply(left.m00, left.m01, left.m02, left.m03, left.m10, left.m11, left.m12, left.m13, left.m20,
+		        left.m21, left.m22, left.m23, left.m30, left.m31, left.m32, left.m33);
 	}
 
 	public void preApply(final double n00, final double n01, final double n02, final double n10, final double n11,
 	        final double n12) {
-		preApply(n00, n01, 0, n02, n10, n11, 0, n12, 0, 0, 1, 0, 0, 0, 0, 1);
+		this.preApply(n00, n01, 0, n02, n10, n11, 0, n12, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	public void preApply(final double n00, final double n01, final double n02, final double n03, final double n10,
@@ -405,8 +405,10 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 		if ((target == null) || (target.length < 3)) {
 			target = new double[3];
 		}
-		if (source == target) { throw new RuntimeException("The source and target vectors used in "
-		        + "PMatrix3D.mult() cannot be identical."); }
+		if (source == target) {
+			throw new RuntimeException("The source and target vectors used in "
+			        + "PMatrix3D.mult() cannot be identical.");
+		}
 		if (target.length == 3) {
 			target[0] = (m00 * source[0]) + (m01 * source[1]) + (m02 * source[2]) + m03;
 			target[1] = (m10 * source[0]) + (m11 * source[1]) + (m12 * source[2]) + m13;
@@ -496,7 +498,9 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 	 */
 	public boolean invert() {
 		final double determinant = determinant();
-		if (determinant == 0) { return false; }
+		if (determinant == 0) {
+			return false;
+		}
 
 		// first row
 		final double t00 = determinant3x3(m11, m12, m13, m21, m22, m23, m31, m32, m33);
@@ -579,45 +583,45 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 
 	// REVERSE VERSIONS OF MATRIX OPERATIONS
 
-	// These functions should not be used, as they will be removed in the future.
+	// These functions should not be used, as they will be removed in the
+	// future.
 
 	protected void invTranslate(final double tx, final double ty, final double tz) {
-		preApply(1, 0, 0, -tx, 0, 1, 0, -ty, 0, 0, 1, -tz, 0, 0, 0, 1);
+		this.preApply(1, 0, 0, -tx, 0, 1, 0, -ty, 0, 0, 1, -tz, 0, 0, 0, 1);
 	}
 
 	protected void invRotateX(final double angle) {
-		final double c = cos(-angle);
-		final double s = sin(-angle);
-		preApply(1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1);
+		final double c = PMatrix3D.cos(-angle);
+		final double s = PMatrix3D.sin(-angle);
+		this.preApply(1, 0, 0, 0, 0, c, -s, 0, 0, s, c, 0, 0, 0, 0, 1);
 	}
 
 	protected void invRotateY(final double angle) {
-		final double c = cos(-angle);
-		final double s = sin(-angle);
-		preApply(c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1);
+		final double c = PMatrix3D.cos(-angle);
+		final double s = PMatrix3D.sin(-angle);
+		this.preApply(c, 0, s, 0, 0, 1, 0, 0, -s, 0, c, 0, 0, 0, 0, 1);
 	}
 
 	protected void invRotateZ(final double angle) {
-		final double c = cos(-angle);
-		final double s = sin(-angle);
-		preApply(c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+		final double c = PMatrix3D.cos(-angle);
+		final double s = PMatrix3D.sin(-angle);
+		this.preApply(c, -s, 0, 0, s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 	}
 
 	protected void invRotate(final double angle, final double v0, final double v1, final double v2) {
 		// TODO should make sure this vector is normalized
 
-		final double c = cos(-angle);
-		final double s = sin(-angle);
+		final double c = PMatrix3D.cos(-angle);
+		final double s = PMatrix3D.sin(-angle);
 		final double t = 1.0f - c;
 
-		preApply((t * v0 * v0) + c, (t * v0 * v1) - (s * v2), (t * v0 * v2) + (s * v1), 0, (t * v0 * v1) + (s * v2), (t
-		        * v1 * v1)
-		        + c, (t * v1 * v2) - (s * v0), 0, (t * v0 * v2) - (s * v1), (t * v1 * v2) + (s * v0),
-		        (t * v2 * v2) + c, 0, 0, 0, 0, 1);
+		this.preApply((t * v0 * v0) + c, (t * v0 * v1) - (s * v2), (t * v0 * v2) + (s * v1), 0, (t * v0 * v1)
+		        + (s * v2), (t * v1 * v1) + c, (t * v1 * v2) - (s * v0), 0, (t * v0 * v2) - (s * v1), (t * v1 * v2)
+		        + (s * v0), (t * v2 * v2) + c, 0, 0, 0, 0, 1);
 	}
 
 	protected void invScale(final double x, final double y, final double z) {
-		preApply(1 / x, 0, 0, 0, 0, 1 / y, 0, 0, 0, 0, 1 / z, 0, 0, 0, 0, 1);
+		this.preApply(1 / x, 0, 0, 0, 0, 1 / y, 0, 0, 0, 0, 1 / z, 0, 0, 0, 0, 1);
 	}
 
 	protected boolean invApply(final double n00, final double n01, final double n02, final double n03,
@@ -627,8 +631,10 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 			inverseCopy = new PMatrix3D();
 		}
 		inverseCopy.set(n00, n01, n02, n03, n10, n11, n12, n13, n20, n21, n22, n23, n30, n31, n32, n33);
-		if (!inverseCopy.invert()) { return false; }
-		preApply(inverseCopy);
+		if (!inverseCopy.invert()) {
+			return false;
+		}
+		this.preApply(inverseCopy);
 		return true;
 	}
 
@@ -640,11 +646,17 @@ public final class PMatrix3D implements PMatrix /* , PConstants */{
 		 * + m12 + " " + m13 + "\n" + m20 + " " + m21 + " " + m22 + " " + m23 + "\n" + m30 + " " +
 		 * m31 + " " + m32 + " " + m33 + "\n");
 		 */
-		int big = (int) Math.abs(max(
-		        max(max(max(abs(m00), abs(m01)), max(abs(m02), abs(m03))),
-		                max(max(abs(m10), abs(m11)), max(abs(m12), abs(m13)))),
-		        max(max(max(abs(m20), abs(m21)), max(abs(m22), abs(m23))),
-		                max(max(abs(m30), abs(m31)), max(abs(m32), abs(m33))))));
+		int big = (int) Math.abs(PMatrix3D.max(
+		        PMatrix3D.max(
+		                PMatrix3D.max(PMatrix3D.max(PMatrix3D.abs(m00), PMatrix3D.abs(m01)),
+		                        PMatrix3D.max(PMatrix3D.abs(m02), PMatrix3D.abs(m03))),
+		                PMatrix3D.max(PMatrix3D.max(PMatrix3D.abs(m10), PMatrix3D.abs(m11)),
+		                        PMatrix3D.max(PMatrix3D.abs(m12), PMatrix3D.abs(m13)))),
+		        PMatrix3D.max(
+		                PMatrix3D.max(PMatrix3D.max(PMatrix3D.abs(m20), PMatrix3D.abs(m21)),
+		                        PMatrix3D.max(PMatrix3D.abs(m22), PMatrix3D.abs(m23))),
+		                PMatrix3D.max(PMatrix3D.max(PMatrix3D.abs(m30), PMatrix3D.abs(m31)),
+		                        PMatrix3D.max(PMatrix3D.abs(m32), PMatrix3D.abs(m33))))));
 
 		int digits = 1;
 		if (Float.isNaN(big) || Float.isInfinite(big)) { // avoid infinite loop

@@ -1,10 +1,10 @@
 package main;
 
-import static main.Utils.range;
 import main.fractalGenome.FractalGenome;
 import main.fractalThread.FractalThread;
 import main.fractalThread.ThreadSignal;
 import processing.core.PApplet;
+import processing.core.PConstants;
 
 public class Main extends PApplet {
 	static boolean	fullscreen	= true;
@@ -23,7 +23,7 @@ public class Main extends PApplet {
 	double	        seed;
 
 	public static final void main(final String args[]) {
-		if (fullscreen) {
+		if (Main.fullscreen) {
 			PApplet.main(new String[] { "--present", "main.Main" });
 		} else {
 			PApplet.main(new String[] { "main.Main" });
@@ -32,12 +32,12 @@ public class Main extends PApplet {
 
 	@Override
 	public void setup() {
-		size(swid, shei);
+		this.size(swid, shei);
 		frameRate(fr);
 
 		h = newHistogram();
 
-		seed = random(0, 1);
+		seed = this.random(0, 1);
 		genome = newGenome();
 		threads = new FractalThread[1];
 		threadSignal = new ThreadSignal();
@@ -46,7 +46,7 @@ public class Main extends PApplet {
 	}
 
 	private FractalGenome newGenome() {
-		FractalGenome fg = new FractalGenome(3, 10);
+		final FractalGenome fg = new FractalGenome(3, 10);
 		fg.variationToggle = true;
 		fg.finalTransformToggle = true;
 		fg.setLogScale();
@@ -93,32 +93,32 @@ public class Main extends PApplet {
 			h.reset();
 		}
 
-		if ('+' == key || '=' == key) {
+		if (('+' == key) || ('=' == key)) {
 			FractalGenome.cameraXShrink /= 1.01;
 			FractalGenome.cameraYShrink /= 1.01;
 			h.reset();
 		}
 
-		if ('-' == key || '_' == key) {
+		if (('-' == key) || ('_' == key)) {
 			FractalGenome.cameraXShrink *= 1.01;
 			FractalGenome.cameraYShrink *= 1.01;
 			h.reset();
 		}
-		if (keyCode == UP) {
+		if (keyCode == PConstants.UP) {
 			FractalGenome.cameraYOffset += .01 * FractalGenome.cameraYShrink;
 			h.reset();
 		}
-		if (keyCode == DOWN) {
+		if (keyCode == PConstants.DOWN) {
 			FractalGenome.cameraYOffset -= .01 * FractalGenome.cameraYShrink;
 			h.reset();
 		}
 
-		if (keyCode == LEFT) {
+		if (keyCode == PConstants.LEFT) {
 			FractalGenome.cameraXOffset += .01 * FractalGenome.cameraXShrink;
 			h.reset();
 		}
 
-		if (keyCode == RIGHT) {
+		if (keyCode == PConstants.RIGHT) {
 			FractalGenome.cameraXOffset -= .01 * FractalGenome.cameraXShrink;
 			h.reset();
 		}
@@ -138,7 +138,7 @@ public class Main extends PApplet {
 
 	private void startThreads() {
 		threadSignal.running = true;
-		for (final int i : range(threads.length)) {
+		for (final int i : Utils.range(threads.length)) {
 			threads[i] = new FractalThread(genome, threadSignal, h);
 		}
 		for (final Thread t : threads) {
@@ -152,7 +152,7 @@ public class Main extends PApplet {
 			loadPixels();
 		} else {
 			h.updatePixels(pixels, genome);
-			updatePixels();
+			this.updatePixels();
 		}
 	}
 }

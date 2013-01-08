@@ -24,37 +24,38 @@ public class PShapeOBJ extends PShape {
 		final ArrayList<PVector> coords = new ArrayList<PVector>();
 		final ArrayList<PVector> normals = new ArrayList<PVector>();
 		final ArrayList<PVector> texcoords = new ArrayList<PVector>();
-		parseOBJ(parent, reader, faces, materials, coords, normals, texcoords);
+		PShapeOBJ.parseOBJ(parent, reader, faces, materials, coords, normals, texcoords);
 
 		// The OBJ geometry is stored with each face in a separate child shape.
 		parent = null;
-		family = GROUP;
+		family = PConstants.GROUP;
 		addChildren(faces, materials, coords, normals, texcoords);
 	}
 
 	protected PShapeOBJ(final OBJFace face, final OBJMaterial mtl, final ArrayList<PVector> coords,
 	        final ArrayList<PVector> normals, final ArrayList<PVector> texcoords) {
-		family = GEOMETRY;
+		family = PShape.GEOMETRY;
 		if (face.vertIdx.size() == 3) {
-			kind = TRIANGLES;
+			kind = PConstants.TRIANGLES;
 		} else if (face.vertIdx.size() == 4) {
-			kind = QUADS;
+			kind = PConstants.QUADS;
 		} else {
-			kind = POLYGON;
+			kind = PConstants.POLYGON;
 		}
 
 		stroke = false;
 		fill = true;
 
 		// Setting material properties for the new face
-		fillColor = rgbaValue(mtl.kd);
-		ambientColor = rgbaValue(mtl.ka);
-		specularColor = rgbaValue(mtl.ks);
+		fillColor = PShapeOBJ.rgbaValue(mtl.kd);
+		ambientColor = PShapeOBJ.rgbaValue(mtl.ka);
+		specularColor = PShapeOBJ.rgbaValue(mtl.ks);
 		shininess = mtl.ns;
 		if (mtl.kdMap != null) {
-			// If current material is textured, then tinting the texture using the
+			// If current material is textured, then tinting the texture using
+			// the
 			// diffuse color.
-			tintColor = rgbaValue(mtl.kd, mtl.d);
+			tintColor = PShapeOBJ.rgbaValue(mtl.kd, mtl.d);
 		}
 
 		vertexCount = face.vertIdx.size();
@@ -75,9 +76,9 @@ public class PShapeOBJ extends PShape {
 				}
 			}
 
-			vertices[j][X] = vert.x;
-			vertices[j][Y] = vert.y;
-			vertices[j][Z] = vert.z;
+			vertices[j][PConstants.X] = vert.x;
+			vertices[j][PConstants.Y] = vert.y;
+			vertices[j][PConstants.Z] = vert.z;
 
 			vertices[j][PGraphics.R] = mtl.kd.x;
 			vertices[j][PGraphics.G] = mtl.kd.y;
@@ -127,7 +128,7 @@ public class PShapeOBJ extends PShape {
 
 			// Creating child shape for current face.
 			final PShape child = new PShapeOBJ(face, mtl, coords, normals, texcoords);
-			addChild(child);
+			this.addChild(child);
 		}
 	}
 
@@ -186,7 +187,8 @@ public class PShapeOBJ extends PShape {
 						normals.add(tempn);
 						readvn = true;
 					} else if (parts[0].equals("vt")) {
-						// uv, inverting v to take into account Processing's inverted Y axis
+						// uv, inverting v to take into account Processing's
+						// inverted Y axis
 						// with respect to OpenGL.
 						final PVector tempv = new PVector(Float.valueOf(parts[1]).floatValue(), 1 - Float.valueOf(
 						        parts[2]).floatValue());
@@ -198,13 +200,14 @@ public class PShapeOBJ extends PShape {
 						if (parts[1] != null) {
 							final BufferedReader mreader = parent.createReader(parts[1]);
 							if (mreader != null) {
-								parseMTL(parent, mreader, materials, mtlTable);
+								PShapeOBJ.parseMTL(parent, mreader, materials, mtlTable);
 							}
 						}
 					} else if (parts[0].equals("g")) {
 						gname = 1 < parts.length ? parts[1] : "";
 					} else if (parts[0].equals("usemtl")) {
-						// Getting index of current active material (will be applied on
+						// Getting index of current active material (will be
+						// applied on
 						// all subsequent faces).
 						if (parts[1] != null) {
 							final String mtlname = parts[1];
@@ -228,7 +231,8 @@ public class PShapeOBJ extends PShape {
 								final String[] forder = seg.split("/");
 
 								if (forder.length > 2) {
-									// Getting vertex and texture and normal indexes.
+									// Getting vertex and texture and normal
+									// indexes.
 									if ((forder[0].length() > 0) && readv) {
 										face.vertIdx.add(Integer.valueOf(forder[0]));
 									}
@@ -241,7 +245,8 @@ public class PShapeOBJ extends PShape {
 										face.normIdx.add(Integer.valueOf(forder[2]));
 									}
 								} else if (forder.length > 1) {
-									// Getting vertex and texture/normal indexes.
+									// Getting vertex and texture/normal
+									// indexes.
 									if ((forder[0].length() > 0) && readv) {
 										face.vertIdx.add(Integer.valueOf(forder[0]));
 									}
@@ -317,7 +322,8 @@ public class PShapeOBJ extends PShape {
 						currentMtl.kd.y = Float.valueOf(parts[2]).floatValue();
 						currentMtl.kd.z = Float.valueOf(parts[3]).floatValue();
 					} else if (parts[0].equals("Ks") && (parts.length > 3)) {
-						// The specular color weighted by the specular coefficient
+						// The specular color weighted by the specular
+						// coefficient
 						currentMtl.ks.x = Float.valueOf(parts[1]).floatValue();
 						currentMtl.ks.y = Float.valueOf(parts[2]).floatValue();
 						currentMtl.ks.z = Float.valueOf(parts[3]).floatValue();

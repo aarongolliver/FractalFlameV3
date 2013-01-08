@@ -1,9 +1,5 @@
 package main.variations;
 
-import static java.lang.Math.atan2;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
 
@@ -19,12 +15,12 @@ public class Hyperbolic10 extends Variation {
 		final double x = pIn.x;
 		final double y = pIn.y;
 		final double rsq = (x * x) + (y * y);
-		final double r = sqrt(rsq);
-		final double t = atan2(x, y);
-		final double p = atan2(y, x);
+		final double r = Math.sqrt(rsq);
+		final double t = Math.atan2(x, y);
+		final double p = Math.atan2(y, x);
 
-		pOut.x = sin(t) / r;
-		pOut.y = r * cos(t);
+		pOut.x = Math.sin(t) / r;
+		pOut.y = r * Math.cos(t);
 
 		return pOut;
 	}

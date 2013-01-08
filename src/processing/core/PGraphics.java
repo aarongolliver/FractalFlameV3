@@ -26,8 +26,8 @@ import java.util.WeakHashMap;
  * off-screen graphics buffer. A PGraphics object can be constructed with the
  * <b>createGraphics()</b> function. The <b>beginDraw()</b> and <b>endDraw()</b> methods (see above
  * example) are necessary to set up the buffer and to finalize it. The fields and methods for this
- * class are extensive. For a complete list, visit the <a
- * href="http://processing.googlecode.com/svn/trunk/processing/build/javadoc/core/">developer's
+ * class are extensive. For a complete list, visit the <a href =
+ * "http://processing.googlecode.com/svn/trunk/processing/build/javadoc/core/" >developer's
  * reference.</a> ( end auto-generated ) <h3>Advanced</h3> Main graphics and rendering context, as
  * well as the base API implementation. <h2>Subclassing and initializing PGraphics objects</h2>
  * Starting in release 0149, subclasses of PGraphics are handled differently. The constructor for
@@ -150,7 +150,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * The hints[] array is allocated early on because it might be used inside beginDraw(),
 	 * allocate(), etc.
 	 */
-	protected boolean[]	                  hints	                = new boolean[HINT_COUNT];
+	protected boolean[]	                  hints	                = new boolean[PConstants.HINT_COUNT];
 
 	// ........................................................
 
@@ -170,28 +170,28 @@ public class PGraphics extends PImage implements PConstants {
 	// X, Y and Z are still stored in PConstants because of their general
 	// usefulness, and that X we'll always want to be 0, etc.
 
-	static public final int	              R	                    = 3;	                                            // actual
-	                                                                                                                // rgb,
-	                                                                                                                // after
-	                                                                                                                // lighting
-	static public final int	              G	                    = 4;	                                            // fill
-	                                                                                                                // stored
-	                                                                                                                // here,
-	                                                                                                                // transform
-	                                                                                                                // in
-	                                                                                                                // place
-	static public final int	              B	                    = 5;	                                            // TODO
-	                                                                                                                // don't
-	                                                                                                                // do
-	                                                                                                                // that
-	                                                                                                                // anymore
-	                                                                                                                // (?)
+	static public final int	              R	                    = 3;	                                                                // actual
+	                                                                                                                                    // rgb,
+	                                                                                                                                    // after
+	                                                                                                                                    // lighting
+	static public final int	              G	                    = 4;	                                                                // fill
+	                                                                                                                                    // stored
+	                                                                                                                                    // here,
+	                                                                                                                                    // transform
+	                                                                                                                                    // in
+	                                                                                                                                    // place
+	static public final int	              B	                    = 5;	                                                                // TODO
+	                                                                                                                                    // don't
+	                                                                                                                                    // do
+	                                                                                                                                    // that
+	                                                                                                                                    // anymore
+	                                                                                                                                    // (?)
 	static public final int	              A	                    = 6;
 
-	static public final int	              U	                    = 7;	                                            // texture
+	static public final int	              U	                    = 7;	                                                                // texture
 	static public final int	              V	                    = 8;
 
-	static public final int	              NX	                = 9;	                                            // normal
+	static public final int	              NX	                = 9;	                                                                // normal
 	static public final int	              NY	                = 10;
 	static public final int	              NZ	                = 11;
 
@@ -210,14 +210,14 @@ public class PGraphics extends PImage implements PConstants {
 
 	// transformations (2D and 3D)
 
-	static public final int	              TX	                = 18;	                                            // transformed
-	                                                                                                                // xyzw
+	static public final int	              TX	                = 18;	                                                                // transformed
+	                                                                                                                                    // xyzw
 	static public final int	              TY	                = 19;
 	static public final int	              TZ	                = 20;
 
-	static public final int	              VX	                = 21;	                                            // view
-	                                                                                                                // space
-	                                                                                                                // coords
+	static public final int	              VX	                = 21;	                                                                // view
+	                                                                                                                                    // space
+	                                                                                                                                    // coords
 	static public final int	              VY	                = 22;
 	static public final int	              VZ	                = 23;
 	static public final int	              VW	                = 24;
@@ -231,17 +231,17 @@ public class PGraphics extends PImage implements PConstants {
 	static public final int	              AB	                = 27;
 
 	// Diffuse is shared with fill.
-	static public final int	              DR	                = 3;	                                            // TODO
-	                                                                                                                // needs
-	                                                                                                                // to
-	                                                                                                                // not
-	                                                                                                                // be
-	                                                                                                                // shared,
-	                                                                                                                // this
-	                                                                                                                // is
-	                                                                                                                // a
-	                                                                                                                // material
-	                                                                                                                // property
+	static public final int	              DR	                = 3;	                                                                // TODO
+	                                                                                                                                    // needs
+	                                                                                                                                    // to
+	                                                                                                                                    // not
+	                                                                                                                                    // be
+	                                                                                                                                    // shared,
+	                                                                                                                                    // this
+	                                                                                                                                    // is
+	                                                                                                                                    // a
+	                                                                                                                                    // material
+	                                                                                                                                    // property
 	static public final int	              DG	                = 4;
 	static public final int	              DB	                = 5;
 	static public final int	              DA	                = 6;
@@ -273,32 +273,32 @@ public class PGraphics extends PImage implements PConstants {
 	// Also inherits imageMode() and smooth() (among others) from PImage.
 
 	/** The current colorMode */
-	public int	                          colorMode;	                                                            // =
-	                                                                                                                // RGB;
+	public int	                          colorMode;	                                                                                // =
+	                                                                                                                                    // RGB;
 
 	/** Max value for red (or hue) set by colorMode */
-	public double	                      colorModeX;	                                                            // =
-	                                                                                                                // 255;
+	public double	                      colorModeX;	                                                                                // =
+	                                                                                                                                    // 255;
 
 	/** Max value for green (or saturation) set by colorMode */
-	public double	                      colorModeY;	                                                            // =
-	                                                                                                                // 255;
+	public double	                      colorModeY;	                                                                                // =
+	                                                                                                                                    // 255;
 
 	/** Max value for blue (or value) set by colorMode */
-	public double	                      colorModeZ;	                                                            // =
-	                                                                                                                // 255;
+	public double	                      colorModeZ;	                                                                                // =
+	                                                                                                                                    // 255;
 
 	/** Max value for alpha set by colorMode */
-	public double	                      colorModeA;	                                                            // =
-	                                                                                                                // 255;
+	public double	                      colorModeA;	                                                                                // =
+	                                                                                                                                    // 255;
 
 	/** True if colors are not in the range 0..1 */
-	boolean	                              colorModeScale;	                                                        // =
-	                                                                                                                // true;
+	boolean	                              colorModeScale;	                                                                            // =
+	                                                                                                                                    // true;
 
 	/** True if colorMode(RGB, 255) */
-	boolean	                              colorModeDefault;	                                                    // =
-	                                                                                                                // true;
+	boolean	                              colorModeDefault;	                                                                        // =
+	                                                                                                                                    // true;
 
 	// ........................................................
 
@@ -352,26 +352,26 @@ public class PGraphics extends PImage implements PConstants {
 	// Additional stroke properties
 
 	static protected final double	      DEFAULT_STROKE_WEIGHT	= 1;
-	static protected final int	          DEFAULT_STROKE_JOIN	= MITER;
-	static protected final int	          DEFAULT_STROKE_CAP	= ROUND;
+	static protected final int	          DEFAULT_STROKE_JOIN	= PConstants.MITER;
+	static protected final int	          DEFAULT_STROKE_CAP	= PConstants.ROUND;
 
 	/**
 	 * Last value set by strokeWeight() (read-only). This has a default setting, rather than
 	 * fighting with renderers about whether that renderer supports thick lines.
 	 */
-	public double	                      strokeWeight	        = DEFAULT_STROKE_WEIGHT;
+	public double	                      strokeWeight	        = PGraphics.DEFAULT_STROKE_WEIGHT;
 
 	/**
 	 * Set by strokeJoin() (read-only). This has a default setting so that strokeJoin() need not be
 	 * called by defaults, because subclasses may not implement it (i.e. PGraphicsGL)
 	 */
-	public int	                          strokeJoin	        = DEFAULT_STROKE_JOIN;
+	public int	                          strokeJoin	        = PGraphics.DEFAULT_STROKE_JOIN;
 
 	/**
 	 * Set by strokeCap() (read-only). This has a default setting so that strokeCap() need not be
 	 * called by defaults, because subclasses may not implement it (i.e. PGraphicsGL)
 	 */
-	public int	                          strokeCap	            = DEFAULT_STROKE_CAP;
+	public int	                          strokeCap	            = PGraphics.DEFAULT_STROKE_CAP;
 
 	// ........................................................
 
@@ -389,7 +389,7 @@ public class PGraphics extends PImage implements PConstants {
 	public int	                          shapeMode;
 
 	/** The current image alignment (read-only) */
-	public int	                          imageMode	            = CORNER;
+	public int	                          imageMode	            = PConstants.CORNER;
 
 	// ........................................................
 
@@ -399,13 +399,13 @@ public class PGraphics extends PImage implements PConstants {
 	public PFont	                      textFont;
 
 	/** The current text align (read-only) */
-	public int	                          textAlign	            = LEFT;
+	public int	                          textAlign	            = PConstants.LEFT;
 
 	/** The current vertical text alignment (read-only) */
-	public int	                          textAlignY	        = BASELINE;
+	public int	                          textAlignY	        = PConstants.BASELINE;
 
 	/** The current text mode (read-only) */
-	public int	                          textMode	            = MODEL;
+	public int	                          textMode	            = PConstants.MODEL;
 
 	/** The current text size (read-only) */
 	public double	                      textSize;
@@ -436,7 +436,7 @@ public class PGraphics extends PImage implements PConstants {
 	// Style stack
 
 	static final int	                  STYLE_STACK_DEPTH	    = 64;
-	PStyle[]	                          styleStack	        = new PStyle[STYLE_STACK_DEPTH];
+	PStyle[]	                          styleStack	        = new PStyle[PGraphics.STYLE_STACK_DEPTH];
 	int	                                  styleStackDepth;
 
 	// //////////////////////////////////////////////////////////
@@ -498,11 +498,11 @@ public class PGraphics extends PImage implements PConstants {
 
 	// vertices
 	public static final int	              DEFAULT_VERTICES	    = 512;
-	protected double	                  vertices[][]	        = new double[DEFAULT_VERTICES][VERTEX_FIELD_COUNT];
-	protected int	                      vertexCount;	                                                            // total
-	                                                                                                                // number
-	                                                                                                                // of
-	                                                                                                                // vertices
+	protected double	                  vertices[][]	        = new double[PGraphics.DEFAULT_VERTICES][PGraphics.VERTEX_FIELD_COUNT];
+	protected int	                      vertexCount;	                                                                                // total
+	                                                                                                                                    // number
+	                                                                                                                                    // of
+	                                                                                                                                    // vertices
 
 	// ........................................................
 
@@ -548,13 +548,13 @@ public class PGraphics extends PImage implements PConstants {
 	static final protected double	      sinLUT[];
 	static final protected double	      cosLUT[];
 	static final protected double	      SINCOS_PRECISION	    = 0.5f;
-	static final protected int	          SINCOS_LENGTH	        = (int) (360f / SINCOS_PRECISION);
+	static final protected int	          SINCOS_LENGTH	        = (int) (360f / PGraphics.SINCOS_PRECISION);
 	static {
-		sinLUT = new double[SINCOS_LENGTH];
-		cosLUT = new double[SINCOS_LENGTH];
-		for (int i = 0; i < SINCOS_LENGTH; i++) {
-			sinLUT[i] = Math.sin(i * DEG_TO_RAD * SINCOS_PRECISION);
-			cosLUT[i] = Math.cos(i * DEG_TO_RAD * SINCOS_PRECISION);
+		sinLUT = new double[PGraphics.SINCOS_LENGTH];
+		cosLUT = new double[PGraphics.SINCOS_LENGTH];
+		for (int i = 0; i < PGraphics.SINCOS_LENGTH; i++) {
+			PGraphics.sinLUT[i] = Math.sin(i * PConstants.DEG_TO_RAD * PGraphics.SINCOS_PRECISION);
+			PGraphics.cosLUT[i] = Math.cos(i * PConstants.DEG_TO_RAD * PGraphics.SINCOS_PRECISION);
 		}
 	}
 
@@ -609,7 +609,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * Sets whether texture coordinates passed to vertex() calls will be based on coordinates that
 	 * are based on the IMAGE or NORMALIZED.
 	 */
-	public int	                          textureMode	        = IMAGE;
+	public int	                          textureMode	        = PConstants.IMAGE;
 
 	/**
 	 * Current horizontal coordinate for texture, will always be between 0 and 1, even if using
@@ -631,7 +631,8 @@ public class PGraphics extends PImage implements PConstants {
 
 	// / Number of U steps (aka "theta") around longitudinally spanning 2*pi
 	public int	                          sphereDetailU	        = 0;
-	// / Number of V steps (aka "phi") along latitudinally top-to-bottom spanning pi
+	// / Number of V steps (aka "phi") along latitudinally top-to-bottom
+	// spanning pi
 	public int	                          sphereDetailV	        = 0;
 
 	// ////////////////////////////////////////////////////////////
@@ -662,7 +663,7 @@ public class PGraphics extends PImage implements PConstants {
 		// headache reasons.. argh, a semi-transparent opengl surface?)
 		// use createGraphics() if you want a transparent surface.
 		if (primarySurface) {
-			format = RGB;
+			format = PConstants.RGB;
 		}
 	}
 
@@ -796,7 +797,7 @@ public class PGraphics extends PImage implements PConstants {
 	}
 
 	public void endPGL() {
-		showMethodWarning("endGL");
+		PGraphics.showMethodWarning("endGL");
 	}
 
 	public void flush() {
@@ -819,30 +820,31 @@ public class PGraphics extends PImage implements PConstants {
 	 * crashing action. This is currently called by checkSettings(), during beginDraw().
 	 */
 	protected void defaultSettings() { // ignore
-		// System.out.println("PGraphics.defaultSettings() " + width + " " + height);
+		// System.out.println("PGraphics.defaultSettings() " + width + " " +
+		// height);
 
 		// smooth(); // 2.0a5
 		if (quality > 0) { // 2.0a5
-			smooth();
+			this.smooth();
 		} else {
 			noSmooth();
 		}
 
-		colorMode(RGB, 255);
-		fill(255);
-		stroke(0);
+		this.colorMode(PConstants.RGB, 255);
+		this.fill(255);
+		this.stroke(0);
 
 		// as of 0178, no longer relying on local versions of the variables
 		// being set, because subclasses may need to take extra action.
-		strokeWeight(DEFAULT_STROKE_WEIGHT);
-		strokeJoin(DEFAULT_STROKE_JOIN);
-		strokeCap(DEFAULT_STROKE_CAP);
+		strokeWeight(PGraphics.DEFAULT_STROKE_WEIGHT);
+		strokeJoin(PGraphics.DEFAULT_STROKE_JOIN);
+		strokeCap(PGraphics.DEFAULT_STROKE_CAP);
 
 		// init shape stuff
 		shape = 0;
 
-		rectMode(CORNER);
-		ellipseMode(DIAMETER);
+		rectMode(PConstants.CORNER);
+		ellipseMode(PConstants.DIAMETER);
 
 		autoNormal = true;
 
@@ -850,18 +852,20 @@ public class PGraphics extends PImage implements PConstants {
 		textFont = null;
 		textSize = 12;
 		textLeading = 14;
-		textAlign = LEFT;
-		textMode = MODEL;
+		textAlign = PConstants.LEFT;
+		textMode = PConstants.MODEL;
 
-		// if this fella is associated with an applet, then clear its background.
+		// if this fella is associated with an applet, then clear its
+		// background.
 		// if it's been created by someone else through createGraphics,
 		// they have to call background() themselves, otherwise everything gets
 		// a gray background (when just a transparent surface or an empty pdf
 		// is what's desired).
 		// this background() call is for the Java 2D and OpenGL renderers.
 		if (primarySurface) {
-			// System.out.println("main drawing surface bg " + getClass().getName());
-			background(backgroundColor);
+			// System.out.println("main drawing surface bg " +
+			// getClass().getName());
+			this.background(backgroundColor);
 		}
 
 		settingsInited = true;
@@ -879,21 +883,22 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	protected void reapplySettings() {
 		// System.out.println("attempting reapplySettings()");
-		if (!settingsInited) { return; // if this is the initial setup, no need to reapply
+		if (!settingsInited) {
+			return; // if this is the initial setup, no need to reapply
 		}
 
 		// System.out.println("  doing reapplySettings");
 		// new Exception().printStackTrace(System.out);
 
-		colorMode(colorMode, colorModeX, colorModeY, colorModeZ);
+		this.colorMode(colorMode, colorModeX, colorModeY, colorModeZ);
 		if (fill) {
 			// PApplet.println("  fill " + PApplet.hex(fillColor));
-			fill(fillColor);
+			this.fill(fillColor);
 		} else {
 			noFill();
 		}
 		if (stroke) {
-			stroke(strokeColor);
+			this.stroke(strokeColor);
 
 			// The if() statements should be handled inside the functions,
 			// otherwise an actual reset/revert won't work properly.
@@ -910,12 +915,12 @@ public class PGraphics extends PImage implements PConstants {
 			noStroke();
 		}
 		if (tint) {
-			tint(tintColor);
+			this.tint(tintColor);
 		} else {
 			noTint();
 		}
 		if (smooth) {
-			smooth();
+			this.smooth();
 		} else {
 			// Don't bother setting this, cuz it'll anger P3D.
 			noSmooth();
@@ -924,12 +929,12 @@ public class PGraphics extends PImage implements PConstants {
 			// System.out.println("  textFont in reapply is " + textFont);
 			// textFont() resets the leading, so save it in case it's changed
 			final double saveLeading = textLeading;
-			textFont(textFont, textSize);
+			this.textFont(textFont, textSize);
 			textLeading(saveLeading);
 		}
 		textMode(textMode);
-		textAlign(textAlign, textAlignY);
-		background(backgroundColor);
+		this.textAlign(textAlign, textAlignY);
+		this.background(backgroundColor);
 
 		reapplySettings = false;
 	}
@@ -994,8 +999,8 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	@SuppressWarnings("deprecation")
 	public void hint(final int which) {
-		if ((which == ENABLE_NATIVE_FONTS) || (which == DISABLE_NATIVE_FONTS)) {
-			showWarning("hint(ENABLE_NATIVE_FONTS) no longer supported. " + "Use createFont() instead.");
+		if ((which == PConstants.ENABLE_NATIVE_FONTS) || (which == PConstants.DISABLE_NATIVE_FONTS)) {
+			PGraphics.showWarning("hint(ENABLE_NATIVE_FONTS) no longer supported. " + "Use createFont() instead.");
 		}
 		if (which > 0) {
 			hints[which] = true;
@@ -1012,7 +1017,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * Start a new shape of type POLYGON
 	 */
 	public void beginShape() {
-		beginShape(POLYGON);
+		this.beginShape(PConstants.POLYGON);
 	}
 
 	/**
@@ -1086,12 +1091,12 @@ public class PGraphics extends PImage implements PConstants {
 		// if drawing a shape and the normal hasn't been set yet,
 		// then we need to set the normals for each vertex so far
 		if (shape != 0) {
-			if (normalMode == NORMAL_MODE_AUTO) {
+			if (normalMode == PGraphics.NORMAL_MODE_AUTO) {
 				// One normal per begin/end shape
-				normalMode = NORMAL_MODE_SHAPE;
-			} else if (normalMode == NORMAL_MODE_SHAPE) {
+				normalMode = PGraphics.NORMAL_MODE_SHAPE;
+			} else if (normalMode == PGraphics.NORMAL_MODE_SHAPE) {
 				// a separate normal for each vertex
-				normalMode = NORMAL_MODE_VERTEX;
+				normalMode = PGraphics.NORMAL_MODE_VERTEX;
 			}
 		}
 	}
@@ -1122,7 +1127,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            Either CLAMP (default) or REPEAT
 	 */
 	public void textureWrap(final int wrap) {
-		showMissingWarning("textureWrap");
+		PGraphics.showMissingWarning("textureWrap");
 	}
 
 	/**
@@ -1154,7 +1159,7 @@ public class PGraphics extends PImage implements PConstants {
 
 	protected void vertexCheck() {
 		if (vertexCount == vertices.length) {
-			final double temp[][] = new double[vertexCount << 1][VERTEX_FIELD_COUNT];
+			final double temp[][] = new double[vertexCount << 1][PGraphics.VERTEX_FIELD_COUNT];
 			System.arraycopy(vertices, 0, temp, 0, vertexCount);
 			vertices = temp;
 		}
@@ -1166,11 +1171,11 @@ public class PGraphics extends PImage implements PConstants {
 
 		curveVertexCount = 0;
 
-		vertex[X] = x;
-		vertex[Y] = y;
-		vertex[Z] = 0;
+		vertex[PConstants.X] = x;
+		vertex[PConstants.Y] = y;
+		vertex[PConstants.Z] = 0;
 
-		vertex[EDGE] = edge ? 1 : 0;
+		vertex[PGraphics.EDGE] = edge ? 1 : 0;
 
 		// if (fill) {
 		// vertex[R] = fillR;
@@ -1181,54 +1186,54 @@ public class PGraphics extends PImage implements PConstants {
 		final boolean textured = textureImage != null;
 		if (fill || textured) {
 			if (!textured) {
-				vertex[R] = fillR;
-				vertex[G] = fillG;
-				vertex[B] = fillB;
-				vertex[A] = fillA;
+				vertex[PGraphics.R] = fillR;
+				vertex[PGraphics.G] = fillG;
+				vertex[PGraphics.B] = fillB;
+				vertex[PGraphics.A] = fillA;
 			} else {
 				if (tint) {
-					vertex[R] = tintR;
-					vertex[G] = tintG;
-					vertex[B] = tintB;
-					vertex[A] = tintA;
+					vertex[PGraphics.R] = tintR;
+					vertex[PGraphics.G] = tintG;
+					vertex[PGraphics.B] = tintB;
+					vertex[PGraphics.A] = tintA;
 				} else {
-					vertex[R] = 1;
-					vertex[G] = 1;
-					vertex[B] = 1;
-					vertex[A] = 1;
+					vertex[PGraphics.R] = 1;
+					vertex[PGraphics.G] = 1;
+					vertex[PGraphics.B] = 1;
+					vertex[PGraphics.A] = 1;
 				}
 			}
 		}
 
 		if (stroke) {
-			vertex[SR] = strokeR;
-			vertex[SG] = strokeG;
-			vertex[SB] = strokeB;
-			vertex[SA] = strokeA;
-			vertex[SW] = strokeWeight;
+			vertex[PGraphics.SR] = strokeR;
+			vertex[PGraphics.SG] = strokeG;
+			vertex[PGraphics.SB] = strokeB;
+			vertex[PGraphics.SA] = strokeA;
+			vertex[PGraphics.SW] = strokeWeight;
 		}
 
 		if (textured) {
-			vertex[U] = textureU;
-			vertex[V] = textureV;
+			vertex[PGraphics.U] = textureU;
+			vertex[PGraphics.V] = textureV;
 		}
 
 		if (autoNormal) {
 			final double norm2 = (normalX * normalX) + (normalY * normalY) + (normalZ * normalZ);
-			if (norm2 < EPSILON) {
-				vertex[HAS_NORMAL] = 0;
+			if (norm2 < PConstants.EPSILON) {
+				vertex[PGraphics.HAS_NORMAL] = 0;
 			} else {
-				if (Math.abs(norm2 - 1) > EPSILON) {
+				if (Math.abs(norm2 - 1) > PConstants.EPSILON) {
 					// The normal vector is not normalized.
 					final double norm = PApplet.sqrt(norm2);
 					normalX /= norm;
 					normalY /= norm;
 					normalZ /= norm;
 				}
-				vertex[HAS_NORMAL] = 1;
+				vertex[PGraphics.HAS_NORMAL] = 1;
 			}
 		} else {
-			vertex[HAS_NORMAL] = 1;
+			vertex[PGraphics.HAS_NORMAL] = 1;
 		}
 
 		vertexCount++;
@@ -1242,11 +1247,12 @@ public class PGraphics extends PImage implements PConstants {
 		// will go through the triangulator. otherwise it'll do thinks like
 		// disappear in mathematically odd ways
 		// http://dev.processing.org/bugs/show_bug.cgi?id=444
-		if (shape == POLYGON) {
+		if (shape == PConstants.POLYGON) {
 			if (vertexCount > 0) {
 				final double pvertex[] = vertices[vertexCount - 1];
-				if ((Math.abs(pvertex[X] - x) < EPSILON) && (Math.abs(pvertex[Y] - y) < EPSILON)
-				        && (Math.abs(pvertex[Z] - z) < EPSILON)) {
+				if ((Math.abs(pvertex[PConstants.X] - x) < PConstants.EPSILON)
+				        && (Math.abs(pvertex[PConstants.Y] - y) < PConstants.EPSILON)
+				        && (Math.abs(pvertex[PConstants.Z] - z) < PConstants.EPSILON)) {
 					// this vertex is identical, don't add it,
 					// because it will anger the triangulator
 					return;
@@ -1254,90 +1260,91 @@ public class PGraphics extends PImage implements PConstants {
 			}
 		}
 
-		// User called vertex(), so that invalidates anything queued up for curve
+		// User called vertex(), so that invalidates anything queued up for
+		// curve
 		// vertices. If this is internally called by curveVertexSegment,
 		// then curveVertexCount will be saved and restored.
 		curveVertexCount = 0;
 
-		vertex[X] = x;
-		vertex[Y] = y;
-		vertex[Z] = z;
+		vertex[PConstants.X] = x;
+		vertex[PConstants.Y] = y;
+		vertex[PConstants.Z] = z;
 
-		vertex[EDGE] = edge ? 1 : 0;
+		vertex[PGraphics.EDGE] = edge ? 1 : 0;
 
 		final boolean textured = textureImage != null;
 		if (fill || textured) {
 			if (!textured) {
-				vertex[R] = fillR;
-				vertex[G] = fillG;
-				vertex[B] = fillB;
-				vertex[A] = fillA;
+				vertex[PGraphics.R] = fillR;
+				vertex[PGraphics.G] = fillG;
+				vertex[PGraphics.B] = fillB;
+				vertex[PGraphics.A] = fillA;
 			} else {
 				if (tint) {
-					vertex[R] = tintR;
-					vertex[G] = tintG;
-					vertex[B] = tintB;
-					vertex[A] = tintA;
+					vertex[PGraphics.R] = tintR;
+					vertex[PGraphics.G] = tintG;
+					vertex[PGraphics.B] = tintB;
+					vertex[PGraphics.A] = tintA;
 				} else {
-					vertex[R] = 1;
-					vertex[G] = 1;
-					vertex[B] = 1;
-					vertex[A] = 1;
+					vertex[PGraphics.R] = 1;
+					vertex[PGraphics.G] = 1;
+					vertex[PGraphics.B] = 1;
+					vertex[PGraphics.A] = 1;
 				}
 			}
 
-			vertex[AR] = ambientR;
-			vertex[AG] = ambientG;
-			vertex[AB] = ambientB;
+			vertex[PGraphics.AR] = ambientR;
+			vertex[PGraphics.AG] = ambientG;
+			vertex[PGraphics.AB] = ambientB;
 
-			vertex[SPR] = specularR;
-			vertex[SPG] = specularG;
-			vertex[SPB] = specularB;
+			vertex[PGraphics.SPR] = specularR;
+			vertex[PGraphics.SPG] = specularG;
+			vertex[PGraphics.SPB] = specularB;
 			// vertex[SPA] = specularA;
 
-			vertex[SHINE] = shininess;
+			vertex[PGraphics.SHINE] = shininess;
 
-			vertex[ER] = emissiveR;
-			vertex[EG] = emissiveG;
-			vertex[EB] = emissiveB;
+			vertex[PGraphics.ER] = emissiveR;
+			vertex[PGraphics.EG] = emissiveG;
+			vertex[PGraphics.EB] = emissiveB;
 		}
 
 		if (stroke) {
-			vertex[SR] = strokeR;
-			vertex[SG] = strokeG;
-			vertex[SB] = strokeB;
-			vertex[SA] = strokeA;
-			vertex[SW] = strokeWeight;
+			vertex[PGraphics.SR] = strokeR;
+			vertex[PGraphics.SG] = strokeG;
+			vertex[PGraphics.SB] = strokeB;
+			vertex[PGraphics.SA] = strokeA;
+			vertex[PGraphics.SW] = strokeWeight;
 		}
 
 		if (textured) {
-			vertex[U] = textureU;
-			vertex[V] = textureV;
+			vertex[PGraphics.U] = textureU;
+			vertex[PGraphics.V] = textureV;
 		}
 
 		if (autoNormal) {
 			final double norm2 = (normalX * normalX) + (normalY * normalY) + (normalZ * normalZ);
-			if (norm2 < EPSILON) {
-				vertex[HAS_NORMAL] = 0;
+			if (norm2 < PConstants.EPSILON) {
+				vertex[PGraphics.HAS_NORMAL] = 0;
 			} else {
-				if (Math.abs(norm2 - 1) > EPSILON) {
+				if (Math.abs(norm2 - 1) > PConstants.EPSILON) {
 					// The normal vector is not normalized.
 					final double norm = PApplet.sqrt(norm2);
 					normalX /= norm;
 					normalY /= norm;
 					normalZ /= norm;
 				}
-				vertex[HAS_NORMAL] = 1;
+				vertex[PGraphics.HAS_NORMAL] = 1;
 			}
 		} else {
-			vertex[HAS_NORMAL] = 1;
+			vertex[PGraphics.HAS_NORMAL] = 1;
 		}
 
-		vertex[NX] = normalX;
-		vertex[NY] = normalY;
-		vertex[NZ] = normalZ;
+		vertex[PGraphics.NX] = normalX;
+		vertex[PGraphics.NY] = normalY;
+		vertex[PGraphics.NZ] = normalZ;
 
-		vertex[BEEN_LIT] = 0;
+		vertex[PGraphics.BEEN_LIT] = 0;
 
 		vertexCount++;
 	}
@@ -1353,13 +1360,13 @@ public class PGraphics extends PImage implements PConstants {
 		vertexCheck();
 		curveVertexCount = 0;
 		final double[] vertex = vertices[vertexCount];
-		System.arraycopy(v, 0, vertex, 0, VERTEX_FIELD_COUNT);
+		System.arraycopy(v, 0, vertex, 0, PGraphics.VERTEX_FIELD_COUNT);
 		vertexCount++;
 	}
 
 	public void vertex(final double x, final double y, final double u, final double v) {
 		vertexTexture(u, v);
-		vertex(x, y);
+		this.vertex(x, y);
 	}
 
 	/**
@@ -1398,7 +1405,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void vertex(final double x, final double y, final double z, final double u, final double v) {
 		vertexTexture(u, v);
-		vertex(x, y, z);
+		this.vertex(x, y, z);
 	}
 
 	/**
@@ -1422,9 +1429,11 @@ public class PGraphics extends PImage implements PConstants {
 	 * Used by both PGraphics2D (for images) and PGraphics3D.
 	 */
 	protected void vertexTexture(double u, double v) {
-		if (textureImage == null) { throw new RuntimeException("You must first call texture() before "
-		        + "using u and v coordinates with vertex()"); }
-		if (textureMode == IMAGE) {
+		if (textureImage == null) {
+			throw new RuntimeException("You must first call texture() before "
+			        + "using u and v coordinates with vertex()");
+		}
+		if (textureMode == PConstants.IMAGE) {
 			u /= textureImage.width;
 			v /= textureImage.height;
 		}
@@ -1445,7 +1454,8 @@ public class PGraphics extends PImage implements PConstants {
 		}
 	}
 
-	// /** This feature is in testing, do not use or rely upon its implementation */
+	// /** This feature is in testing, do not use or rely upon its
+	// implementation */
 	// public void breakShape() {
 	// showWarning("This renderer cannot currently handle concave shapes, " +
 	// "or shapes with holes.");
@@ -1455,18 +1465,18 @@ public class PGraphics extends PImage implements PConstants {
 	 * @webref shape:vertex
 	 */
 	public void beginContour() {
-		showMissingWarning("beginContour");
+		PGraphics.showMissingWarning("beginContour");
 	}
 
 	/**
 	 * @webref shape:vertex
 	 */
 	public void endContour() {
-		showMissingWarning("endContour");
+		PGraphics.showMissingWarning("endContour");
 	}
 
 	public void endShape() {
-		endShape(OPEN);
+		this.endShape(PConstants.OPEN);
 	}
 
 	/**
@@ -1496,11 +1506,11 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PApplet#createShape()
 	 */
 	public PShape loadShape(final String filename) {
-		return loadShape(filename, null);
+		return this.loadShape(filename, null);
 	}
 
 	public PShape loadShape(final String filename, final String options) {
-		showMissingWarning("loadShape");
+		PGraphics.showMissingWarning("loadShape");
 		return null;
 	}
 
@@ -1515,12 +1525,12 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PApplet#loadShape(String)
 	 */
 	public PShape createShape() {
-		showMissingWarning("createShape");
+		PGraphics.showMissingWarning("createShape");
 		return null;
 	}
 
 	public PShape createShape(final PShape source) {
-		showMissingWarning("createShape");
+		PGraphics.showMissingWarning("createShape");
 		return null;
 	}
 
@@ -1529,7 +1539,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            either POINTS, LINES, TRIANGLES, TRIANGLE_FAN, TRIANGLE_STRIP, QUADS, QUAD_STRIP
 	 */
 	public PShape createShape(final int type) {
-		showMissingWarning("createShape");
+		PGraphics.showMissingWarning("createShape");
 		return null;
 	}
 
@@ -1540,7 +1550,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            parameters that match the kind of shape
 	 */
 	public PShape createShape(final int kind, final double... p) {
-		showMissingWarning("createShape");
+		PGraphics.showMissingWarning("createShape");
 		return null;
 	}
 
@@ -1560,7 +1570,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @param d height of the rectangle by default
 	 */
 	public void clip(double a, double b, double c, double d) {
-		if (imageMode == CORNER) {
+		if (imageMode == PConstants.CORNER) {
 			if (c < 0) { // reset a negative width
 				a += c;
 				c = -c;
@@ -1572,7 +1582,7 @@ public class PGraphics extends PImage implements PConstants {
 
 			clipImpl(a, b, a + c, b + d);
 
-		} else if (imageMode == CORNERS) {
+		} else if (imageMode == PConstants.CORNERS) {
 			if (c < a) { // reverse because x2 < x1
 				final double temp = a;
 				a = c;
@@ -1586,7 +1596,7 @@ public class PGraphics extends PImage implements PConstants {
 
 			clipImpl(a, b, c, d);
 
-		} else if (imageMode == CENTER) {
+		} else if (imageMode == PConstants.CENTER) {
 			// c and d are width/height
 			if (c < 0) {
 				c = -c;
@@ -1602,14 +1612,14 @@ public class PGraphics extends PImage implements PConstants {
 	}
 
 	protected void clipImpl(final double x1, final double y1, final double x2, final double y2) {
-		showMissingWarning("clip");
+		PGraphics.showMissingWarning("clip");
 	}
 
 	/*
 	 * @webref rendering:shaders
 	 */
 	public void noClip() {
-		showMissingWarning("noClip");
+		PGraphics.showMissingWarning("noClip");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -1625,7 +1635,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            the blending mode to use
 	 */
 	public void blendMode(final int mode) {
-		showMissingWarning("blendMode");
+		PGraphics.showMissingWarning("blendMode");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -1633,25 +1643,29 @@ public class PGraphics extends PImage implements PConstants {
 	// CURVE/BEZIER VERTEX HANDLING
 
 	protected void bezierVertexCheck() {
-		bezierVertexCheck(shape, vertexCount);
+		this.bezierVertexCheck(shape, vertexCount);
 	}
 
 	protected void bezierVertexCheck(final int shape, final int vertexCount) {
-		if ((shape == 0) || (shape != POLYGON)) { throw new RuntimeException("beginShape() or beginShape(POLYGON) "
-		        + "must be used before bezierVertex() or quadraticVertex()"); }
-		if (vertexCount == 0) { throw new RuntimeException("vertex() must be used at least once"
-		        + "before bezierVertex() or quadraticVertex()"); }
+		if ((shape == 0) || (shape != PConstants.POLYGON)) {
+			throw new RuntimeException("beginShape() or beginShape(POLYGON) "
+			        + "must be used before bezierVertex() or quadraticVertex()");
+		}
+		if (vertexCount == 0) {
+			throw new RuntimeException("vertex() must be used at least once"
+			        + "before bezierVertex() or quadraticVertex()");
+		}
 	}
 
 	public void bezierVertex(final double x2, final double y2, final double x3, final double y3, final double x4,
 	        final double y4) {
 		bezierInitCheck();
-		bezierVertexCheck();
+		this.bezierVertexCheck();
 		final PMatrix3D draw = bezierDrawMatrix;
 
 		final double[] prev = vertices[vertexCount - 1];
-		double x1 = prev[X];
-		double y1 = prev[Y];
+		double x1 = prev[PConstants.X];
+		double y1 = prev[PConstants.Y];
 
 		double xplot1 = (draw.m10 * x1) + (draw.m11 * x2) + (draw.m12 * x3) + (draw.m13 * x4);
 		double xplot2 = (draw.m20 * x1) + (draw.m21 * x2) + (draw.m22 * x3) + (draw.m23 * x4);
@@ -1668,7 +1682,7 @@ public class PGraphics extends PImage implements PConstants {
 			y1 += yplot1;
 			yplot1 += yplot2;
 			yplot2 += yplot3;
-			vertex(x1, y1);
+			this.vertex(x1, y1);
 		}
 	}
 
@@ -1710,13 +1724,13 @@ public class PGraphics extends PImage implements PConstants {
 	public void bezierVertex(final double x2, final double y2, final double z2, final double x3, final double y3,
 	        final double z3, final double x4, final double y4, final double z4) {
 		bezierInitCheck();
-		bezierVertexCheck();
+		this.bezierVertexCheck();
 		final PMatrix3D draw = bezierDrawMatrix;
 
 		final double[] prev = vertices[vertexCount - 1];
-		double x1 = prev[X];
-		double y1 = prev[Y];
-		double z1 = prev[Z];
+		double x1 = prev[PConstants.X];
+		double y1 = prev[PConstants.Y];
+		double z1 = prev[PConstants.Z];
 
 		double xplot1 = (draw.m10 * x1) + (draw.m11 * x2) + (draw.m12 * x3) + (draw.m13 * x4);
 		double xplot2 = (draw.m20 * x1) + (draw.m21 * x2) + (draw.m22 * x3) + (draw.m23 * x4);
@@ -1740,7 +1754,7 @@ public class PGraphics extends PImage implements PConstants {
 			z1 += zplot1;
 			zplot1 += zplot2;
 			zplot2 += zplot3;
-			vertex(x1, y1, z1);
+			this.vertex(x1, y1, z1);
 		}
 	}
 
@@ -1762,11 +1776,11 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void quadraticVertex(final double cx, final double cy, final double x3, final double y3) {
 		final double[] prev = vertices[vertexCount - 1];
-		final double x1 = prev[X];
-		final double y1 = prev[Y];
+		final double x1 = prev[PConstants.X];
+		final double y1 = prev[PConstants.Y];
 
-		bezierVertex(x1 + (((cx - x1) * 2) / 3.0f), y1 + (((cy - y1) * 2) / 3.0f), x3 + (((cx - x3) * 2) / 3.0f), y3
-		        + (((cy - y3) * 2) / 3.0f), x3, y3);
+		this.bezierVertex(x1 + (((cx - x1) * 2) / 3.0f), y1 + (((cy - y1) * 2) / 3.0f), x3 + (((cx - x3) * 2) / 3.0f),
+		        y3 + (((cy - y3) * 2) / 3.0f), x3, y3);
 	}
 
 	/**
@@ -1778,16 +1792,16 @@ public class PGraphics extends PImage implements PConstants {
 	public void quadraticVertex(final double cx, final double cy, final double cz, final double x3, final double y3,
 	        final double z3) {
 		final double[] prev = vertices[vertexCount - 1];
-		final double x1 = prev[X];
-		final double y1 = prev[Y];
-		final double z1 = prev[Z];
+		final double x1 = prev[PConstants.X];
+		final double y1 = prev[PConstants.Y];
+		final double z1 = prev[PConstants.Z];
 
-		bezierVertex(x1 + (((cx - x1) * 2) / 3.0f), y1 + (((cy - y1) * 2) / 3.0f), z1 + (((cz - z1) * 2) / 3.0f), x3
-		        + (((cx - x3) * 2) / 3.0f), y3 + (((cy - y3) * 2) / 3.0f), z3 + (((cz - z3) * 2) / 3.0f), x3, y3, z3);
+		this.bezierVertex(x1 + (((cx - x1) * 2) / 3.0f), y1 + (((cy - y1) * 2) / 3.0f), z1 + (((cz - z1) * 2) / 3.0f),
+		        x3 + (((cx - x3) * 2) / 3.0f), y3 + (((cy - y3) * 2) / 3.0f), z3 + (((cz - z3) * 2) / 3.0f), x3, y3, z3);
 	}
 
 	protected void curveVertexCheck() {
-		curveVertexCheck(shape);
+		this.curveVertexCheck(shape);
 	}
 
 	/**
@@ -1795,8 +1809,9 @@ public class PGraphics extends PImage implements PConstants {
 	 * overridden by subclasses that need the flexibility.
 	 */
 	protected void curveVertexCheck(final int shape) {
-		if (shape != POLYGON) { throw new RuntimeException("You must use beginShape() or "
-		        + "beginShape(POLYGON) before curveVertex()"); }
+		if (shape != PConstants.POLYGON) {
+			throw new RuntimeException("You must use beginShape() or " + "beginShape(POLYGON) before curveVertex()");
+		}
 		// to improve code init time, allocate on first use.
 		if (curveVertices == null) {
 			curveVertices = new double[128][3];
@@ -1837,18 +1852,22 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#quadraticVertex(double, double, double, double, double, double)
 	 */
 	public void curveVertex(final double x, final double y) {
-		curveVertexCheck();
+		this.curveVertexCheck();
 		final double[] vertex = curveVertices[curveVertexCount];
-		vertex[X] = x;
-		vertex[Y] = y;
+		vertex[PConstants.X] = x;
+		vertex[PConstants.Y] = y;
 		curveVertexCount++;
 
 		// draw a segment if there are enough points
 		if (curveVertexCount > 3) {
-			curveVertexSegment(curveVertices[curveVertexCount - 4][X], curveVertices[curveVertexCount - 4][Y],
-			        curveVertices[curveVertexCount - 3][X], curveVertices[curveVertexCount - 3][Y],
-			        curveVertices[curveVertexCount - 2][X], curveVertices[curveVertexCount - 2][Y],
-			        curveVertices[curveVertexCount - 1][X], curveVertices[curveVertexCount - 1][Y]);
+			this.curveVertexSegment(curveVertices[curveVertexCount - 4][PConstants.X],
+			        curveVertices[curveVertexCount - 4][PConstants.Y],
+			        curveVertices[curveVertexCount - 3][PConstants.X],
+			        curveVertices[curveVertexCount - 3][PConstants.Y],
+			        curveVertices[curveVertexCount - 2][PConstants.X],
+			        curveVertices[curveVertexCount - 2][PConstants.Y],
+			        curveVertices[curveVertexCount - 1][PConstants.X],
+			        curveVertices[curveVertexCount - 1][PConstants.Y]);
 		}
 	}
 
@@ -1857,21 +1876,27 @@ public class PGraphics extends PImage implements PConstants {
 	 *            the z-coordinate of the vertex
 	 */
 	public void curveVertex(final double x, final double y, final double z) {
-		curveVertexCheck();
+		this.curveVertexCheck();
 		final double[] vertex = curveVertices[curveVertexCount];
-		vertex[X] = x;
-		vertex[Y] = y;
-		vertex[Z] = z;
+		vertex[PConstants.X] = x;
+		vertex[PConstants.Y] = y;
+		vertex[PConstants.Z] = z;
 		curveVertexCount++;
 
 		// draw a segment if there are enough points
 		if (curveVertexCount > 3) {
-			curveVertexSegment(curveVertices[curveVertexCount - 4][X], curveVertices[curveVertexCount - 4][Y],
-			        curveVertices[curveVertexCount - 4][Z], curveVertices[curveVertexCount - 3][X],
-			        curveVertices[curveVertexCount - 3][Y], curveVertices[curveVertexCount - 3][Z],
-			        curveVertices[curveVertexCount - 2][X], curveVertices[curveVertexCount - 2][Y],
-			        curveVertices[curveVertexCount - 2][Z], curveVertices[curveVertexCount - 1][X],
-			        curveVertices[curveVertexCount - 1][Y], curveVertices[curveVertexCount - 1][Z]);
+			this.curveVertexSegment(curveVertices[curveVertexCount - 4][PConstants.X],
+			        curveVertices[curveVertexCount - 4][PConstants.Y],
+			        curveVertices[curveVertexCount - 4][PConstants.Z],
+			        curveVertices[curveVertexCount - 3][PConstants.X],
+			        curveVertices[curveVertexCount - 3][PConstants.Y],
+			        curveVertices[curveVertexCount - 3][PConstants.Z],
+			        curveVertices[curveVertexCount - 2][PConstants.X],
+			        curveVertices[curveVertexCount - 2][PConstants.Y],
+			        curveVertices[curveVertexCount - 2][PConstants.Z],
+			        curveVertices[curveVertexCount - 1][PConstants.X],
+			        curveVertices[curveVertexCount - 1][PConstants.Y],
+			        curveVertices[curveVertexCount - 1][PConstants.Z]);
 		}
 	}
 
@@ -1897,7 +1922,7 @@ public class PGraphics extends PImage implements PConstants {
 		// vertex() will reset splineVertexCount, so save it
 		final int savedCount = curveVertexCount;
 
-		vertex(x0, y0);
+		this.vertex(x0, y0);
 		for (int j = 0; j < curveDetail; j++) {
 			x0 += xplot1;
 			xplot1 += xplot2;
@@ -1905,7 +1930,7 @@ public class PGraphics extends PImage implements PConstants {
 			y0 += yplot1;
 			yplot1 += yplot2;
 			yplot2 += yplot3;
-			vertex(x0, y0);
+			this.vertex(x0, y0);
 		}
 		curveVertexCount = savedCount;
 	}
@@ -1938,7 +1963,7 @@ public class PGraphics extends PImage implements PConstants {
 		double zplot2 = (draw.m20 * z1) + (draw.m21 * z2) + (draw.m22 * z3) + (draw.m23 * z4);
 		final double zplot3 = (draw.m30 * z1) + (draw.m31 * z2) + (draw.m32 * z3) + (draw.m33 * z4);
 
-		vertex(x0, y0, z0);
+		this.vertex(x0, y0, z0);
 		for (int j = 0; j < curveDetail; j++) {
 			x0 += xplot1;
 			xplot1 += xplot2;
@@ -1949,7 +1974,7 @@ public class PGraphics extends PImage implements PConstants {
 			z0 += zplot1;
 			zplot1 += zplot2;
 			zplot2 += zplot3;
-			vertex(x0, y0, z0);
+			this.vertex(x0, y0, z0);
 		}
 		curveVertexCount = savedCount;
 	}
@@ -1972,9 +1997,9 @@ public class PGraphics extends PImage implements PConstants {
 	 *            y-coordinate of the point
 	 */
 	public void point(final double x, final double y) {
-		beginShape(POINTS);
-		vertex(x, y);
-		endShape();
+		this.beginShape(PConstants.POINTS);
+		this.vertex(x, y);
+		this.endShape();
 	}
 
 	/**
@@ -1982,9 +2007,9 @@ public class PGraphics extends PImage implements PConstants {
 	 *            z-coordinate of the point
 	 */
 	public void point(final double x, final double y, final double z) {
-		beginShape(POINTS);
-		vertex(x, y, z);
-		endShape();
+		this.beginShape(PConstants.POINTS);
+		this.vertex(x, y, z);
+		this.endShape();
 	}
 
 	/**
@@ -2012,10 +2037,10 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#beginShape()
 	 */
 	public void line(final double x1, final double y1, final double x2, final double y2) {
-		beginShape(LINES);
-		vertex(x1, y1);
-		vertex(x2, y2);
-		endShape();
+		this.beginShape(PConstants.LINES);
+		this.vertex(x1, y1);
+		this.vertex(x2, y2);
+		this.endShape();
 	}
 
 	/**
@@ -2026,10 +2051,10 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void line(final double x1, final double y1, final double z1, final double x2, final double y2,
 	        final double z2) {
-		beginShape(LINES);
-		vertex(x1, y1, z1);
-		vertex(x2, y2, z2);
-		endShape();
+		this.beginShape(PConstants.LINES);
+		this.vertex(x1, y1, z1);
+		this.vertex(x2, y2, z2);
+		this.endShape();
 	}
 
 	/**
@@ -2054,11 +2079,11 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void triangle(final double x1, final double y1, final double x2, final double y2, final double x3,
 	        final double y3) {
-		beginShape(TRIANGLES);
-		vertex(x1, y1);
-		vertex(x2, y2);
-		vertex(x3, y3);
-		endShape();
+		this.beginShape(PConstants.TRIANGLES);
+		this.vertex(x1, y1);
+		this.vertex(x2, y2);
+		this.vertex(x3, y3);
+		this.endShape();
 	}
 
 	/**
@@ -2088,12 +2113,12 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void quad(final double x1, final double y1, final double x2, final double y2, final double x3,
 	        final double y3, final double x4, final double y4) {
-		beginShape(QUADS);
-		vertex(x1, y1);
-		vertex(x2, y2);
-		vertex(x3, y3);
-		vertex(x4, y4);
-		endShape();
+		this.beginShape(PConstants.QUADS);
+		this.vertex(x1, y1);
+		this.vertex(x2, y2);
+		this.vertex(x3, y3);
+		this.vertex(x4, y4);
+		this.endShape();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -2180,7 +2205,7 @@ public class PGraphics extends PImage implements PConstants {
 			d = temp;
 		}
 
-		rectImpl(a, b, c, d);
+		this.rectImpl(a, b, c, d);
 	}
 
 	protected void rectImpl(final double x1, final double y1, final double x2, final double y2) {
@@ -2191,7 +2216,8 @@ public class PGraphics extends PImage implements PConstants {
 	// (e.g. not all renderers use the vertices array)
 	// Also seems to be some issues on quality here (too dense)
 	// http://code.google.com/p/processing/issues/detail?id=265
-	// private void quadraticVertex(double cpx, double cpy, double x, double y) {
+	// private void quadraticVertex(double cpx, double cpy, double x, double y)
+	// {
 	// double[] prev = vertices[vertexCount - 1];
 	// double prevX = prev[X];
 	// double prevY = prev[Y];
@@ -2207,7 +2233,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            radii for all four corners
 	 */
 	public void rect(final double a, final double b, final double c, final double d, final double r) {
-		rect(a, b, c, d, r, r, r, r);
+		this.rect(a, b, c, d, r, r, r, r);
 	}
 
 	/**
@@ -2272,39 +2298,39 @@ public class PGraphics extends PImage implements PConstants {
 			bl = maxRounding;
 		}
 
-		rectImpl(a, b, c, d, tl, tr, br, bl);
+		this.rectImpl(a, b, c, d, tl, tr, br, bl);
 	}
 
 	protected void rectImpl(final double x1, final double y1, final double x2, final double y2, final double tl,
 	        final double tr, final double br, final double bl) {
-		beginShape();
+		this.beginShape();
 		// vertex(x1+tl, y1);
 		if (tr != 0) {
-			vertex(x2 - tr, y1);
-			quadraticVertex(x2, y1, x2, y1 + tr);
+			this.vertex(x2 - tr, y1);
+			this.quadraticVertex(x2, y1, x2, y1 + tr);
 		} else {
-			vertex(x2, y1);
+			this.vertex(x2, y1);
 		}
 		if (br != 0) {
-			vertex(x2, y2 - br);
-			quadraticVertex(x2, y2, x2 - br, y2);
+			this.vertex(x2, y2 - br);
+			this.quadraticVertex(x2, y2, x2 - br, y2);
 		} else {
-			vertex(x2, y2);
+			this.vertex(x2, y2);
 		}
 		if (bl != 0) {
-			vertex(x1 + bl, y2);
-			quadraticVertex(x1, y2, x1, y2 - bl);
+			this.vertex(x1 + bl, y2);
+			this.quadraticVertex(x1, y2, x1, y2 - bl);
 		} else {
-			vertex(x1, y2);
+			this.vertex(x1, y2);
 		}
 		if (tl != 0) {
-			vertex(x1, y1 + tl);
-			quadraticVertex(x1, y1, x1 + tl, y1);
+			this.vertex(x1, y1 + tl);
+			this.quadraticVertex(x1, y1, x1 + tl, y1);
 		} else {
-			vertex(x1, y1);
+			this.vertex(x1, y1);
 		}
 		// endShape();
-		endShape(CLOSE);
+		this.endShape(PConstants.CLOSE);
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -2356,17 +2382,17 @@ public class PGraphics extends PImage implements PConstants {
 		double w = c;
 		double h = d;
 
-		if (ellipseMode == CORNERS) {
+		if (ellipseMode == PConstants.CORNERS) {
 			w = c - a;
 			h = d - b;
 
-		} else if (ellipseMode == RADIUS) {
+		} else if (ellipseMode == PConstants.RADIUS) {
 			x = a - c;
 			y = b - d;
 			w = c * 2;
 			h = d * 2;
 
-		} else if (ellipseMode == DIAMETER) {
+		} else if (ellipseMode == PConstants.DIAMETER) {
 			x = a - (c / 2f);
 			y = b - (d / 2f);
 		}
@@ -2414,7 +2440,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void arc(final double a, final double b, final double c, final double d, final double start,
 	        final double stop) {
-		arc(a, b, c, d, start, stop, 0);
+		this.arc(a, b, c, d, start, stop, 0);
 	}
 
 	/*
@@ -2427,17 +2453,17 @@ public class PGraphics extends PImage implements PConstants {
 		double w = c;
 		double h = d;
 
-		if (ellipseMode == CORNERS) {
+		if (ellipseMode == PConstants.CORNERS) {
 			w = c - a;
 			h = d - b;
 
-		} else if (ellipseMode == RADIUS) {
+		} else if (ellipseMode == PConstants.RADIUS) {
 			x = a - c;
 			y = b - d;
 			w = c * 2;
 			h = d * 2;
 
-		} else if (ellipseMode == CENTER) {
+		} else if (ellipseMode == PConstants.CENTER) {
 			x = a - (c / 2f);
 			y = b - (d / 2f);
 		}
@@ -2448,13 +2474,13 @@ public class PGraphics extends PImage implements PConstants {
 			if (stop > start) {
 				// make sure that we're starting at a useful point
 				while (start < 0) {
-					start += TWO_PI;
-					stop += TWO_PI;
+					start += PConstants.TWO_PI;
+					stop += PConstants.TWO_PI;
 				}
 
-				if ((stop - start) > TWO_PI) {
+				if ((stop - start) > PConstants.TWO_PI) {
 					start = 0;
-					stop = TWO_PI;
+					stop = PConstants.TWO_PI;
 				}
 				arcImpl(x, y, w, h, start, stop, mode);
 			}
@@ -2472,7 +2498,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	protected void arcImpl(final double x, final double y, final double w, final double h, final double start,
 	        final double stop, final int mode) {
-		showMissingWarning("arc");
+		PGraphics.showMissingWarning("arc");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -2489,7 +2515,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#sphere(double)
 	 */
 	public void box(final double size) {
-		box(size, size, size);
+		this.box(size, size, size);
 	}
 
 	/**
@@ -2511,51 +2537,51 @@ public class PGraphics extends PImage implements PConstants {
 		// TODO not the least bit efficient, it even redraws lines
 		// along the vertices. ugly ugly ugly!
 
-		beginShape(QUADS);
+		this.beginShape(PConstants.QUADS);
 
 		// front
 		normal(0, 0, 1);
-		vertex(x1, y1, z1);
-		vertex(x2, y1, z1);
-		vertex(x2, y2, z1);
-		vertex(x1, y2, z1);
+		this.vertex(x1, y1, z1);
+		this.vertex(x2, y1, z1);
+		this.vertex(x2, y2, z1);
+		this.vertex(x1, y2, z1);
 
 		// right
 		normal(1, 0, 0);
-		vertex(x2, y1, z1);
-		vertex(x2, y1, z2);
-		vertex(x2, y2, z2);
-		vertex(x2, y2, z1);
+		this.vertex(x2, y1, z1);
+		this.vertex(x2, y1, z2);
+		this.vertex(x2, y2, z2);
+		this.vertex(x2, y2, z1);
 
 		// back
 		normal(0, 0, -1);
-		vertex(x2, y1, z2);
-		vertex(x1, y1, z2);
-		vertex(x1, y2, z2);
-		vertex(x2, y2, z2);
+		this.vertex(x2, y1, z2);
+		this.vertex(x1, y1, z2);
+		this.vertex(x1, y2, z2);
+		this.vertex(x2, y2, z2);
 
 		// left
 		normal(-1, 0, 0);
-		vertex(x1, y1, z2);
-		vertex(x1, y1, z1);
-		vertex(x1, y2, z1);
-		vertex(x1, y2, z2);
+		this.vertex(x1, y1, z2);
+		this.vertex(x1, y1, z1);
+		this.vertex(x1, y2, z1);
+		this.vertex(x1, y2, z2);
 
 		// top
 		normal(0, 1, 0);
-		vertex(x1, y1, z2);
-		vertex(x2, y1, z2);
-		vertex(x2, y1, z1);
-		vertex(x1, y1, z1);
+		this.vertex(x1, y1, z2);
+		this.vertex(x2, y1, z2);
+		this.vertex(x2, y1, z1);
+		this.vertex(x1, y1, z1);
 
 		// bottom
 		normal(0, -1, 0);
-		vertex(x1, y2, z1);
-		vertex(x2, y2, z1);
-		vertex(x2, y2, z2);
-		vertex(x1, y2, z2);
+		this.vertex(x1, y2, z1);
+		this.vertex(x2, y2, z1);
+		this.vertex(x2, y2, z2);
+		this.vertex(x1, y2, z2);
 
-		endShape();
+		this.endShape();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -2581,7 +2607,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#sphere(double)
 	 */
 	public void sphereDetail(final int res) {
-		sphereDetail(res, res);
+		this.sphereDetail(res, res);
 	}
 
 	/**
@@ -2597,15 +2623,17 @@ public class PGraphics extends PImage implements PConstants {
 		if (vres < 2) {
 			vres = 2; // force a minimum res
 		}
-		if ((ures == sphereDetailU) && (vres == sphereDetailV)) { return; }
+		if ((ures == sphereDetailU) && (vres == sphereDetailV)) {
+			return;
+		}
 
-		final double delta = (double) SINCOS_LENGTH / ures;
+		final double delta = (double) PGraphics.SINCOS_LENGTH / ures;
 		final double[] cx = new double[ures];
 		final double[] cz = new double[ures];
 		// calc unit circle in XZ plane
 		for (int i = 0; i < ures; i++) {
-			cx[i] = cosLUT[(int) (i * delta) % SINCOS_LENGTH];
-			cz[i] = sinLUT[(int) (i * delta) % SINCOS_LENGTH];
+			cx[i] = PGraphics.cosLUT[(int) (i * delta) % PGraphics.SINCOS_LENGTH];
+			cz[i] = PGraphics.sinLUT[(int) (i * delta) % PGraphics.SINCOS_LENGTH];
 		}
 		// computing vertexlist
 		// vertexlist starts at south pole
@@ -2617,13 +2645,13 @@ public class PGraphics extends PImage implements PConstants {
 		sphereY = new double[vertCount];
 		sphereZ = new double[vertCount];
 
-		final double angle_step = (SINCOS_LENGTH * 0.5f) / vres;
+		final double angle_step = (PGraphics.SINCOS_LENGTH * 0.5f) / vres;
 		double angle = angle_step;
 
 		// step along Y axis
 		for (int i = 1; i < vres; i++) {
-			final double curradius = sinLUT[(int) angle % SINCOS_LENGTH];
-			final double currY = cosLUT[(int) angle % SINCOS_LENGTH];
+			final double curradius = PGraphics.sinLUT[(int) angle % PGraphics.SINCOS_LENGTH];
+			final double currY = PGraphics.cosLUT[(int) angle % PGraphics.SINCOS_LENGTH];
 			for (int j = 0; j < ures; j++) {
 				sphereX[currVert] = cx[j] * curradius;
 				sphereY[currVert] = currY;
@@ -2665,24 +2693,24 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void sphere(final double r) {
 		if ((sphereDetailU < 3) || (sphereDetailV < 2)) {
-			sphereDetail(30);
+			this.sphereDetail(30);
 		}
 
 		edge(false);
 
 		// 1st ring from south pole
-		beginShape(TRIANGLE_STRIP);
+		this.beginShape(PConstants.TRIANGLE_STRIP);
 		for (int i = 0; i < sphereDetailU; i++) {
 			normal(0, -1, 0);
-			vertex(0, -r, 0);
+			this.vertex(0, -r, 0);
 			normal(sphereX[i], sphereY[i], sphereZ[i]);
-			vertex(r * sphereX[i], r * sphereY[i], r * sphereZ[i]);
+			this.vertex(r * sphereX[i], r * sphereY[i], r * sphereZ[i]);
 		}
 		normal(0, -r, 0);
-		vertex(0, -r, 0);
+		this.vertex(0, -r, 0);
 		normal(sphereX[0], sphereY[0], sphereZ[0]);
-		vertex(r * sphereX[0], r * sphereY[0], r * sphereZ[0]);
-		endShape();
+		this.vertex(r * sphereX[0], r * sphereY[0], r * sphereZ[0]);
+		this.endShape();
 
 		int v1, v11, v2;
 
@@ -2692,37 +2720,37 @@ public class PGraphics extends PImage implements PConstants {
 			v1 = v11 = voff;
 			voff += sphereDetailU;
 			v2 = voff;
-			beginShape(TRIANGLE_STRIP);
+			this.beginShape(PConstants.TRIANGLE_STRIP);
 			for (int j = 0; j < sphereDetailU; j++) {
 				normal(sphereX[v1], sphereY[v1], sphereZ[v1]);
-				vertex(r * sphereX[v1], r * sphereY[v1], r * sphereZ[v1++]);
+				this.vertex(r * sphereX[v1], r * sphereY[v1], r * sphereZ[v1++]);
 				normal(sphereX[v2], sphereY[v2], sphereZ[v2]);
-				vertex(r * sphereX[v2], r * sphereY[v2], r * sphereZ[v2++]);
+				this.vertex(r * sphereX[v2], r * sphereY[v2], r * sphereZ[v2++]);
 			}
 			// close each ring
 			v1 = v11;
 			v2 = voff;
 			normal(sphereX[v1], sphereY[v1], sphereZ[v1]);
-			vertex(r * sphereX[v1], r * sphereY[v1], r * sphereZ[v1]);
+			this.vertex(r * sphereX[v1], r * sphereY[v1], r * sphereZ[v1]);
 			normal(sphereX[v2], sphereY[v2], sphereZ[v2]);
-			vertex(r * sphereX[v2], r * sphereY[v2], r * sphereZ[v2]);
-			endShape();
+			this.vertex(r * sphereX[v2], r * sphereY[v2], r * sphereZ[v2]);
+			this.endShape();
 		}
 
 		// add the northern cap
-		beginShape(TRIANGLE_STRIP);
+		this.beginShape(PConstants.TRIANGLE_STRIP);
 		for (int i = 0; i < sphereDetailU; i++) {
 			v2 = voff + i;
 			normal(sphereX[v2], sphereY[v2], sphereZ[v2]);
-			vertex(r * sphereX[v2], r * sphereY[v2], r * sphereZ[v2]);
+			this.vertex(r * sphereX[v2], r * sphereY[v2], r * sphereZ[v2]);
 			normal(0, 1, 0);
-			vertex(0, r, 0);
+			this.vertex(0, r, 0);
 		}
 		normal(sphereX[voff], sphereY[voff], sphereZ[voff]);
-		vertex(r * sphereX[voff], r * sphereY[voff], r * sphereZ[voff]);
+		this.vertex(r * sphereX[voff], r * sphereY[voff], r * sphereZ[voff]);
 		normal(0, 1, 0);
-		vertex(0, r, 0);
-		endShape();
+		this.vertex(0, r, 0);
+		this.endShape();
 
 		edge(true);
 	}
@@ -2813,7 +2841,8 @@ public class PGraphics extends PImage implements PConstants {
 	}
 
 	protected void bezierInit() {
-		// overkill to be broken out, but better parity with the curve stuff below
+		// overkill to be broken out, but better parity with the curve stuff
+		// below
 		bezierDetail(bezierDetail);
 		bezierInited = true;
 	}
@@ -2843,17 +2872,18 @@ public class PGraphics extends PImage implements PConstants {
 
 		// multiply the basis and forward diff matrices together
 		// saves much time since this needn't be done for each curve
-		// mult_spline_matrix(bezierForwardMatrix, bezier_basis, bezierDrawMatrix, 4);
+		// mult_spline_matrix(bezierForwardMatrix, bezier_basis,
+		// bezierDrawMatrix, 4);
 		// bezierDrawMatrix.set(bezierForwardMatrix);
 		bezierDrawMatrix.apply(bezierBasisMatrix);
 	}
 
 	public void bezier(final double x1, final double y1, final double x2, final double y2, final double x3,
 	        final double y3, final double x4, final double y4) {
-		beginShape();
-		vertex(x1, y1);
-		bezierVertex(x2, y2, x3, y3, x4, y4);
-		endShape();
+		this.beginShape();
+		this.vertex(x1, y1);
+		this.bezierVertex(x2, y2, x3, y3, x4, y4);
+		this.endShape();
 	}
 
 	/**
@@ -2932,10 +2962,10 @@ public class PGraphics extends PImage implements PConstants {
 	public void bezier(final double x1, final double y1, final double z1, final double x2, final double y2,
 	        final double z2, final double x3, final double y3, final double z3, final double x4, final double y4,
 	        final double z4) {
-		beginShape();
-		vertex(x1, y1, z1);
-		bezierVertex(x2, y2, z2, x3, y3, z3, x4, y4, z4);
-		endShape();
+		this.beginShape();
+		this.vertex(x1, y1, z1);
+		this.bezierVertex(x2, y2, z2, x3, y3, z3, x4, y4, z4);
+		this.endShape();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -3146,12 +3176,12 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void curve(final double x1, final double y1, final double x2, final double y2, final double x3,
 	        final double y3, final double x4, final double y4) {
-		beginShape();
-		curveVertex(x1, y1);
-		curveVertex(x2, y2);
-		curveVertex(x3, y3);
-		curveVertex(x4, y4);
-		endShape();
+		this.beginShape();
+		this.curveVertex(x1, y1);
+		this.curveVertex(x2, y2);
+		this.curveVertex(x3, y3);
+		this.curveVertex(x4, y4);
+		this.endShape();
 	}
 
 	/**
@@ -3167,12 +3197,12 @@ public class PGraphics extends PImage implements PConstants {
 	public void curve(final double x1, final double y1, final double z1, final double x2, final double y2,
 	        final double z2, final double x3, final double y3, final double z3, final double x4, final double y4,
 	        final double z4) {
-		beginShape();
-		curveVertex(x1, y1, z1);
-		curveVertex(x2, y2, z2);
-		curveVertex(x3, y3, z3);
-		curveVertex(x4, y4, z4);
-		endShape();
+		this.beginShape();
+		this.curveVertex(x1, y1, z1);
+		this.curveVertex(x2, y2, z2);
+		this.curveVertex(x3, y3, z3);
+		this.curveVertex(x4, y4, z4);
+		this.endShape();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -3265,7 +3295,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#background(double, double, double, double)
 	 */
 	public void imageMode(final int mode) {
-		if ((mode == CORNER) || (mode == CORNERS) || (mode == CENTER)) {
+		if ((mode == PConstants.CORNER) || (mode == PConstants.CORNERS) || (mode == PConstants.CENTER)) {
 			imageMode = mode;
 		} else {
 			final String msg = "imageMode() only works with CORNER, CORNERS, or CENTER";
@@ -3307,12 +3337,14 @@ public class PGraphics extends PImage implements PConstants {
 	public void image(final PImage img, final double a, final double b) {
 		// Starting in release 0144, image errors are simply ignored.
 		// loadImageAsync() sets width and height to -1 when loading fails.
-		if ((img.width == -1) || (img.height == -1)) { return; }
+		if ((img.width == -1) || (img.height == -1)) {
+			return;
+		}
 
-		if ((imageMode == CORNER) || (imageMode == CORNERS)) {
+		if ((imageMode == PConstants.CORNER) || (imageMode == PConstants.CORNERS)) {
 			imageImpl(img, a, b, a + img.width, b + img.height, 0, 0, img.width, img.height);
 
-		} else if (imageMode == CENTER) {
+		} else if (imageMode == PConstants.CENTER) {
 			final double x1 = a - (img.width / 2);
 			final double y1 = b - (img.height / 2);
 			imageImpl(img, x1, y1, x1 + img.width, y1 + img.height, 0, 0, img.width, img.height);
@@ -3326,7 +3358,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            height to display the image
 	 */
 	public void image(final PImage img, final double a, final double b, final double c, final double d) {
-		image(img, a, b, c, d, 0, 0, img.width, img.height);
+		this.image(img, a, b, c, d, 0, 0, img.width, img.height);
 	}
 
 	/**
@@ -3339,9 +3371,11 @@ public class PGraphics extends PImage implements PConstants {
 	        final int u2, final int v2) {
 		// Starting in release 0144, image errors are simply ignored.
 		// loadImageAsync() sets width and height to -1 when loading fails.
-		if ((img.width == -1) || (img.height == -1)) { return; }
+		if ((img.width == -1) || (img.height == -1)) {
+			return;
+		}
 
-		if (imageMode == CORNER) {
+		if (imageMode == PConstants.CORNER) {
 			if (c < 0) { // reset a negative width
 				a += c;
 				c = -c;
@@ -3353,7 +3387,7 @@ public class PGraphics extends PImage implements PConstants {
 
 			imageImpl(img, a, b, a + c, b + d, u1, v1, u2, v2);
 
-		} else if (imageMode == CORNERS) {
+		} else if (imageMode == PConstants.CORNERS) {
 			if (c < a) { // reverse because x2 < x1
 				final double temp = a;
 				a = c;
@@ -3367,7 +3401,7 @@ public class PGraphics extends PImage implements PConstants {
 
 			imageImpl(img, a, b, c, d, u1, v1, u2, v2);
 
-		} else if (imageMode == CENTER) {
+		} else if (imageMode == PConstants.CENTER) {
 			// c and d are width/height
 			if (c < 0) {
 				c = -c;
@@ -3397,7 +3431,7 @@ public class PGraphics extends PImage implements PConstants {
 
 		stroke = false;
 		// fill = true;
-		textureMode = IMAGE;
+		textureMode = PConstants.IMAGE;
 
 		// double savedFillR = fillR;
 		// double savedFillG = fillG;
@@ -3417,13 +3451,13 @@ public class PGraphics extends PImage implements PConstants {
 		// fillA = 1;
 		// }
 
-		beginShape(QUADS);
+		this.beginShape(PConstants.QUADS);
 		texture(img);
-		vertex(x1, y1, u1, v1);
-		vertex(x1, y2, u1, v2);
-		vertex(x2, y2, u2, v2);
-		vertex(x2, y1, u2, v1);
-		endShape();
+		this.vertex(x1, y1, u1, v1);
+		this.vertex(x1, y2, u1, v2);
+		this.vertex(x2, y2, u2, v2);
+		this.vertex(x2, y1, u2, v1);
+		this.endShape();
 
 		stroke = savedStroke;
 		// fill = savedFill;
@@ -3470,14 +3504,14 @@ public class PGraphics extends PImage implements PConstants {
 			// to avoid depth-sorting issues.
 			flush();
 
-			if (shapeMode == CENTER) {
+			if (shapeMode == PConstants.CENTER) {
 				pushMatrix();
-				translate(-shape.getWidth() / 2, -shape.getHeight() / 2);
+				this.translate(-shape.getWidth() / 2, -shape.getHeight() / 2);
 			}
 
 			shape.draw(this); // needs to handle recorder too
 
-			if (shapeMode == CENTER) {
+			if (shapeMode == PConstants.CENTER) {
 				popMatrix();
 			}
 		}
@@ -3514,11 +3548,11 @@ public class PGraphics extends PImage implements PConstants {
 
 			pushMatrix();
 
-			if (shapeMode == CENTER) {
-				translate(x - (shape.getWidth() / 2), y - (shape.getHeight() / 2));
+			if (shapeMode == PConstants.CENTER) {
+				this.translate(x - (shape.getWidth() / 2), y - (shape.getHeight() / 2));
 
-			} else if ((shapeMode == CORNER) || (shapeMode == CORNERS)) {
-				translate(x, y);
+			} else if ((shapeMode == PConstants.CORNER) || (shapeMode == PConstants.CORNERS)) {
+				this.translate(x, y);
 			}
 			shape.draw(this);
 
@@ -3528,7 +3562,7 @@ public class PGraphics extends PImage implements PConstants {
 
 	// TODO unapproved
 	protected void shape(final PShape shape, final double x, final double y, final double z) {
-		showMissingWarning("shape");
+		PGraphics.showMissingWarning("shape");
 	}
 
 	/**
@@ -3547,22 +3581,22 @@ public class PGraphics extends PImage implements PConstants {
 
 			pushMatrix();
 
-			if (shapeMode == CENTER) {
+			if (shapeMode == PConstants.CENTER) {
 				// x and y are center, c and d refer to a diameter
-				translate(a - (c / 2f), b - (d / 2f));
-				scale(c / shape.getWidth(), d / shape.getHeight());
+				this.translate(a - (c / 2f), b - (d / 2f));
+				this.scale(c / shape.getWidth(), d / shape.getHeight());
 
-			} else if (shapeMode == CORNER) {
-				translate(a, b);
-				scale(c / shape.getWidth(), d / shape.getHeight());
+			} else if (shapeMode == PConstants.CORNER) {
+				this.translate(a, b);
+				this.scale(c / shape.getWidth(), d / shape.getHeight());
 
-			} else if (shapeMode == CORNERS) {
+			} else if (shapeMode == PConstants.CORNERS) {
 				// c and d are x2/y2, make them into width/height
 				c -= a;
 				d -= b;
 				// then same as above
-				translate(a, b);
-				scale(c / shape.getWidth(), d / shape.getHeight());
+				this.translate(a, b);
+				this.scale(c / shape.getWidth(), d / shape.getHeight());
 			}
 			shape.draw(this);
 
@@ -3573,7 +3607,7 @@ public class PGraphics extends PImage implements PConstants {
 	// TODO unapproved
 	protected void shape(final PShape shape, final double x, final double y, final double z, final double c,
 	        final double d, final double e) {
-		showMissingWarning("shape");
+		PGraphics.showMissingWarning("shape");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -3581,7 +3615,7 @@ public class PGraphics extends PImage implements PConstants {
 	// TEXT/FONTS
 
 	public void textAlign(final int alignX) {
-		textAlign(alignX, BASELINE);
+		this.textAlign(alignX, PConstants.BASELINE);
 	}
 
 	/**
@@ -3631,7 +3665,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public double textAscent() {
 		if (textFont == null) {
-			defaultFontOrDeath("textAscent");
+			this.defaultFontOrDeath("textAscent");
 		}
 		return textFont.ascent() * textSize;
 	}
@@ -3647,7 +3681,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public double textDescent() {
 		if (textFont == null) {
-			defaultFontOrDeath("textDescent");
+			this.defaultFontOrDeath("textDescent");
 		}
 		return textFont.descent() * textSize;
 	}
@@ -3704,7 +3738,7 @@ public class PGraphics extends PImage implements PConstants {
 			textSize(which.size);
 
 		} else {
-			throw new RuntimeException(ERROR_TEXTFONT_NULL_PFONT);
+			throw new RuntimeException(PConstants.ERROR_TEXTFONT_NULL_PFONT);
 		}
 	}
 
@@ -3713,7 +3747,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            the size of the letters in units of pixels
 	 */
 	public void textFont(final PFont which, final double size) {
-		textFont(which);
+		this.textFont(which);
 		textSize(size);
 	}
 
@@ -3763,12 +3797,12 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void textMode(final int mode) {
 		// CENTER and MODEL overlap (they're both 3)
-		if ((mode == LEFT) || (mode == RIGHT)) {
-			showWarning("Since Processing 1.0 beta, textMode() is now textAlign().");
+		if ((mode == PConstants.LEFT) || (mode == PConstants.RIGHT)) {
+			PGraphics.showWarning("Since Processing 1.0 beta, textMode() is now textAlign().");
 			return;
 		}
-		if (mode == SCREEN) {
-			showWarning("textMode(SCREEN) has been removed from Processing 2.0.");
+		if (mode == PConstants.SCREEN) {
+			PGraphics.showWarning("textMode(SCREEN) has been removed from Processing 2.0.");
 			return;
 		}
 
@@ -3784,7 +3818,7 @@ public class PGraphics extends PImage implements PConstants {
 				modeStr = "SHAPE";
 				break;
 			}
-			showWarning("textMode(" + modeStr + ") is not supported by this renderer.");
+			PGraphics.showWarning("textMode(" + modeStr + ") is not supported by this renderer.");
 		}
 	}
 
@@ -3807,7 +3841,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void textSize(final double size) {
 		if (textFont == null) {
-			defaultFontOrDeath("textSize", size);
+			this.defaultFontOrDeath("textSize", size);
 		}
 		textSize = size;
 		textLeading = (textAscent() + textDescent()) * 1.275f;
@@ -3838,7 +3872,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public double textWidth(final String str) {
 		if (textFont == null) {
-			defaultFontOrDeath("textWidth");
+			this.defaultFontOrDeath("textWidth");
 		}
 
 		final int length = str.length();
@@ -3917,14 +3951,14 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void text(final char c, final double x, double y) {
 		if (textFont == null) {
-			defaultFontOrDeath("text");
+			this.defaultFontOrDeath("text");
 		}
 
-		if (textAlignY == CENTER) {
+		if (textAlignY == PConstants.CENTER) {
 			y += textAscent() / 2;
-		} else if (textAlignY == TOP) {
+		} else if (textAlignY == PConstants.TOP) {
 			y += textAscent();
-		} else if (textAlignY == BOTTOM) {
+		} else if (textAlignY == PConstants.BOTTOM) {
 			y -= textDescent();
 			// } else if (textAlignY == BASELINE) {
 			// do nothing
@@ -3945,14 +3979,14 @@ public class PGraphics extends PImage implements PConstants {
 		// }
 
 		if (z != 0) {
-			translate(0, 0, z); // slowness, badness
+			this.translate(0, 0, z); // slowness, badness
 		}
 
-		text(c, x, y);
+		this.text(c, x, y);
 		// textZ = z;
 
 		if (z != 0) {
-			translate(0, 0, -z);
+			this.translate(0, 0, -z);
 		}
 	}
 
@@ -3970,7 +4004,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void text(final String str, final double x, final double y) {
 		if (textFont == null) {
-			defaultFontOrDeath("text");
+			this.defaultFontOrDeath("text");
 		}
 
 		final int length = str.length();
@@ -3978,7 +4012,7 @@ public class PGraphics extends PImage implements PConstants {
 			textBuffer = new char[length + 10];
 		}
 		str.getChars(0, length, textBuffer, 0);
-		text(textBuffer, 0, length, x, y);
+		this.text(textBuffer, 0, length, x, y);
 	}
 
 	/**
@@ -4001,16 +4035,16 @@ public class PGraphics extends PImage implements PConstants {
 				high += textLeading;
 			}
 		}
-		if (textAlignY == CENTER) {
+		if (textAlignY == PConstants.CENTER) {
 			// for a single line, this adds half the textAscent to y
 			// for multiple lines, subtract half the additional height
 			// y += (textAscent() - textDescent() - high)/2;
 			y += (textAscent() - high) / 2;
-		} else if (textAlignY == TOP) {
+		} else if (textAlignY == PConstants.TOP) {
 			// for a single line, need to add textAscent to y
 			// for multiple lines, no different
 			y += textAscent();
-		} else if (textAlignY == BOTTOM) {
+		} else if (textAlignY == PConstants.BOTTOM) {
 			// for a single line, this is just offset by the descent
 			// for multiple lines, subtract leading for each line
 			y -= textDescent() + high;
@@ -4038,27 +4072,27 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void text(final String str, final double x, final double y, final double z) {
 		if (z != 0) {
-			translate(0, 0, z); // slow!
+			this.translate(0, 0, z); // slow!
 		}
 
-		text(str, x, y);
+		this.text(str, x, y);
 		// textZ = z;
 
 		if (z != 0) {
-			translate(0, 0, -z); // inaccurate!
+			this.translate(0, 0, -z); // inaccurate!
 		}
 	}
 
 	public void text(final char[] chars, final int start, final int stop, final double x, final double y, final double z) {
 		if (z != 0) {
-			translate(0, 0, z); // slow!
+			this.translate(0, 0, z); // slow!
 		}
 
-		text(chars, start, stop, x, y);
+		this.text(chars, start, stop, x, y);
 		// textZ = z;
 
 		if (z != 0) {
-			translate(0, 0, -z); // inaccurate!
+			this.translate(0, 0, -z); // inaccurate!
 		}
 	}
 
@@ -4083,7 +4117,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void text(final String str, double x1, double y1, double x2, double y2) {
 		if (textFont == null) {
-			defaultFontOrDeath("text");
+			this.defaultFontOrDeath("text");
 		}
 
 		double hradius, vradius;
@@ -4127,7 +4161,7 @@ public class PGraphics extends PImage implements PConstants {
 		// // if the box is already too small, tell em to f off
 		// if (currentY > y2) return;
 
-		final double spaceWidth = textWidth(' ');
+		final double spaceWidth = this.textWidth(' ');
 
 		if (textBreakStart == null) {
 			textBreakStart = new int[20];
@@ -4161,22 +4195,24 @@ public class PGraphics extends PImage implements PConstants {
 		// lineX is the position where the text starts, which is adjusted
 		// to left/center/right based on the current textAlign
 		double lineX = x1; // boxX1;
-		if (textAlign == CENTER) {
+		if (textAlign == PConstants.CENTER) {
 			lineX = lineX + (boxWidth / 2f);
-		} else if (textAlign == RIGHT) {
+		} else if (textAlign == PConstants.RIGHT) {
 			lineX = x2; // boxX2;
 		}
 
 		final double boxHeight = y2 - y1;
-		// int lineFitCount = 1 + PApplet.floor((boxHeight - textAscent()) / textLeading);
+		// int lineFitCount = 1 + PApplet.floor((boxHeight - textAscent()) /
+		// textLeading);
 		// incorporate textAscent() for the top (baseline will be y1 + ascent)
-		// and textDescent() for the bottom, so that lower parts of letters aren't
+		// and textDescent() for the bottom, so that lower parts of letters
+		// aren't
 		// outside the box. [0151]
 		final double topAndBottom = textAscent() + textDescent();
 		final int lineFitCount = 1 + PApplet.floor((boxHeight - topAndBottom) / textLeading);
 		final int lineCount = Math.min(textBreakCount, lineFitCount);
 
-		if (textAlignY == CENTER) {
+		if (textAlignY == PConstants.CENTER) {
 			final double lineHigh = textAscent() + (textLeading * (lineCount - 1));
 			double y = y1 + textAscent() + ((boxHeight - lineHigh) / 2);
 			for (int i = 0; i < lineCount; i++) {
@@ -4184,7 +4220,7 @@ public class PGraphics extends PImage implements PConstants {
 				y += textLeading;
 			}
 
-		} else if (textAlignY == BOTTOM) {
+		} else if (textAlignY == PConstants.BOTTOM) {
 			double y = y2 - textDescent() - (textLeading * (lineCount - 1));
 			for (int i = 0; i < lineCount; i++) {
 				textLineAlignImpl(textBuffer, textBreakStart[i], textBreakStop[i], lineX, y);
@@ -4222,22 +4258,28 @@ public class PGraphics extends PImage implements PConstants {
 
 				if ((runningX + wordWidth) > boxWidth) {
 					if (runningX != 0) {
-						// Next word is too big, output the current line and advance
+						// Next word is too big, output the current line and
+						// advance
 						index = wordStart;
 						textSentenceBreak(lineStart, index);
-						// Eat whitespace because multiple spaces don't count for s*
+						// Eat whitespace because multiple spaces don't count
+						// for s*
 						// when they're at the end of a line.
 						while ((index < stop) && (buffer[index] == ' ')) {
 							index++;
 						}
 					} else { // (runningX == 0)
-						// If this is the first word on the line, and its width is greater
-						// than the width of the text box, then break the word where at the
-						// max width, and send the rest of the word to the next line.
+						// If this is the first word on the line, and its width
+						// is greater
+						// than the width of the text box, then break the word
+						// where at the
+						// max width, and send the rest of the word to the next
+						// line.
 						do {
 							index--;
 							if (index == wordStart) {
-								// Not a single char will fit on this line. screw 'em.
+								// Not a single char will fit on this line.
+								// screw 'em.
 								// System.out.println("screw you");
 								return false; // Float.NaN;
 							}
@@ -4281,7 +4323,8 @@ public class PGraphics extends PImage implements PConstants {
 		textBreakCount++;
 	}
 
-	// public void text(String s, double a, double b, double c, double d, double z) {
+	// public void text(String s, double a, double b, double c, double d, double
+	// z) {
 	// if (z != 0) translate(0, 0, z); // slowness, badness
 	//
 	// text(s, a, b, c, d);
@@ -4291,11 +4334,11 @@ public class PGraphics extends PImage implements PConstants {
 	// }
 
 	public void text(final int num, final double x, final double y) {
-		text(String.valueOf(num), x, y);
+		this.text(String.valueOf(num), x, y);
 	}
 
 	public void text(final int num, final double x, final double y, final double z) {
-		text(String.valueOf(num), x, y, z);
+		this.text(String.valueOf(num), x, y, z);
 	}
 
 	/**
@@ -4307,11 +4350,11 @@ public class PGraphics extends PImage implements PConstants {
 	 *            the numeric value to be displayed
 	 */
 	public void text(final double num, final double x, final double y) {
-		text(PApplet.nfs(num, 0, 3), x, y);
+		this.text(PApplet.nfs(num, 0, 3), x, y);
 	}
 
 	public void text(final double num, final double x, final double y, final double z) {
-		text(PApplet.nfs(num, 0, 3), x, y, z);
+		this.text(PApplet.nfs(num, 0, 3), x, y, z);
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -4326,10 +4369,10 @@ public class PGraphics extends PImage implements PConstants {
 	 * point.
 	 */
 	protected void textLineAlignImpl(final char buffer[], final int start, final int stop, double x, final double y) {
-		if (textAlign == CENTER) {
+		if (textAlign == PConstants.CENTER) {
 			x -= textWidthImpl(buffer, start, stop) / 2f;
 
-		} else if (textAlign == RIGHT) {
+		} else if (textAlign == PConstants.RIGHT) {
 			x -= textWidthImpl(buffer, start, stop);
 		}
 
@@ -4344,17 +4387,20 @@ public class PGraphics extends PImage implements PConstants {
 			textCharImpl(buffer[index], x, y);
 
 			// this doesn't account for kerning
-			x += textWidth(buffer[index]);
+			x += this.textWidth(buffer[index]);
 		}
 		// textX = x;
 		// textY = y;
 		// textZ = 0; // this will get set by the caller if non-zero
 	}
 
-	protected void textCharImpl(final char ch, final double x, final double y) { // , double z) {
+	protected void textCharImpl(final char ch, final double x, final double y) { // ,
+		                                                                         // double
+		                                                                         // z)
+		                                                                         // {
 		final PFont.Glyph glyph = textFont.getGlyph(ch);
 		if (glyph != null) {
-			if (textMode == MODEL) {
+			if (textMode == PConstants.MODEL) {
 				final double high = glyph.height / (double) textFont.size;
 				final double bwidth = glyph.width / (double) textFont.size;
 				final double lextent = glyph.leftExtent / (double) textFont.size;
@@ -4368,7 +4414,7 @@ public class PGraphics extends PImage implements PConstants {
 				textCharModelImpl(glyph.image, x1, y1, x2, y2, glyph.width, glyph.height);
 			}
 		} else if ((ch != ' ') && (ch != 127)) {
-			showWarning("No glyph found for the " + ch + " (\\u" + PApplet.hex(ch, 4) + ") character");
+			PGraphics.showWarning("No glyph found for the " + ch + " (\\u" + PApplet.hex(ch, 4) + ") character");
 		}
 	}
 
@@ -4407,7 +4453,9 @@ public class PGraphics extends PImage implements PConstants {
 		int x0 = 0;
 		int y0 = 0;
 
-		if ((xx >= width) || (yy >= height) || ((xx + w0) < 0) || ((yy + h0) < 0)) { return; }
+		if ((xx >= width) || (yy >= height) || ((xx + w0) < 0) || ((yy + h0) < 0)) {
+			return;
+		}
 
 		if (xx < 0) {
 			x0 -= xx;
@@ -4471,7 +4519,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#rotateZ(double)
 	 */
 	public void pushMatrix() {
-		showMethodWarning("pushMatrix");
+		PGraphics.showMethodWarning("pushMatrix");
 	}
 
 	/**
@@ -4486,7 +4534,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#pushMatrix()
 	 */
 	public void popMatrix() {
-		showMethodWarning("popMatrix");
+		PGraphics.showMethodWarning("popMatrix");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -4519,7 +4567,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#scale(double, double, double)
 	 */
 	public void translate(final double x, final double y) {
-		showMissingWarning("translate");
+		PGraphics.showMissingWarning("translate");
 	}
 
 	/**
@@ -4527,7 +4575,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            forward/backward translation
 	 */
 	public void translate(final double x, final double y, final double z) {
-		showMissingWarning("translate");
+		PGraphics.showMissingWarning("translate");
 	}
 
 	/**
@@ -4557,7 +4605,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PApplet#radians(double)
 	 */
 	public void rotate(final double angle) {
-		showMissingWarning("rotate");
+		PGraphics.showMissingWarning("rotate");
 	}
 
 	/**
@@ -4584,7 +4632,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#translate(double, double, double)
 	 */
 	public void rotateX(final double angle) {
-		showMethodWarning("rotateX");
+		PGraphics.showMethodWarning("rotateX");
 	}
 
 	/**
@@ -4611,7 +4659,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#translate(double, double, double)
 	 */
 	public void rotateY(final double angle) {
-		showMethodWarning("rotateY");
+		PGraphics.showMethodWarning("rotateY");
 	}
 
 	/**
@@ -4638,7 +4686,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#translate(double, double, double)
 	 */
 	public void rotateZ(final double angle) {
-		showMethodWarning("rotateZ");
+		PGraphics.showMethodWarning("rotateZ");
 	}
 
 	/**
@@ -4649,7 +4697,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @param z
 	 */
 	public void rotate(final double angle, final double x, final double y, final double z) {
-		showMissingWarning("rotate");
+		PGraphics.showMissingWarning("rotate");
 	}
 
 	/**
@@ -4676,7 +4724,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#rotateZ(double)
 	 */
 	public void scale(final double s) {
-		showMissingWarning("scale");
+		PGraphics.showMissingWarning("scale");
 	}
 
 	/**
@@ -4690,7 +4738,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            percentage to scale the object in the y-axis
 	 */
 	public void scale(final double x, final double y) {
-		showMissingWarning("scale");
+		PGraphics.showMissingWarning("scale");
 	}
 
 	/**
@@ -4698,7 +4746,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            percentage to scale the object in the z-axis
 	 */
 	public void scale(final double x, final double y, final double z) {
-		showMissingWarning("scale");
+		PGraphics.showMissingWarning("scale");
 	}
 
 	/**
@@ -4726,7 +4774,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PApplet#radians(double)
 	 */
 	public void shearX(final double angle) {
-		showMissingWarning("shearX");
+		PGraphics.showMissingWarning("shearX");
 	}
 
 	/**
@@ -4754,7 +4802,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PApplet#radians(double)
 	 */
 	public void shearY(final double angle) {
-		showMissingWarning("shearY");
+		PGraphics.showMissingWarning("shearY");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -4772,7 +4820,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#printMatrix()
 	 */
 	public void resetMatrix() {
-		showMethodWarning("resetMatrix");
+		PGraphics.showMethodWarning("resetMatrix");
 	}
 
 	/**
@@ -4790,14 +4838,14 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void applyMatrix(final PMatrix source) {
 		if (source instanceof PMatrix2D) {
-			applyMatrix((PMatrix2D) source);
+			this.applyMatrix((PMatrix2D) source);
 		} else if (source instanceof PMatrix3D) {
-			applyMatrix((PMatrix3D) source);
+			this.applyMatrix((PMatrix3D) source);
 		}
 	}
 
 	public void applyMatrix(final PMatrix2D source) {
-		applyMatrix(source.m00, source.m01, source.m02, source.m10, source.m11, source.m12);
+		this.applyMatrix(source.m00, source.m01, source.m02, source.m10, source.m11, source.m12);
 	}
 
 	/**
@@ -4816,12 +4864,13 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void applyMatrix(final double n00, final double n01, final double n02, final double n10, final double n11,
 	        final double n12) {
-		showMissingWarning("applyMatrix");
+		PGraphics.showMissingWarning("applyMatrix");
 	}
 
 	public void applyMatrix(final PMatrix3D source) {
-		applyMatrix(source.m00, source.m01, source.m02, source.m03, source.m10, source.m11, source.m12, source.m13,
-		        source.m20, source.m21, source.m22, source.m23, source.m30, source.m31, source.m32, source.m33);
+		this.applyMatrix(source.m00, source.m01, source.m02, source.m03, source.m10, source.m11, source.m12,
+		        source.m13, source.m20, source.m21, source.m22, source.m23, source.m30, source.m31, source.m32,
+		        source.m33);
 	}
 
 	/**
@@ -4849,7 +4898,7 @@ public class PGraphics extends PImage implements PConstants {
 	public void applyMatrix(final double n00, final double n01, final double n02, final double n03, final double n10,
 	        final double n11, final double n12, final double n13, final double n20, final double n21, final double n22,
 	        final double n23, final double n30, final double n31, final double n32, final double n33) {
-		showMissingWarning("applyMatrix");
+		PGraphics.showMissingWarning("applyMatrix");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -4857,7 +4906,7 @@ public class PGraphics extends PImage implements PConstants {
 	// MATRIX GET/SET/PRINT
 
 	public PMatrix getMatrix() {
-		showMissingWarning("getMatrix");
+		PGraphics.showMissingWarning("getMatrix");
 		return null;
 	}
 
@@ -4866,7 +4915,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * new matrix.
 	 */
 	public PMatrix2D getMatrix(final PMatrix2D target) {
-		showMissingWarning("getMatrix");
+		PGraphics.showMissingWarning("getMatrix");
 		return null;
 	}
 
@@ -4875,7 +4924,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * new matrix.
 	 */
 	public PMatrix3D getMatrix(final PMatrix3D target) {
-		showMissingWarning("getMatrix");
+		PGraphics.showMissingWarning("getMatrix");
 		return null;
 	}
 
@@ -4884,9 +4933,9 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void setMatrix(final PMatrix source) {
 		if (source instanceof PMatrix2D) {
-			setMatrix((PMatrix2D) source);
+			this.setMatrix((PMatrix2D) source);
 		} else if (source instanceof PMatrix3D) {
-			setMatrix((PMatrix3D) source);
+			this.setMatrix((PMatrix3D) source);
 		}
 	}
 
@@ -4894,14 +4943,14 @@ public class PGraphics extends PImage implements PConstants {
 	 * Set the current transformation to the contents of the specified source.
 	 */
 	public void setMatrix(final PMatrix2D source) {
-		showMissingWarning("setMatrix");
+		PGraphics.showMissingWarning("setMatrix");
 	}
 
 	/**
 	 * Set the current transformation to the contents of the specified source.
 	 */
 	public void setMatrix(final PMatrix3D source) {
-		showMissingWarning("setMatrix");
+		PGraphics.showMissingWarning("setMatrix");
 	}
 
 	/**
@@ -4915,7 +4964,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#applyMatrix(PMatrix)
 	 */
 	public void printMatrix() {
-		showMethodWarning("printMatrix");
+		PGraphics.showMethodWarning("printMatrix");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -4950,7 +4999,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#scale(double, double, double)
 	 */
 	public void beginCamera() {
-		showMethodWarning("beginCamera");
+		PGraphics.showMethodWarning("beginCamera");
 	}
 
 	/**
@@ -4962,7 +5011,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#camera(double, double, double, double, double, double, double, double, double)
 	 */
 	public void endCamera() {
-		showMethodWarning("endCamera");
+		PGraphics.showMethodWarning("endCamera");
 	}
 
 	/**
@@ -4980,7 +5029,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#frustum(double, double, double, double, double, double)
 	 */
 	public void camera() {
-		showMissingWarning("camera");
+		PGraphics.showMissingWarning("camera");
 	}
 
 	/**
@@ -5005,7 +5054,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void camera(final double eyeX, final double eyeY, final double eyeZ, final double centerX,
 	        final double centerY, final double centerZ, final double upX, final double upY, final double upZ) {
-		showMissingWarning("camera");
+		PGraphics.showMissingWarning("camera");
 	}
 
 	/**
@@ -5016,7 +5065,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#camera(double, double, double, double, double, double, double, double, double)
 	 */
 	public void printCamera() {
-		showMethodWarning("printCamera");
+		PGraphics.showMethodWarning("printCamera");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -5035,7 +5084,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @webref lights_camera:camera
 	 */
 	public void ortho() {
-		showMissingWarning("ortho");
+		PGraphics.showMissingWarning("ortho");
 	}
 
 	/**
@@ -5049,7 +5098,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            top plane of the clipping volume
 	 */
 	public void ortho(final double left, final double right, final double bottom, final double top) {
-		showMissingWarning("ortho");
+		PGraphics.showMissingWarning("ortho");
 	}
 
 	/**
@@ -5060,7 +5109,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void ortho(final double left, final double right, final double bottom, final double top, final double near,
 	        final double far) {
-		showMissingWarning("ortho");
+		PGraphics.showMissingWarning("ortho");
 	}
 
 	/**
@@ -5077,7 +5126,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @webref lights_camera:camera
 	 */
 	public void perspective() {
-		showMissingWarning("perspective");
+		PGraphics.showMissingWarning("perspective");
 	}
 
 	/**
@@ -5091,7 +5140,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            z-position of farthest clipping plane
 	 */
 	public void perspective(final double fovy, final double aspect, final double zNear, final double zFar) {
-		showMissingWarning("perspective");
+		PGraphics.showMissingWarning("perspective");
 	}
 
 	/**
@@ -5118,7 +5167,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void frustum(final double left, final double right, final double bottom, final double top,
 	        final double near, final double far) {
-		showMethodWarning("frustum");
+		PGraphics.showMethodWarning("frustum");
 	}
 
 	/**
@@ -5129,7 +5178,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#camera(double, double, double, double, double, double, double, double, double)
 	 */
 	public void printProjection() {
-		showMethodWarning("printCamera");
+		PGraphics.showMethodWarning("printCamera");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -5150,7 +5199,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#screenZ(double, double, double)
 	 */
 	public double screenX(final double x, final double y) {
-		showMissingWarning("screenX");
+		PGraphics.showMissingWarning("screenX");
 		return 0;
 	}
 
@@ -5168,7 +5217,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#screenZ(double, double, double)
 	 */
 	public double screenY(final double x, final double y) {
-		showMissingWarning("screenY");
+		PGraphics.showMissingWarning("screenY");
 		return 0;
 	}
 
@@ -5177,7 +5226,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            3D z-coordinate to be mapped
 	 */
 	public double screenX(final double x, final double y, final double z) {
-		showMissingWarning("screenX");
+		PGraphics.showMissingWarning("screenX");
 		return 0;
 	}
 
@@ -5186,7 +5235,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            3D z-coordinate to be mapped
 	 */
 	public double screenY(final double x, final double y, final double z) {
-		showMissingWarning("screenY");
+		PGraphics.showMissingWarning("screenY");
 		return 0;
 	}
 
@@ -5206,7 +5255,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#screenY(double, double, double)
 	 */
 	public double screenZ(final double x, final double y, final double z) {
-		showMissingWarning("screenZ");
+		PGraphics.showMissingWarning("screenZ");
 		return 0;
 	}
 
@@ -5234,7 +5283,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#modelZ(double, double, double)
 	 */
 	public double modelX(final double x, final double y, final double z) {
-		showMissingWarning("modelX");
+		PGraphics.showMissingWarning("modelX");
 		return 0;
 	}
 
@@ -5262,7 +5311,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#modelZ(double, double, double)
 	 */
 	public double modelY(final double x, final double y, final double z) {
-		showMissingWarning("modelY");
+		PGraphics.showMissingWarning("modelY");
 		return 0;
 	}
 
@@ -5290,7 +5339,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#modelY(double, double, double)
 	 */
 	public double modelZ(final double x, final double y, final double z) {
-		showMissingWarning("modelZ");
+		PGraphics.showMissingWarning("modelZ");
 		return 0;
 	}
 
@@ -5322,7 +5371,7 @@ public class PGraphics extends PImage implements PConstants {
 			styleStack[styleStackDepth] = new PStyle();
 		}
 		final PStyle s = styleStack[styleStackDepth++];
-		getStyle(s);
+		this.getStyle(s);
 	}
 
 	/**
@@ -5338,7 +5387,9 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#pushStyle()
 	 */
 	public void popStyle() {
-		if (styleStackDepth == 0) { throw new RuntimeException("Too many popStyle() without enough pushStyle()"); }
+		if (styleStackDepth == 0) {
+			throw new RuntimeException("Too many popStyle() without enough pushStyle()");
+		}
 		styleStackDepth--;
 		style(styleStack[styleStackDepth]);
 	}
@@ -5356,17 +5407,17 @@ public class PGraphics extends PImage implements PConstants {
 		shapeMode(s.shapeMode);
 
 		if (s.tint) {
-			tint(s.tintColor);
+			this.tint(s.tintColor);
 		} else {
 			noTint();
 		}
 		if (s.fill) {
-			fill(s.fillColor);
+			this.fill(s.fillColor);
 		} else {
 			noFill();
 		}
 		if (s.stroke) {
-			stroke(s.strokeColor);
+			this.stroke(s.strokeColor);
 		} else {
 			noStroke();
 		}
@@ -5375,12 +5426,13 @@ public class PGraphics extends PImage implements PConstants {
 		strokeJoin(s.strokeJoin);
 
 		// Set the colorMode() for the material properties.
-		// TODO this is really inefficient, need to just have a material() method,
+		// TODO this is really inefficient, need to just have a material()
+		// method,
 		// but this has the least impact to the API.
-		colorMode(RGB, 1);
-		ambient(s.ambientR, s.ambientG, s.ambientB);
-		emissive(s.emissiveR, s.emissiveG, s.emissiveB);
-		specular(s.specularR, s.specularG, s.specularB);
+		this.colorMode(PConstants.RGB, 1);
+		this.ambient(s.ambientR, s.ambientG, s.ambientB);
+		this.emissive(s.emissiveR, s.emissiveG, s.emissiveB);
+		this.specular(s.specularR, s.specularG, s.specularB);
 		shininess(s.shininess);
 
 		/*
@@ -5394,23 +5446,24 @@ public class PGraphics extends PImage implements PConstants {
 		// s.shininess);
 
 		// Set this after the material properties.
-		colorMode(s.colorMode, s.colorModeX, s.colorModeY, s.colorModeZ, s.colorModeA);
+		this.colorMode(s.colorMode, s.colorModeX, s.colorModeY, s.colorModeZ, s.colorModeA);
 
 		// This is a bit asymmetric, since there's no way to do "noFont()",
-		// and a null textFont will produce an error (since usually that means that
+		// and a null textFont will produce an error (since usually that means
+		// that
 		// the font couldn't load properly). So in some cases, the font won't be
 		// 'cleared' to null, even though that's technically correct.
 		if (s.textFont != null) {
-			textFont(s.textFont, s.textSize);
+			this.textFont(s.textFont, s.textSize);
 			textLeading(s.textLeading);
 		}
 		// These don't require a font to be set.
-		textAlign(s.textAlign, s.textAlignY);
+		this.textAlign(s.textAlign, s.textAlignY);
 		textMode(s.textMode);
 	}
 
 	public PStyle getStyle() { // ignore
-		return getStyle(null);
+		return this.getStyle(null);
 	}
 
 	public PStyle getStyle(PStyle s) { // ignore
@@ -5569,7 +5622,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#colorMode(int, double, double, double, double)
 	 */
 	public void stroke(final int rgb) {
-		colorCalc(rgb);
+		this.colorCalc(rgb);
 		strokeFromCalc();
 	}
 
@@ -5578,7 +5631,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            opacity of the stroke
 	 */
 	public void stroke(final int rgb, final double alpha) {
-		colorCalc(rgb, alpha);
+		this.colorCalc(rgb, alpha);
 		strokeFromCalc();
 	}
 
@@ -5587,12 +5640,12 @@ public class PGraphics extends PImage implements PConstants {
 	 *            specifies a value between white and black
 	 */
 	public void stroke(final double gray) {
-		colorCalc(gray);
+		this.colorCalc(gray);
 		strokeFromCalc();
 	}
 
 	public void stroke(final double gray, final double alpha) {
-		colorCalc(gray, alpha);
+		this.colorCalc(gray, alpha);
 		strokeFromCalc();
 	}
 
@@ -5606,12 +5659,12 @@ public class PGraphics extends PImage implements PConstants {
 	 * @webref color:setting
 	 */
 	public void stroke(final double v1, final double v2, final double v3) {
-		colorCalc(v1, v2, v3);
+		this.colorCalc(v1, v2, v3);
 		strokeFromCalc();
 	}
 
 	public void stroke(final double v1, final double v2, final double v3, final double alpha) {
-		colorCalc(v1, v2, v3, alpha);
+		this.colorCalc(v1, v2, v3, alpha);
 		strokeFromCalc();
 	}
 
@@ -5674,7 +5727,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#image(PImage, double, double, double, double)
 	 */
 	public void tint(final int rgb) {
-		colorCalc(rgb);
+		this.colorCalc(rgb);
 		tintFromCalc();
 	}
 
@@ -5683,7 +5736,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            opacity of the image
 	 */
 	public void tint(final int rgb, final double alpha) {
-		colorCalc(rgb, alpha);
+		this.colorCalc(rgb, alpha);
 		tintFromCalc();
 	}
 
@@ -5692,12 +5745,12 @@ public class PGraphics extends PImage implements PConstants {
 	 *            specifies a value between white and black
 	 */
 	public void tint(final double gray) {
-		colorCalc(gray);
+		this.colorCalc(gray);
 		tintFromCalc();
 	}
 
 	public void tint(final double gray, final double alpha) {
-		colorCalc(gray, alpha);
+		this.colorCalc(gray, alpha);
 		tintFromCalc();
 	}
 
@@ -5710,12 +5763,12 @@ public class PGraphics extends PImage implements PConstants {
 	 *            blue or brightness value (depending on current color mode)
 	 */
 	public void tint(final double v1, final double v2, final double v3) {
-		colorCalc(v1, v2, v3);
+		this.colorCalc(v1, v2, v3);
 		tintFromCalc();
 	}
 
 	public void tint(final double v1, final double v2, final double v3, final double alpha) {
-		colorCalc(v1, v2, v3, alpha);
+		this.colorCalc(v1, v2, v3, alpha);
 		tintFromCalc();
 	}
 
@@ -5778,7 +5831,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#colorMode(int, double, double, double, double)
 	 */
 	public void fill(final int rgb) {
-		colorCalc(rgb);
+		this.colorCalc(rgb);
 		fillFromCalc();
 	}
 
@@ -5787,7 +5840,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            opacity of the fill
 	 */
 	public void fill(final int rgb, final double alpha) {
-		colorCalc(rgb, alpha);
+		this.colorCalc(rgb, alpha);
 		fillFromCalc();
 	}
 
@@ -5796,12 +5849,12 @@ public class PGraphics extends PImage implements PConstants {
 	 *            number specifying value between white and black
 	 */
 	public void fill(final double gray) {
-		colorCalc(gray);
+		this.colorCalc(gray);
 		fillFromCalc();
 	}
 
 	public void fill(final double gray, final double alpha) {
-		colorCalc(gray, alpha);
+		this.colorCalc(gray, alpha);
 		fillFromCalc();
 	}
 
@@ -5814,12 +5867,12 @@ public class PGraphics extends PImage implements PConstants {
 	 *            blue or brightness value (depending on current color mode)
 	 */
 	public void fill(final double v1, final double v2, final double v3) {
-		colorCalc(v1, v2, v3);
+		this.colorCalc(v1, v2, v3);
 		fillFromCalc();
 	}
 
 	public void fill(final double v1, final double v2, final double v3, final double alpha) {
-		colorCalc(v1, v2, v3, alpha);
+		this.colorCalc(v1, v2, v3, alpha);
 		fillFromCalc();
 	}
 
@@ -5865,7 +5918,7 @@ public class PGraphics extends PImage implements PConstants {
 		// colorCalcARGB(rgb, colorModeA);
 		// ambientFromCalc();
 		// }
-		colorCalc(rgb);
+		this.colorCalc(rgb);
 		ambientFromCalc();
 	}
 
@@ -5874,7 +5927,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            number specifying value between white and black
 	 */
 	public void ambient(final double gray) {
-		colorCalc(gray);
+		this.colorCalc(gray);
 		ambientFromCalc();
 	}
 
@@ -5887,7 +5940,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            blue or brightness value (depending on current color mode)
 	 */
 	public void ambient(final double v1, final double v2, final double v3) {
-		colorCalc(v1, v2, v3);
+		this.colorCalc(v1, v2, v3);
 		ambientFromCalc();
 	}
 
@@ -5923,7 +5976,7 @@ public class PGraphics extends PImage implements PConstants {
 		// colorCalcARGB(rgb, colorModeA);
 		// specularFromCalc();
 		// }
-		colorCalc(rgb);
+		this.colorCalc(rgb);
 		specularFromCalc();
 	}
 
@@ -5931,7 +5984,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * gray number specifying value between white and black
 	 */
 	public void specular(final double gray) {
-		colorCalc(gray);
+		this.colorCalc(gray);
 		specularFromCalc();
 	}
 
@@ -5944,7 +5997,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            blue or brightness value (depending on current color mode)
 	 */
 	public void specular(final double v1, final double v2, final double v3) {
-		colorCalc(v1, v2, v3);
+		this.colorCalc(v1, v2, v3);
 		specularFromCalc();
 	}
 
@@ -5994,7 +6047,7 @@ public class PGraphics extends PImage implements PConstants {
 		// colorCalcARGB(rgb, colorModeA);
 		// emissiveFromCalc();
 		// }
-		colorCalc(rgb);
+		this.colorCalc(rgb);
 		emissiveFromCalc();
 	}
 
@@ -6002,7 +6055,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * gray number specifying value between white and black
 	 */
 	public void emissive(final double gray) {
-		colorCalc(gray);
+		this.colorCalc(gray);
 		emissiveFromCalc();
 	}
 
@@ -6015,7 +6068,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            blue or brightness value (depending on current color mode)
 	 */
 	public void emissive(final double v1, final double v2, final double v3) {
-		colorCalc(v1, v2, v3);
+		this.colorCalc(v1, v2, v3);
 		emissiveFromCalc();
 	}
 
@@ -6052,7 +6105,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#noLights()
 	 */
 	public void lights() {
-		showMethodWarning("lights");
+		PGraphics.showMethodWarning("lights");
 	}
 
 	/**
@@ -6066,7 +6119,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#lights()
 	 */
 	public void noLights() {
-		showMethodWarning("noLights");
+		PGraphics.showMethodWarning("noLights");
 	}
 
 	/**
@@ -6093,7 +6146,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *      double, double, double)
 	 */
 	public void ambientLight(final double v1, final double v2, final double v3) {
-		showMethodWarning("ambientLight");
+		PGraphics.showMethodWarning("ambientLight");
 	}
 
 	/**
@@ -6106,7 +6159,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void ambientLight(final double v1, final double v2, final double v3, final double x, final double y,
 	        final double z) {
-		showMethodWarning("ambientLight");
+		PGraphics.showMethodWarning("ambientLight");
 	}
 
 	/**
@@ -6143,7 +6196,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void directionalLight(final double v1, final double v2, final double v3, final double nx, final double ny,
 	        final double nz) {
-		showMethodWarning("directionalLight");
+		PGraphics.showMethodWarning("directionalLight");
 	}
 
 	/**
@@ -6176,7 +6229,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public void pointLight(final double v1, final double v2, final double v3, final double x, final double y,
 	        final double z) {
-		showMethodWarning("pointLight");
+		PGraphics.showMethodWarning("pointLight");
 	}
 
 	/**
@@ -6220,7 +6273,7 @@ public class PGraphics extends PImage implements PConstants {
 	public void spotLight(final double v1, final double v2, final double v3, final double x, final double y,
 	        final double z, final double nx, final double ny, final double nz, final double angle,
 	        final double concentration) {
-		showMethodWarning("spotLight");
+		PGraphics.showMethodWarning("spotLight");
 	}
 
 	/**
@@ -6254,7 +6307,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#lightSpecular(double, double, double)
 	 */
 	public void lightFalloff(final double constant, final double linear, final double quadratic) {
-		showMethodWarning("lightFalloff");
+		PGraphics.showMethodWarning("lightFalloff");
 	}
 
 	/**
@@ -6281,7 +6334,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *      double, double, double)
 	 */
 	public void lightSpecular(final double v1, final double v2, final double v3) {
-		showMethodWarning("lightSpecular");
+		PGraphics.showMethodWarning("lightSpecular");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -6336,7 +6389,7 @@ public class PGraphics extends PImage implements PConstants {
 		// backgroundFromCalc();
 		// backgroundImpl();
 		// }
-		colorCalc(rgb);
+		this.colorCalc(rgb);
 		backgroundFromCalc();
 	}
 
@@ -6358,7 +6411,7 @@ public class PGraphics extends PImage implements PConstants {
 		// backgroundImpl();
 		// }
 		// }
-		colorCalc(rgb, alpha);
+		this.colorCalc(rgb, alpha);
 		backgroundFromCalc();
 	}
 
@@ -6367,17 +6420,17 @@ public class PGraphics extends PImage implements PConstants {
 	 *            specifies a value between white and black
 	 */
 	public void background(final double gray) {
-		colorCalc(gray);
+		this.colorCalc(gray);
 		backgroundFromCalc();
 		// backgroundImpl();
 	}
 
 	public void background(final double gray, final double alpha) {
-		if (format == RGB) {
-			background(gray); // ignore alpha for main drawing surface
+		if (format == PConstants.RGB) {
+			this.background(gray); // ignore alpha for main drawing surface
 
 		} else {
-			colorCalc(gray, alpha);
+			this.colorCalc(gray, alpha);
 			backgroundFromCalc();
 			// backgroundImpl();
 		}
@@ -6392,13 +6445,13 @@ public class PGraphics extends PImage implements PConstants {
 	 *            blue or brightness value (depending on the current color mode)
 	 */
 	public void background(final double v1, final double v2, final double v3) {
-		colorCalc(v1, v2, v3);
+		this.colorCalc(v1, v2, v3);
 		backgroundFromCalc();
 		// backgroundImpl();
 	}
 
 	public void background(final double v1, final double v2, final double v3, final double alpha) {
-		colorCalc(v1, v2, v3, alpha);
+		this.colorCalc(v1, v2, v3, alpha);
 		backgroundFromCalc();
 	}
 
@@ -6406,22 +6459,22 @@ public class PGraphics extends PImage implements PConstants {
 	 * @webref color:setting
 	 */
 	public void clear() {
-		background(0, 0, 0, 0);
+		this.background(0, 0, 0, 0);
 	}
 
 	protected void backgroundFromCalc() {
 		backgroundR = calcR;
 		backgroundG = calcG;
 		backgroundB = calcB;
-		backgroundA = (format == RGB) ? colorModeA : calcA;
+		backgroundA = (format == PConstants.RGB) ? colorModeA : calcA;
 		backgroundRi = calcRi;
 		backgroundGi = calcGi;
 		backgroundBi = calcBi;
-		backgroundAi = (format == RGB) ? 255 : calcAi;
-		backgroundAlpha = (format == RGB) ? false : calcAlpha;
+		backgroundAi = (format == PConstants.RGB) ? 255 : calcAi;
+		backgroundAlpha = (format == PConstants.RGB) ? false : calcAlpha;
 		backgroundColor = calcColor;
 
-		backgroundImpl();
+		this.backgroundImpl();
 	}
 
 	/**
@@ -6439,11 +6492,14 @@ public class PGraphics extends PImage implements PConstants {
 	 *            PImage to set as background (must be same size as the sketch window)
 	 */
 	public void background(final PImage image) {
-		if ((image.width != width) || (image.height != height)) { throw new RuntimeException(
-		        ERROR_BACKGROUND_IMAGE_SIZE); }
-		if ((image.format != RGB) && (image.format != ARGB)) { throw new RuntimeException(ERROR_BACKGROUND_IMAGE_FORMAT); }
+		if ((image.width != width) || (image.height != height)) {
+			throw new RuntimeException(PConstants.ERROR_BACKGROUND_IMAGE_SIZE);
+		}
+		if ((image.format != PConstants.RGB) && (image.format != PConstants.ARGB)) {
+			throw new RuntimeException(PConstants.ERROR_BACKGROUND_IMAGE_FORMAT);
+		}
 		backgroundColor = 0; // just zero it out for images
-		backgroundImpl(image);
+		this.backgroundImpl(image);
 	}
 
 	/**
@@ -6452,7 +6508,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	protected void backgroundImpl(final PImage image) {
 		// blit image to the screen
-		set(0, 0, image);
+		this.set(0, 0, image);
 	}
 
 	/**
@@ -6464,8 +6520,8 @@ public class PGraphics extends PImage implements PConstants {
 		pushStyle();
 		pushMatrix();
 		resetMatrix();
-		fill(backgroundColor);
-		rect(0, 0, width, height);
+		this.fill(backgroundColor);
+		this.rect(0, 0, width, height);
 		popMatrix();
 		popStyle();
 	}
@@ -6516,7 +6572,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#stroke(double)
 	 */
 	public void colorMode(final int mode) {
-		colorMode(mode, colorModeX, colorModeY, colorModeZ, colorModeA);
+		this.colorMode(mode, colorModeX, colorModeY, colorModeZ, colorModeA);
 	}
 
 	/**
@@ -6524,7 +6580,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            range for all color elements
 	 */
 	public void colorMode(final int mode, final double max) {
-		colorMode(mode, max, max, max, max);
+		this.colorMode(mode, max, max, max, max);
 	}
 
 	/**
@@ -6536,7 +6592,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            range for the blue or brightness depending on the current color mode
 	 */
 	public void colorMode(final int mode, final double max1, final double max2, final double max3) {
-		colorMode(mode, max1, max2, max3, colorModeA);
+		this.colorMode(mode, max1, max2, max3, colorModeA);
 	}
 
 	/**
@@ -6556,8 +6612,8 @@ public class PGraphics extends PImage implements PConstants {
 
 		// if color is rgb/0..255 this will make it easier for the
 		// red() green() etc functions
-		colorModeDefault = (colorMode == RGB) && (colorModeA == 255) && (colorModeX == 255) && (colorModeY == 255)
-		        && (colorModeZ == 255);
+		colorModeDefault = (colorMode == PConstants.RGB) && (colorModeA == 255) && (colorModeX == 255)
+		        && (colorModeY == 255) && (colorModeZ == 255);
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -6599,7 +6655,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	protected void colorCalc(final int rgb) {
 		if (((rgb & 0xff000000) == 0) && (rgb <= colorModeX)) {
-			colorCalc((double) rgb);
+			this.colorCalc((double) rgb);
 
 		} else {
 			colorCalcARGB(rgb, colorModeA);
@@ -6607,8 +6663,9 @@ public class PGraphics extends PImage implements PConstants {
 	}
 
 	protected void colorCalc(final int rgb, final double alpha) {
-		if (((rgb & 0xff000000) == 0) && (rgb <= colorModeX)) { // see above
-			colorCalc((double) rgb, alpha);
+		if (((rgb & 0xff000000) == 0) && (rgb <= colorModeX)) { // see
+			                                                    // above
+			this.colorCalc((double) rgb, alpha);
 
 		} else {
 			colorCalcARGB(rgb, alpha);
@@ -6616,7 +6673,7 @@ public class PGraphics extends PImage implements PConstants {
 	}
 
 	protected void colorCalc(final double gray) {
-		colorCalc(gray, colorModeA);
+		this.colorCalc(gray, colorModeA);
 	}
 
 	protected void colorCalc(double gray, double alpha) {
@@ -6648,7 +6705,7 @@ public class PGraphics extends PImage implements PConstants {
 	}
 
 	protected void colorCalc(final double x, final double y, final double z) {
-		colorCalc(x, y, z, colorModeA);
+		this.colorCalc(x, y, z, colorModeA);
 	}
 
 	protected void colorCalc(double x, double y, double z, double a) {
@@ -6805,12 +6862,12 @@ public class PGraphics extends PImage implements PConstants {
 		// } else {
 		// colorCalcARGB(c, colorModeA);
 		// }
-		colorCalc(c);
+		this.colorCalc(c);
 		return calcColor;
 	}
 
 	public final int color(final double gray) { // ignore
-		colorCalc(gray);
+		this.colorCalc(gray);
 		return calcColor;
 	}
 
@@ -6826,7 +6883,7 @@ public class PGraphics extends PImage implements PConstants {
 		//
 		// return ((alpha & 0xff) << 24) | (c << 16) | (c << 8) | c;
 		// }
-		colorCalc(c, alpha);
+		this.colorCalc(c, alpha);
 		return calcColor;
 	}
 
@@ -6836,7 +6893,7 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public final int color(final int c, final double alpha) { // ignore
 		// if (((c & 0xff000000) == 0) && (c <= colorModeX)) {
-		colorCalc(c, alpha);
+		this.colorCalc(c, alpha);
 		// } else {
 		// colorCalcARGB(c, alpha);
 		// }
@@ -6844,27 +6901,27 @@ public class PGraphics extends PImage implements PConstants {
 	}
 
 	public final int color(final double gray, final double alpha) { // ignore
-		colorCalc(gray, alpha);
+		this.colorCalc(gray, alpha);
 		return calcColor;
 	}
 
 	public final int color(final int v1, final int v2, final int v3) { // ignore
-		colorCalc(v1, v2, v3);
+		this.colorCalc(v1, v2, v3);
 		return calcColor;
 	}
 
 	public final int color(final double v1, final double v2, final double v3) { // ignore
-		colorCalc(v1, v2, v3);
+		this.colorCalc(v1, v2, v3);
 		return calcColor;
 	}
 
 	public final int color(final int v1, final int v2, final int v3, final int a) { // ignore
-		colorCalc(v1, v2, v3, a);
+		this.colorCalc(v1, v2, v3, a);
 		return calcColor;
 	}
 
 	public final int color(final double v1, final double v2, final double v3, final double a) { // ignore
-		colorCalc(v1, v2, v3, a);
+		this.colorCalc(v1, v2, v3, a);
 		return calcColor;
 	}
 
@@ -6891,7 +6948,9 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public final double alpha(final int rgb) {
 		final double outgoing = (rgb >> 24) & 0xff;
-		if (colorModeA == 255) { return outgoing; }
+		if (colorModeA == 255) {
+			return outgoing;
+		}
 		return (outgoing / 255.0f) * colorModeA;
 	}
 
@@ -6927,7 +6986,9 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public final double red(final int rgb) {
 		final double c = (rgb >> 16) & 0xff;
-		if (colorModeDefault) { return c; }
+		if (colorModeDefault) {
+			return c;
+		}
 		return (c / 255.0f) * colorModeX;
 	}
 
@@ -6962,7 +7023,9 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public final double green(final int rgb) {
 		final double c = (rgb >> 8) & 0xff;
-		if (colorModeDefault) { return c; }
+		if (colorModeDefault) {
+			return c;
+		}
 		return (c / 255.0f) * colorModeY;
 	}
 
@@ -6997,7 +7060,9 @@ public class PGraphics extends PImage implements PConstants {
 	 */
 	public final double blue(final int rgb) {
 		final double c = (rgb) & 0xff;
-		if (colorModeDefault) { return c; }
+		if (colorModeDefault) {
+			return c;
+		}
 		return (c / 255.0f) * colorModeZ;
 	}
 
@@ -7094,7 +7159,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * @see PGraphics#color(double, double, double, double)
 	 */
 	public int lerpColor(final int c1, final int c2, final double amt) {
-		return lerpColor(c1, c2, amt, colorMode);
+		return PGraphics.lerpColor(c1, c2, amt, colorMode);
 	}
 
 	static float[]	lerpColorHSB1;
@@ -7105,7 +7170,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *           components of a color supplied as an int value.
 	 */
 	static public int lerpColor(final int c1, final int c2, final double amt, final int mode) {
-		if (mode == RGB) {
+		if (mode == PConstants.RGB) {
 			final double a1 = ((c1 >> 24) & 0xff);
 			final double r1 = (c1 >> 16) & 0xff;
 			final double g1 = (c1 >> 8) & 0xff;
@@ -7118,18 +7183,18 @@ public class PGraphics extends PImage implements PConstants {
 			return (((int) (a1 + ((a2 - a1) * amt)) << 24) | ((int) (r1 + ((r2 - r1) * amt)) << 16)
 			        | ((int) (g1 + ((g2 - g1) * amt)) << 8) | ((int) (b1 + ((b2 - b1) * amt))));
 
-		} else if (mode == HSB) {
-			if (lerpColorHSB1 == null) {
-				lerpColorHSB1 = new float[3];
-				lerpColorHSB2 = new float[3];
+		} else if (mode == PConstants.HSB) {
+			if (PGraphics.lerpColorHSB1 == null) {
+				PGraphics.lerpColorHSB1 = new float[3];
+				PGraphics.lerpColorHSB2 = new float[3];
 			}
 
 			final double a1 = (c1 >> 24) & 0xff;
 			final double a2 = (c2 >> 24) & 0xff;
 			final int alfa = ((int) (a1 + ((a2 - a1) * amt))) << 24;
 
-			Color.RGBtoHSB((c1 >> 16) & 0xff, (c1 >> 8) & 0xff, c1 & 0xff, lerpColorHSB1);
-			Color.RGBtoHSB((c2 >> 16) & 0xff, (c2 >> 8) & 0xff, c2 & 0xff, lerpColorHSB2);
+			Color.RGBtoHSB((c1 >> 16) & 0xff, (c1 >> 8) & 0xff, c1 & 0xff, PGraphics.lerpColorHSB1);
+			Color.RGBtoHSB((c2 >> 16) & 0xff, (c2 >> 8) & 0xff, c2 & 0xff, PGraphics.lerpColorHSB2);
 
 			/*
 			 * If mode is HSB, this will take the shortest path around the color wheel to find the
@@ -7141,16 +7206,17 @@ public class PGraphics extends PImage implements PConstants {
 			// those who might want it...in spite of how despicable
 			// a full spectrum scale might be.
 			// roll around when 0.9 to 0.1
-			// more than 0.5 away means that it should roll in the other direction
+			// more than 0.5 away means that it should roll in the other
+			// direction
 			/*
 			 * double h1 = lerpColorHSB1[0]; double h2 = lerpColorHSB2[0]; if (Math.abs(h1 - h2) >
 			 * 0.5f) { if (h1 > h2) { // i.e. h1 is 0.7, h2 is 0.1 h2 += 1; } else { // i.e. h1 is
 			 * 0.1, h2 is 0.7 h1 += 1; } } double ho = (PApplet.lerp(lerpColorHSB1[0],
 			 * lerpColorHSB2[0], amt)) % 1.0f;
 			 */
-			final float ho = (float) PApplet.lerp(lerpColorHSB1[0], lerpColorHSB2[0], amt);
-			final float so = (float) PApplet.lerp(lerpColorHSB1[1], lerpColorHSB2[1], amt);
-			final float bo = (float) PApplet.lerp(lerpColorHSB1[2], lerpColorHSB2[2], amt);
+			final float ho = (float) PApplet.lerp(PGraphics.lerpColorHSB1[0], PGraphics.lerpColorHSB2[0], amt);
+			final float so = (float) PApplet.lerp(PGraphics.lerpColorHSB1[1], PGraphics.lerpColorHSB2[1], amt);
+			final float bo = (float) PApplet.lerp(PGraphics.lerpColorHSB1[2], PGraphics.lerpColorHSB2[2], amt);
 
 			return alfa | (Color.HSBtoRGB(ho, so, bo) & 0xFFFFFF);
 		}
@@ -7204,12 +7270,12 @@ public class PGraphics extends PImage implements PConstants {
 	 *            the error message (which will be stored for later comparison)
 	 */
 	static public void showWarning(final String msg) { // ignore
-		if (warnings == null) {
-			warnings = new HashMap<String, Object>();
+		if (PGraphics.warnings == null) {
+			PGraphics.warnings = new HashMap<String, Object>();
 		}
-		if (!warnings.containsKey(msg)) {
+		if (!PGraphics.warnings.containsKey(msg)) {
 			System.err.println(msg);
-			warnings.put(msg, new Object());
+			PGraphics.warnings.put(msg, new Object());
 		}
 	}
 
@@ -7217,7 +7283,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * Version of showWarning() that takes a parsed String.
 	 */
 	static public void showWarning(final String msg, final Object... args) { // ignore
-		showWarning(String.format(msg, args));
+		PGraphics.showWarning(String.format(msg, args));
 	}
 
 	/**
@@ -7227,7 +7293,8 @@ public class PGraphics extends PImage implements PConstants {
 	 *            The method name (no parentheses)
 	 */
 	static public void showDepthWarning(final String method) {
-		showWarning(method + "() can only be used with a renderer that " + "supports 3D, such as P3D or OPENGL.");
+		PGraphics.showWarning(method + "() can only be used with a renderer that "
+		        + "supports 3D, such as P3D or OPENGL.");
 	}
 
 	/**
@@ -7238,7 +7305,7 @@ public class PGraphics extends PImage implements PConstants {
 	 *            The method name (no parentheses)
 	 */
 	static public void showDepthWarningXYZ(final String method) {
-		showWarning(method + "() with x, y, and z coordinates " + "can only be used with a renderer that "
+		PGraphics.showWarning(method + "() with x, y, and z coordinates " + "can only be used with a renderer that "
 		        + "supports 3D, such as P3D or OPENGL. " + "Use a version without a z-coordinate instead.");
 	}
 
@@ -7246,7 +7313,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * Display a warning that the specified method is simply unavailable.
 	 */
 	static public void showMethodWarning(final String method) {
-		showWarning(method + "() is not available with this renderer.");
+		PGraphics.showWarning(method + "() is not available with this renderer.");
 	}
 
 	/**
@@ -7254,7 +7321,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * are). For instance, if vertex(x, y, u, v) is not available, but vertex(x, y) is just fine.
 	 */
 	static public void showVariationWarning(final String str) {
-		showWarning(str + " is not available with this renderer.");
+		PGraphics.showWarning(str + " is not available with this renderer.");
 	}
 
 	/**
@@ -7263,7 +7330,8 @@ public class PGraphics extends PImage implements PConstants {
 	 * properly.
 	 */
 	static public void showMissingWarning(final String method) {
-		showWarning(method + "(), or this particular variation of it, " + "is not available with this renderer.");
+		PGraphics.showWarning(method + "(), or this particular variation of it, "
+		        + "is not available with this renderer.");
 	}
 
 	/**
@@ -7279,7 +7347,7 @@ public class PGraphics extends PImage implements PConstants {
 	 * Same as below, but defaults to a 12 point font, just as MacWrite intended.
 	 */
 	protected void defaultFontOrDeath(final String method) {
-		defaultFontOrDeath(method, 12);
+		this.defaultFontOrDeath(method, 12);
 	}
 
 	/**

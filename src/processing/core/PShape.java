@@ -197,7 +197,8 @@ public class PShape implements PConstants {
 	// how to handle rectmode/ellipsemode?
 	// are they bitshifted into the constant?
 	// CORNER, CORNERS, CENTER, (CENTER_RADIUS?)
-	// static final int RECT = 3; // could just be QUAD, but would be x1/y1/x2/y2
+	// static final int RECT = 3; // could just be QUAD, but would be
+	// x1/y1/x2/y2
 	// static final int ELLIPSE = 4;
 	//
 	// static final int VERTEX = 7;
@@ -218,7 +219,7 @@ public class PShape implements PConstants {
 	// public double py;
 
 	public PShape() {
-		family = GROUP;
+		family = PConstants.GROUP;
 	}
 
 	/**
@@ -376,7 +377,8 @@ public class PShape implements PConstants {
 	}
 
 	// /**
-	// * Return true if this shape requires rendering through OpenGL. Defaults to false.
+	// * Return true if this shape requires rendering through OpenGL. Defaults
+	// to false.
 	// */
 	// // TODO unapproved
 	// public boolean isGL() {
@@ -692,17 +694,17 @@ public class PShape implements PConstants {
 	// TODO unapproved
 	static protected PShape createShape(final PApplet parent, final PShape src) {
 		PShape dest = null;
-		if (src.family == GROUP) {
-			dest = parent.createShape(GROUP);
+		if (src.family == PConstants.GROUP) {
+			dest = parent.createShape(PConstants.GROUP);
 			PShape.copyGroup(parent, src, dest);
-		} else if (src.family == PRIMITIVE) {
+		} else if (src.family == PShape.PRIMITIVE) {
 			dest = parent.createShape(src.kind, src.params);
 			PShape.copyPrimitive(src, dest);
-		} else if (src.family == GEOMETRY) {
+		} else if (src.family == PShape.GEOMETRY) {
 			dest = parent.createShape(src.kind);
 			PShape.copyGeometry(src, dest);
-		} else if (src.family == PATH) {
-			dest = parent.createShape(PATH);
+		} else if (src.family == PShape.PATH) {
+			dest = parent.createShape(PShape.PATH);
 			PShape.copyPath(src, dest);
 		}
 		dest.setName(src.name);
@@ -711,9 +713,9 @@ public class PShape implements PConstants {
 
 	// TODO unapproved
 	static protected void copyGroup(final PApplet parent, final PShape src, final PShape dest) {
-		copyMatrix(src, dest);
-		copyStyles(src, dest);
-		copyImage(src, dest);
+		PShape.copyMatrix(src, dest);
+		PShape.copyStyles(src, dest);
+		PShape.copyImage(src, dest);
 		for (int i = 0; i < src.childCount; i++) {
 			final PShape c = PShape.createShape(parent, src.children[i]);
 			dest.addChild(c);
@@ -722,16 +724,16 @@ public class PShape implements PConstants {
 
 	// TODO unapproved
 	static protected void copyPrimitive(final PShape src, final PShape dest) {
-		copyMatrix(src, dest);
-		copyStyles(src, dest);
-		copyImage(src, dest);
+		PShape.copyMatrix(src, dest);
+		PShape.copyStyles(src, dest);
+		PShape.copyImage(src, dest);
 	}
 
 	// TODO unapproved
 	static protected void copyGeometry(final PShape src, final PShape dest) {
-		copyMatrix(src, dest);
-		copyStyles(src, dest);
-		copyImage(src, dest);
+		PShape.copyMatrix(src, dest);
+		PShape.copyStyles(src, dest);
+		PShape.copyImage(src, dest);
 
 		if (src.style) {
 			for (int i = 0; i < src.vertexCount; i++) {
@@ -741,26 +743,30 @@ public class PShape implements PConstants {
 				        vert[PGraphics.A] * 255);
 
 				// Do we need to copy these as well?
-				// dest.ambient(vert[PGraphics.AR] * 255, vert[PGraphics.AG] * 255,
+				// dest.ambient(vert[PGraphics.AR] * 255, vert[PGraphics.AG] *
+				// 255,
 				// vert[PGraphics.AB] * 255);
-				// dest.specular(vert[PGraphics.SPR] * 255, vert[PGraphics.SPG] * 255,
+				// dest.specular(vert[PGraphics.SPR] * 255, vert[PGraphics.SPG]
+				// * 255,
 				// vert[PGraphics.SPB] * 255);
-				// dest.emissive(vert[PGraphics.ER] * 255, vert[PGraphics.EG] * 255,
+				// dest.emissive(vert[PGraphics.ER] * 255, vert[PGraphics.EG] *
+				// 255,
 				// vert[PGraphics.EB] * 255);
 				// dest.shininess(vert[PGraphics.SHINE]);
 
 				if (0 < PApplet.dist(vert[PGraphics.NX], vert[PGraphics.NY], vert[PGraphics.NZ], 0, 0, 0)) {
 					dest.normal(vert[PGraphics.NX], vert[PGraphics.NY], vert[PGraphics.NZ]);
 				}
-				dest.vertex(vert[X], vert[Y], vert[Z], vert[PGraphics.U], vert[PGraphics.V]);
+				dest.vertex(vert[PConstants.X], vert[PConstants.Y], vert[PConstants.Z], vert[PGraphics.U],
+				        vert[PGraphics.V]);
 			}
 		} else {
 			for (int i = 0; i < src.vertexCount; i++) {
 				final double[] vert = src.vertices[i];
-				if (vert[Z] == 0) {
-					dest.vertex(vert[X], vert[Y]);
+				if (vert[PConstants.Z] == 0) {
+					dest.vertex(vert[PConstants.X], vert[PConstants.Y]);
 				} else {
-					dest.vertex(vert[X], vert[Y], vert[Z]);
+					dest.vertex(vert[PConstants.X], vert[PConstants.Y], vert[PConstants.Z]);
 				}
 			}
 		}
@@ -770,9 +776,9 @@ public class PShape implements PConstants {
 
 	// TODO unapproved
 	static protected void copyPath(final PShape src, final PShape dest) {
-		copyMatrix(src, dest);
-		copyStyles(src, dest);
-		copyImage(src, dest);
+		PShape.copyMatrix(src, dest);
+		PShape.copyStyles(src, dest);
+		PShape.copyImage(src, dest);
 		dest.close = src.close;
 		dest.setPath(src.vertexCount, src.vertices, src.vertexCodeCount, src.vertexCodes);
 	}
@@ -830,13 +836,13 @@ public class PShape implements PConstants {
 	 */
 	public void drawImpl(final PGraphics g) {
 		// System.out.println("drawing " + family);
-		if (family == GROUP) {
+		if (family == PConstants.GROUP) {
 			drawGroup(g);
-		} else if (family == PRIMITIVE) {
+		} else if (family == PShape.PRIMITIVE) {
 			drawPrimitive(g);
-		} else if (family == GEOMETRY) {
+		} else if (family == PShape.GEOMETRY) {
 			drawGeometry(g);
-		} else if (family == PATH) {
+		} else if (family == PShape.PATH) {
 			drawPath(g);
 		}
 	}
@@ -848,47 +854,47 @@ public class PShape implements PConstants {
 	}
 
 	protected void drawPrimitive(final PGraphics g) {
-		if (kind == POINT) {
+		if (kind == PConstants.POINT) {
 			g.point(params[0], params[1]);
 
-		} else if (kind == LINE) {
+		} else if (kind == PConstants.LINE) {
 			if (params.length == 4) { // 2D
 				g.line(params[0], params[1], params[2], params[3]);
 			} else { // 3D
 				g.line(params[0], params[1], params[2], params[3], params[4], params[5]);
 			}
 
-		} else if (kind == TRIANGLE) {
+		} else if (kind == PConstants.TRIANGLE) {
 			g.triangle(params[0], params[1], params[2], params[3], params[4], params[5]);
 
-		} else if (kind == QUAD) {
+		} else if (kind == PConstants.QUAD) {
 			g.quad(params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7]);
 
-		} else if (kind == RECT) {
+		} else if (kind == PConstants.RECT) {
 			if (image != null) {
-				g.imageMode(CORNER);
+				g.imageMode(PConstants.CORNER);
 				g.image(image, params[0], params[1], params[2], params[3]);
 			} else {
-				g.rectMode(CORNER);
+				g.rectMode(PConstants.CORNER);
 				g.rect(params[0], params[1], params[2], params[3]);
 			}
 
-		} else if (kind == ELLIPSE) {
-			g.ellipseMode(CORNER);
+		} else if (kind == PConstants.ELLIPSE) {
+			g.ellipseMode(PConstants.CORNER);
 			g.ellipse(params[0], params[1], params[2], params[3]);
 
-		} else if (kind == ARC) {
-			g.ellipseMode(CORNER);
+		} else if (kind == PConstants.ARC) {
+			g.ellipseMode(PConstants.CORNER);
 			g.arc(params[0], params[1], params[2], params[3], params[4], params[5]);
 
-		} else if (kind == BOX) {
+		} else if (kind == PConstants.BOX) {
 			if (params.length == 1) {
 				g.box(params[0]);
 			} else {
 				g.box(params[0], params[1], params[2]);
 			}
 
-		} else if (kind == SPHERE) {
+		} else if (kind == PConstants.SPHERE) {
 			g.sphere(params[0]);
 		}
 	}
@@ -903,10 +909,10 @@ public class PShape implements PConstants {
 		} else {
 			for (int i = 0; i < vertexCount; i++) {
 				final double[] vert = vertices[i];
-				if (vert[Z] == 0) {
-					g.vertex(vert[X], vert[Y]);
+				if (vert[PConstants.Z] == 0) {
+					g.vertex(vert[PConstants.X], vert[PConstants.Y]);
 				} else {
-					g.vertex(vert[X], vert[Y], vert[Z]);
+					g.vertex(vert[PConstants.X], vert[PConstants.Y], vert[PConstants.Z]);
 				}
 			}
 		}
@@ -932,7 +938,9 @@ public class PShape implements PConstants {
 	protected void drawPath(final PGraphics g) {
 		// Paths might be empty (go figure)
 		// http://dev.processing.org/bugs/show_bug.cgi?id=982
-		if (vertices == null) { return; }
+		if (vertices == null) {
+			return;
+		}
 
 		boolean insideContour = false;
 		g.beginShape();
@@ -940,11 +948,11 @@ public class PShape implements PConstants {
 		if (vertexCodeCount == 0) { // each point is a simple vertex
 			if (vertices[0].length == 2) { // drawing 2D vertices
 				for (int i = 0; i < vertexCount; i++) {
-					g.vertex(vertices[i][X], vertices[i][Y]);
+					g.vertex(vertices[i][PConstants.X], vertices[i][PConstants.Y]);
 				}
 			} else { // drawing 3D vertices
 				for (int i = 0; i < vertexCount; i++) {
-					g.vertex(vertices[i][X], vertices[i][Y], vertices[i][Z]);
+					g.vertex(vertices[i][PConstants.X], vertices[i][PConstants.Y], vertices[i][PConstants.Z]);
 				}
 			}
 
@@ -956,20 +964,21 @@ public class PShape implements PConstants {
 					switch (vertexCodes[j]) {
 
 					case VERTEX:
-						g.vertex(vertices[index][X], vertices[index][Y]);
+						g.vertex(vertices[index][PConstants.X], vertices[index][PConstants.Y]);
 						// cx = vertices[index][X];
 						// cy = vertices[index][Y];
 						index++;
 						break;
 
 					case QUAD_BEZIER_VERTEX:
-						g.quadraticVertex(vertices[index + 0][X], vertices[index + 0][Y], vertices[index + 1][X],
-						        vertices[index + 1][Y]);
+						g.quadraticVertex(vertices[index + 0][PConstants.X], vertices[index + 0][PConstants.Y],
+						        vertices[index + 1][PConstants.X], vertices[index + 1][PConstants.Y]);
 						// double x1 = vertices[index+0][X];
 						// double y1 = vertices[index+0][Y];
 						// double x2 = vertices[index+1][X];
 						// double y2 = vertices[index+1][Y];
-						// g.bezierVertex(x1 + ((cx-x1)*2/3.0f), y1 + ((cy-y1)*2/3.0f),
+						// g.bezierVertex(x1 + ((cx-x1)*2/3.0f), y1 +
+						// ((cy-y1)*2/3.0f),
 						// x2 + ((cx-x2)*2/3.0f), y2 + ((cy-y2)*2/3.0f),
 						// x2, y2);
 						// cx = vertices[index+1][X];
@@ -978,15 +987,16 @@ public class PShape implements PConstants {
 						break;
 
 					case BEZIER_VERTEX:
-						g.bezierVertex(vertices[index + 0][X], vertices[index + 0][Y], vertices[index + 1][X],
-						        vertices[index + 1][Y], vertices[index + 2][X], vertices[index + 2][Y]);
+						g.bezierVertex(vertices[index + 0][PConstants.X], vertices[index + 0][PConstants.Y],
+						        vertices[index + 1][PConstants.X], vertices[index + 1][PConstants.Y],
+						        vertices[index + 2][PConstants.X], vertices[index + 2][PConstants.Y]);
 						// cx = vertices[index+2][X];
 						// cy = vertices[index+2][Y];
 						index += 3;
 						break;
 
 					case CURVE_VERTEX:
-						g.curveVertex(vertices[index][X], vertices[index][Y]);
+						g.curveVertex(vertices[index][PConstants.X], vertices[index][PConstants.Y]);
 						index++;
 						break;
 
@@ -1003,7 +1013,8 @@ public class PShape implements PConstants {
 					switch (vertexCodes[j]) {
 
 					case VERTEX:
-						g.vertex(vertices[index][X], vertices[index][Y], vertices[index][Z]);
+						g.vertex(vertices[index][PConstants.X], vertices[index][PConstants.Y],
+						        vertices[index][PConstants.Z]);
 						// cx = vertices[index][X];
 						// cy = vertices[index][Y];
 						// cz = vertices[index][Z];
@@ -1011,20 +1022,24 @@ public class PShape implements PConstants {
 						break;
 
 					case QUAD_BEZIER_VERTEX:
-						g.quadraticVertex(vertices[index + 0][X], vertices[index + 0][Y], vertices[index + 0][Z],
-						        vertices[index + 1][X], vertices[index + 1][Y], vertices[index + 0][Z]);
+						g.quadraticVertex(vertices[index + 0][PConstants.X], vertices[index + 0][PConstants.Y],
+						        vertices[index + 0][PConstants.Z], vertices[index + 1][PConstants.X],
+						        vertices[index + 1][PConstants.Y], vertices[index + 0][PConstants.Z]);
 						index += 2;
 						break;
 
 					case BEZIER_VERTEX:
-						g.bezierVertex(vertices[index + 0][X], vertices[index + 0][Y], vertices[index + 0][Z],
-						        vertices[index + 1][X], vertices[index + 1][Y], vertices[index + 1][Z],
-						        vertices[index + 2][X], vertices[index + 2][Y], vertices[index + 2][Z]);
+						g.bezierVertex(vertices[index + 0][PConstants.X], vertices[index + 0][PConstants.Y],
+						        vertices[index + 0][PConstants.Z], vertices[index + 1][PConstants.X],
+						        vertices[index + 1][PConstants.Y], vertices[index + 1][PConstants.Z],
+						        vertices[index + 2][PConstants.X], vertices[index + 2][PConstants.Y],
+						        vertices[index + 2][PConstants.Z]);
 						index += 3;
 						break;
 
 					case CURVE_VERTEX:
-						g.curveVertex(vertices[index][X], vertices[index][Y], vertices[index][Z]);
+						g.curveVertex(vertices[index][PConstants.X], vertices[index][PConstants.Y],
+						        vertices[index][PConstants.Z]);
 						index++;
 						break;
 
@@ -1041,7 +1056,7 @@ public class PShape implements PConstants {
 		if (insideContour) {
 			g.endContour();
 		}
-		g.endShape(close ? CLOSE : OPEN);
+		g.endShape(close ? PConstants.CLOSE : PConstants.OPEN);
 	}
 
 	// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
@@ -1079,14 +1094,20 @@ public class PShape implements PConstants {
 	 *            the name of the shape to get
 	 */
 	public PShape getChild(final String target) {
-		if ((name != null) && name.equals(target)) { return this; }
+		if ((name != null) && name.equals(target)) {
+			return this;
+		}
 		if (nameTable != null) {
 			final PShape found = nameTable.get(target);
-			if (found != null) { return found; }
+			if (found != null) {
+				return found;
+			}
 		}
 		for (int i = 0; i < childCount; i++) {
 			final PShape found = children[i].getChild(target);
-			if (found != null) { return found; }
+			if (found != null) {
+				return found;
+			}
 		}
 		return null;
 	}
@@ -1097,7 +1118,7 @@ public class PShape implements PConstants {
 	 */
 	public PShape findChild(final String target) {
 		if (parent == null) {
-			return getChild(target);
+			return this.getChild(target);
 
 		} else {
 			return parent.findChild(target);
@@ -1192,7 +1213,9 @@ public class PShape implements PConstants {
 	 */
 	public int getChildIndex(final PShape who) {
 		for (int i = 0; i < childCount; i++) {
-			if (children[i] == who) { return i; }
+			if (children[i] == who) {
+				return i;
+			}
 		}
 		return -1;
 	}
@@ -1213,7 +1236,7 @@ public class PShape implements PConstants {
 	}
 
 	public double[] getParams() {
-		return getParams(null);
+		return this.getParams(null);
 	}
 
 	public double[] getParams(double[] target) {
@@ -1240,12 +1263,16 @@ public class PShape implements PConstants {
 	}
 
 	public void setPath(final int vcount, final double[][] verts) {
-		setPath(vcount, verts, 0, null);
+		this.setPath(vcount, verts, 0, null);
 	}
 
 	protected void setPath(final int vcount, final double[][] verts, final int ccount, final int[] codes) {
-		if ((verts == null) || (verts.length < vcount)) { return; }
-		if ((0 < ccount) && ((codes == null) || (codes.length < ccount))) { return; }
+		if ((verts == null) || (verts.length < vcount)) {
+			return;
+		}
+		if ((0 < ccount) && ((codes == null) || (codes.length < ccount))) {
+			return;
+		}
 
 		final int ndim = verts[0].length;
 		vertexCount = vcount;
@@ -1280,7 +1307,7 @@ public class PShape implements PConstants {
 	 * @see PShape#getVertexCount()
 	 */
 	public PVector getVertex(final int index) {
-		return getVertex(index, null);
+		return this.getVertex(index, null);
 	}
 
 	/**
@@ -1291,22 +1318,22 @@ public class PShape implements PConstants {
 		if (vec == null) {
 			vec = new PVector();
 		}
-		vec.x = vertices[index][X];
-		vec.y = vertices[index][Y];
-		vec.z = vertices[index][Z];
+		vec.x = vertices[index][PConstants.X];
+		vec.y = vertices[index][PConstants.Y];
+		vec.z = vertices[index][PConstants.Z];
 		return vec;
 	}
 
 	public double getVertexX(final int index) {
-		return vertices[index][X];
+		return vertices[index][PConstants.X];
 	}
 
 	public double getVertexY(final int index) {
-		return vertices[index][Y];
+		return vertices[index][PConstants.Y];
 	}
 
 	public double getVertexZ(final int index) {
-		return vertices[index][Z];
+		return vertices[index][PConstants.Z];
 	}
 
 	/**
@@ -1322,8 +1349,8 @@ public class PShape implements PConstants {
 	 * @see PShape#getVertexCount()
 	 */
 	public void setVertex(final int index, final double x, final double y) {
-		vertices[index][X] = x;
-		vertices[index][Y] = y;
+		vertices[index][PConstants.X] = x;
+		vertices[index][PConstants.Y] = y;
 	}
 
 	/**
@@ -1331,9 +1358,9 @@ public class PShape implements PConstants {
 	 *            the z value for the vertex
 	 */
 	public void setVertex(final int index, final double x, final double y, final double z) {
-		vertices[index][X] = x;
-		vertices[index][Y] = y;
-		vertices[index][Z] = z;
+		vertices[index][PConstants.X] = x;
+		vertices[index][PConstants.Y] = y;
+		vertices[index][PConstants.Z] = z;
 	}
 
 	/**
@@ -1341,13 +1368,13 @@ public class PShape implements PConstants {
 	 *            the PVector to define the x, y, z coordinates
 	 */
 	public void setVertex(final int index, final PVector vec) {
-		vertices[index][X] = vec.x;
-		vertices[index][Y] = vec.y;
-		vertices[index][Z] = vec.z;
+		vertices[index][PConstants.X] = vec.x;
+		vertices[index][PConstants.Y] = vec.y;
+		vertices[index][PConstants.Z] = vec.z;
 	}
 
 	public PVector getNormal(final int index) {
-		return getNormal(index, null);
+		return this.getNormal(index, null);
 	}
 
 	public PVector getNormal(final int index, PVector vec) {
@@ -1477,7 +1504,9 @@ public class PShape implements PConstants {
 	}
 
 	public int[] getVertexCodes() {
-		if (vertexCodes == null) { return null; }
+		if (vertexCodes == null) {
+			return null;
+		}
 		if (vertexCodes.length != vertexCodeCount) {
 			vertexCodes = PApplet.subset(vertexCodes, 0, vertexCodeCount);
 		}
@@ -1503,11 +1532,11 @@ public class PShape implements PConstants {
 
 	// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 	public boolean contains(final double x, final double y) {
-		if (family == PATH) {
+		if (family == PShape.PATH) {
 			boolean c = false;
 			for (int i = 0, j = vertexCount - 1; i < vertexCount; j = i++) {
-				if (((vertices[i][Y] > y) != (vertices[j][Y] > y))
-				        && (x < ((((vertices[j][X] - vertices[i][X]) * (y - vertices[i][Y])) / (vertices[j][1] - vertices[i][Y])) + vertices[i][X]))) {
+				if (((vertices[i][PConstants.Y] > y) != (vertices[j][PConstants.Y] > y))
+				        && (x < ((((vertices[j][PConstants.X] - vertices[i][PConstants.X]) * (y - vertices[i][PConstants.Y])) / (vertices[j][1] - vertices[i][PConstants.Y])) + vertices[i][PConstants.X]))) {
 					c = !c;
 				}
 			}
@@ -1588,7 +1617,7 @@ public class PShape implements PConstants {
 	 * @see PShape#resetMatrix()
 	 */
 	public void rotateX(final double angle) {
-		rotate(angle, 1, 0, 0);
+		this.rotate(angle, 1, 0, 0);
 	}
 
 	/**
@@ -1618,7 +1647,7 @@ public class PShape implements PConstants {
 	 * @see PShape#resetMatrix()
 	 */
 	public void rotateY(final double angle) {
-		rotate(angle, 0, 1, 0);
+		this.rotate(angle, 0, 1, 0);
 	}
 
 	/**
@@ -1648,7 +1677,7 @@ public class PShape implements PConstants {
 	 * @see PShape#resetMatrix()
 	 */
 	public void rotateZ(final double angle) {
-		rotate(angle, 0, 0, 1);
+		this.rotate(angle, 0, 0, 1);
 	}
 
 	/**
@@ -1686,7 +1715,7 @@ public class PShape implements PConstants {
 	public void rotate(final double angle, double v0, double v1, double v2) {
 		checkMatrix(3);
 		final double norm2 = (v0 * v0) + (v1 * v1) + (v2 * v2);
-		if (Math.abs(norm2 - 1) > EPSILON) {
+		if (Math.abs(norm2 - 1) > PConstants.EPSILON) {
 			// The rotation vector is not normalized.
 			final double norm = PApplet.sqrt(norm2);
 			v0 /= norm;
@@ -1763,15 +1792,15 @@ public class PShape implements PConstants {
 
 	public void applyMatrix(final PMatrix source) {
 		if (source instanceof PMatrix2D) {
-			applyMatrix((PMatrix2D) source);
+			this.applyMatrix((PMatrix2D) source);
 		} else if (source instanceof PMatrix3D) {
-			applyMatrix((PMatrix3D) source);
+			this.applyMatrix((PMatrix3D) source);
 		}
 	}
 
 	public void applyMatrix(final PMatrix2D source) {
-		applyMatrix(source.m00, source.m01, 0, source.m02, source.m10, source.m11, 0, source.m12, 0, 0, 1, 0, 0, 0, 0,
-		        1);
+		this.applyMatrix(source.m00, source.m01, 0, source.m02, source.m10, source.m11, 0, source.m12, 0, 0, 1, 0, 0,
+		        0, 0, 1);
 	}
 
 	public void applyMatrix(final double n00, final double n01, final double n02, final double n10, final double n11,
@@ -1781,8 +1810,9 @@ public class PShape implements PConstants {
 	}
 
 	public void applyMatrix(final PMatrix3D source) {
-		applyMatrix(source.m00, source.m01, source.m02, source.m03, source.m10, source.m11, source.m12, source.m13,
-		        source.m20, source.m21, source.m22, source.m23, source.m30, source.m31, source.m32, source.m33);
+		this.applyMatrix(source.m00, source.m01, source.m02, source.m03, source.m10, source.m11, source.m12,
+		        source.m13, source.m20, source.m21, source.m22, source.m23, source.m30, source.m31, source.m32,
+		        source.m33);
 	}
 
 	public void applyMatrix(final double n00, final double n01, final double n02, final double n03, final double n10,
@@ -1834,7 +1864,7 @@ public class PShape implements PConstants {
 	// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 
 	public void colorMode(final int mode) {
-		colorMode(mode, colorModeX, colorModeY, colorModeZ, colorModeA);
+		this.colorMode(mode, colorModeX, colorModeY, colorModeZ, colorModeA);
 	}
 
 	/**
@@ -1842,7 +1872,7 @@ public class PShape implements PConstants {
 	 *            range for all color elements
 	 */
 	public void colorMode(final int mode, final double max) {
-		colorMode(mode, max, max, max, max);
+		this.colorMode(mode, max, max, max, max);
 	}
 
 	/**
@@ -1854,7 +1884,7 @@ public class PShape implements PConstants {
 	 *            range for the blue or brightness depending on the current color mode
 	 */
 	public void colorMode(final int mode, final double maxX, final double maxY, final double maxZ) {
-		colorMode(mode, maxX, maxY, maxZ, colorModeA);
+		this.colorMode(mode, maxX, maxY, maxZ, colorModeA);
 	}
 
 	/**
@@ -1874,13 +1904,13 @@ public class PShape implements PConstants {
 
 		// if color is rgb/0..255 this will make it easier for the
 		// red() green() etc functions
-		colorModeDefault = (colorMode == RGB) && (colorModeA == 255) && (colorModeX == 255) && (colorModeY == 255)
-		        && (colorModeZ == 255);
+		colorModeDefault = (colorMode == PConstants.RGB) && (colorModeA == 255) && (colorModeX == 255)
+		        && (colorModeY == 255) && (colorModeZ == 255);
 	}
 
 	protected void colorCalc(final int rgb) {
 		if (((rgb & 0xff000000) == 0) && (rgb <= colorModeX)) {
-			colorCalc((double) rgb);
+			this.colorCalc((double) rgb);
 
 		} else {
 			colorCalcARGB(rgb, colorModeA);
@@ -1888,8 +1918,9 @@ public class PShape implements PConstants {
 	}
 
 	protected void colorCalc(final int rgb, final double alpha) {
-		if (((rgb & 0xff000000) == 0) && (rgb <= colorModeX)) { // see above
-			colorCalc((double) rgb, alpha);
+		if (((rgb & 0xff000000) == 0) && (rgb <= colorModeX)) { // see
+			                                                    // above
+			this.colorCalc((double) rgb, alpha);
 
 		} else {
 			colorCalcARGB(rgb, alpha);
@@ -1897,7 +1928,7 @@ public class PShape implements PConstants {
 	}
 
 	protected void colorCalc(final double gray) {
-		colorCalc(gray, colorModeA);
+		this.colorCalc(gray, colorModeA);
 	}
 
 	protected void colorCalc(double gray, double alpha) {
@@ -1929,7 +1960,7 @@ public class PShape implements PConstants {
 	}
 
 	protected void colorCalc(final double x, final double y, final double z) {
-		colorCalc(x, y, z, colorModeA);
+		this.colorCalc(x, y, z, colorModeA);
 	}
 
 	protected void colorCalc(double x, double y, double z, double a) {

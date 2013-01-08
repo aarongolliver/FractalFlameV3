@@ -32,6 +32,6 @@ public class TouchEvent extends Event {
 
 	public TouchEvent(final Object nativeObject, final long millis, final int action, final int modifiers) {
 		super(nativeObject, millis, action, modifiers);
-		flavor = TOUCH;
+		flavor = Event.TOUCH;
 	}
 }

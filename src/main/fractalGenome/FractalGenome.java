@@ -1,20 +1,21 @@
 package main.fractalGenome;
 
-import static java.lang.Math.*;
-import static main.Utils.*;
-
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
 
 import main.ColorSet;
+import main.Utils;
 import main.variations.Bent14;
 import main.variations.Blob23;
-import main.variations.*;
+import main.variations.Bubble28;
+import main.variations.Cosine20;
+import main.variations.Cylinder29;
 import main.variations.Diamond11;
 import main.variations.Disc8;
 import main.variations.Ex12;
 import main.variations.Exponential18;
+import main.variations.Eyefish27;
 import main.variations.Fan22;
 import main.variations.FanTwo25;
 import main.variations.Fisheye16;
@@ -25,10 +26,12 @@ import main.variations.Hyperbolic10;
 import main.variations.Julia13;
 import main.variations.Linear0;
 import main.variations.PDJ24;
+import main.variations.Perspective30;
 import main.variations.Polar5;
 import main.variations.Popcorn17;
 import main.variations.Power19;
 import main.variations.Rings21;
+import main.variations.RingsTwo26;
 import main.variations.Sinusodial1;
 import main.variations.Spherical2;
 import main.variations.Spiral9;
@@ -49,7 +52,7 @@ public final class FractalGenome {
 	public boolean	           variationToggle	    = true;
 	protected TreeSet<Integer>	variations;
 	public double[]	           variationWeights;
-	private final int	       nVariations	        = (int) (random() * 12 + 2);
+	private final int	       nVariations	        = (int) ((Math.random() * 12) + 2);
 
 	final public double[][]	   variationParameters;
 	public boolean	           finalTransformToggle	= true;
@@ -65,26 +68,26 @@ public final class FractalGenome {
 	static public double	   gamma	            = 1;
 
 	public void setLogScale() {
-		logScale = true;
-		linearScale = false;
+		FractalGenome.logScale = true;
+		FractalGenome.linearScale = false;
 	}
 
 	public void setLinearScale() {
-		logScale = false;
-		linearScale = true;
+		FractalGenome.logScale = false;
+		FractalGenome.linearScale = true;
 	}
 
 	public FractalGenome(final int minAffineTransforms, final int maxAffineTransforms) {
 
-		cameraXOffset = 0;
-		cameraYOffset = 0;
-		cameraXShrink = 10;
-		cameraYShrink = 10;
-		center = false;
-		logScale = false;
-		linearScale = false;
+		FractalGenome.cameraXOffset = 0;
+		FractalGenome.cameraYOffset = 0;
+		FractalGenome.cameraXShrink = 10;
+		FractalGenome.cameraYShrink = 10;
+		FractalGenome.center = false;
+		FractalGenome.logScale = false;
+		FractalGenome.linearScale = false;
 
-		gamma = 1;
+		FractalGenome.gamma = 1;
 
 		nAffineTransformatioins = resetNAffineTransformations(minAffineTransforms, maxAffineTransforms);
 		affineProbabilities = resetAffineProbabilities(nAffineTransformatioins);
@@ -100,26 +103,28 @@ public final class FractalGenome {
 	}
 
 	private double[][] resetVariationParameters() {
-		double[][] p = new double[Variation.NUMBER_OF_VARIATIONS + 1][4];
-		for (double[] row : p)
-			for (int i : range(row.length))
-				row[i] = map(random(), 0, 1, -1, 1);
+		final double[][] p = new double[Variation.NUMBER_OF_VARIATIONS + 1][4];
+		for (final double[] row : p) {
+			for (final int i : Utils.range(row.length)) {
+				row[i] = Utils.map(Math.random(), 0, 1, -1, 1);
+			}
+		}
 		return p;
 	}
 
 	public FractalGenome(final FractalGenome genome) {
-		this.nAffineTransformatioins = genome.nAffineTransformatioins;
-		this.affineProbabilities = genome.affineProbabilities;
+		nAffineTransformatioins = genome.nAffineTransformatioins;
+		affineProbabilities = genome.affineProbabilities;
 
-		this.affineMatrices = genome.affineMatrices;
-		this.finalTransformMatrices = genome.finalTransformMatrices;
-		this.affineColor = genome.affineColor;
-		this.finalColor = genome.finalColor;
-		this.variations = genome.variations;
-		this.variationWeights = genome.variationWeights;
-		this.variationParameters = genome.variationParameters;
-		this.variationToggle = genome.variationToggle;
-		this.finalTransformToggle = genome.finalTransformToggle;
+		affineMatrices = genome.affineMatrices;
+		finalTransformMatrices = genome.finalTransformMatrices;
+		affineColor = genome.affineColor;
+		finalColor = genome.finalColor;
+		variations = genome.variations;
+		variationWeights = genome.variationWeights;
+		variationParameters = genome.variationParameters;
+		variationToggle = genome.variationToggle;
+		finalTransformToggle = genome.finalTransformToggle;
 	}
 
 	private void resetVariations() {
@@ -131,7 +136,7 @@ public final class FractalGenome {
 
 		variationWeights = new double[Variation.NUMBER_OF_VARIATIONS];
 
-		for (final int i : range(variationWeights.length)) {
+		for (final int i : Utils.range(variationWeights.length)) {
 			variationWeights[i] = Math.random();
 		}
 	}
@@ -139,7 +144,7 @@ public final class FractalGenome {
 	public ColorSet[] resetAffineColor(final int nAffineTransformatioins) {
 		final ColorSet[] cs = new ColorSet[nAffineTransformatioins];
 
-		for (final int i : range(nAffineTransformatioins)) {
+		for (final int i : Utils.range(nAffineTransformatioins)) {
 			cs[i] = new ColorSet(Math.random(), Math.random(), Math.random());
 		}
 
@@ -151,7 +156,7 @@ public final class FractalGenome {
 		for (int i = 0; i < matrices.length; i++) {
 			for (int j = 0; j < matrices[i].length; j++) {
 				for (int k = 0; k < matrices[i][j].length; k++) {
-					matrices[i][j][k] = map(random(), 0, 1, -1, 1);
+					matrices[i][j][k] = Utils.map(Math.random(), 0, 1, -1, 1);
 				}
 			}
 		}
@@ -166,14 +171,14 @@ public final class FractalGenome {
 		maxAffineTransforms = (maxAffineTransforms >= minAffineTransforms) ? maxAffineTransforms : minAffineTransforms;
 
 		// picks a random number between max and min
-		return (int) (random() * (maxAffineTransforms - minAffineTransforms)) + minAffineTransforms;
+		return (int) (Math.random() * (maxAffineTransforms - minAffineTransforms)) + minAffineTransforms;
 	}
 
 	private int[] resetAffineProbabilities(final int nAffineTransformatioins) {
 		final double[] affineProbabilities = new double[nAffineTransformatioins];
 
-		for (final int i : range(nAffineTransformatioins)) {
-			affineProbabilities[i] = random();
+		for (final int i : Utils.range(nAffineTransformatioins)) {
+			affineProbabilities[i] = Math.random();
 		}
 		Arrays.sort(affineProbabilities);
 
@@ -294,12 +299,13 @@ public final class FractalGenome {
 				break;
 			case 31:
 				// I disabled Noise because it's always ugly
-				//variations[i++] = new Noise31(genome);
+				// variations[i++] = new Noise31(genome);
 				variations[i++] = new Rings21(genome);
 				break;
 			default:
-				while (true)
+				while (true) {
 					System.out.println("MISTAKE");
+				}
 			}
 		}
 		return variations;

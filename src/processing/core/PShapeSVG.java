@@ -18,6 +18,7 @@ import java.awt.Paint;
 import java.awt.PaintContext;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -153,8 +154,9 @@ public class PShapeSVG extends PShape {
 	public PShapeSVG(final XML svg) {
 		this(null, svg, true);
 
-		if (!svg.getName().equals("svg")) { throw new RuntimeException("root is not <svg>, it's <" + svg.getName()
-		        + ">"); }
+		if (!svg.getName().equals("svg")) {
+			throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
+		}
 
 		// not proper parsing of the viewBox, but will cover us for cases where
 		// the width and height of the object is not specified
@@ -171,8 +173,8 @@ public class PShapeSVG extends PShape {
 		final String unitWidth = svg.getString("width");
 		final String unitHeight = svg.getString("height");
 		if (unitWidth != null) {
-			width = parseUnitSize(unitWidth);
-			height = parseUnitSize(unitHeight);
+			width = PShapeSVG.parseUnitSize(unitWidth);
+			height = PShapeSVG.parseUnitSize(unitHeight);
 		} else {
 			if ((width == 0) || (height == 0)) {
 				// throw new RuntimeException("width/height not specified");
@@ -199,7 +201,8 @@ public class PShapeSVG extends PShape {
 			stroke = false;
 			strokeColor = 0xff000000;
 			strokeWeight = 1;
-			strokeCap = PConstants.SQUARE; // equivalent to BUTT in svg spec
+			strokeCap = PConstants.SQUARE; // equivalent to BUTT in svg
+			                               // spec
 			strokeJoin = PConstants.MITER;
 			strokeGradient = null;
 			strokeGradientPaint = null;
@@ -259,7 +262,7 @@ public class PShapeSVG extends PShape {
 
 		final String transformStr = properties.getString("transform");
 		if (transformStr != null) {
-			matrix = parseTransform(transformStr);
+			matrix = PShapeSVG.parseTransform(transformStr);
 		}
 
 		if (parseKids) {
@@ -279,7 +282,7 @@ public class PShapeSVG extends PShape {
 				// if (kid.name != null) {
 				// System.out.println("adding child " + kid.name);
 				// }
-				addChild(kid);
+				this.addChild(kid);
 			}
 		}
 		children = (PShape[]) PApplet.subset(children, 0, childCount);
@@ -354,7 +357,8 @@ public class PShapeSVG extends PShape {
 			// } else if (name.equals("font-face")) {
 			// return new FontFace(this, elem);
 
-			// } else if (name.equals("glyph") || name.equals("missing-glyph")) {
+			// } else if (name.equals("glyph") || name.equals("missing-glyph"))
+			// {
 			// return new FontGlyph(this, elem);
 
 		} else if (name.equals("metadata")) {
@@ -388,10 +392,10 @@ public class PShapeSVG extends PShape {
 	}
 
 	protected void parseLine() {
-		kind = LINE;
-		family = PRIMITIVE;
-		params = new double[] { getFloatWithUnit(element, "x1"), getFloatWithUnit(element, "y1"),
-		        getFloatWithUnit(element, "x2"), getFloatWithUnit(element, "y2") };
+		kind = PConstants.LINE;
+		family = PShape.PRIMITIVE;
+		params = new double[] { PShapeSVG.getFloatWithUnit(element, "x1"), PShapeSVG.getFloatWithUnit(element, "y1"),
+		        PShapeSVG.getFloatWithUnit(element, "x2"), PShapeSVG.getFloatWithUnit(element, "y2") };
 	}
 
 	/**
@@ -401,19 +405,19 @@ public class PShapeSVG extends PShape {
 	 *            true if this is a circle and not an ellipse
 	 */
 	protected void parseEllipse(final boolean circle) {
-		kind = ELLIPSE;
-		family = PRIMITIVE;
+		kind = PConstants.ELLIPSE;
+		family = PShape.PRIMITIVE;
 		params = new double[4];
 
-		params[0] = getFloatWithUnit(element, "cx");
-		params[1] = getFloatWithUnit(element, "cy");
+		params[0] = PShapeSVG.getFloatWithUnit(element, "cx");
+		params[1] = PShapeSVG.getFloatWithUnit(element, "cy");
 
 		double rx, ry;
 		if (circle) {
-			rx = ry = getFloatWithUnit(element, "r");
+			rx = ry = PShapeSVG.getFloatWithUnit(element, "r");
 		} else {
-			rx = getFloatWithUnit(element, "rx");
-			ry = getFloatWithUnit(element, "ry");
+			rx = PShapeSVG.getFloatWithUnit(element, "rx");
+			ry = PShapeSVG.getFloatWithUnit(element, "ry");
 		}
 		params[0] -= rx;
 		params[1] -= ry;
@@ -423,10 +427,10 @@ public class PShapeSVG extends PShape {
 	}
 
 	protected void parseRect() {
-		kind = RECT;
-		family = PRIMITIVE;
-		params = new double[] { getFloatWithUnit(element, "x"), getFloatWithUnit(element, "y"),
-		        getFloatWithUnit(element, "width"), getFloatWithUnit(element, "height") };
+		kind = PConstants.RECT;
+		family = PShape.PRIMITIVE;
+		params = new double[] { PShapeSVG.getFloatWithUnit(element, "x"), PShapeSVG.getFloatWithUnit(element, "y"),
+		        PShapeSVG.getFloatWithUnit(element, "width"), PShapeSVG.getFloatWithUnit(element, "height") };
 	}
 
 	/**
@@ -436,7 +440,7 @@ public class PShapeSVG extends PShape {
 	 *            true if shape is closed (polygon), false if not (polyline)
 	 */
 	protected void parsePoly(final boolean close) {
-		family = PATH;
+		family = PShape.PATH;
 		this.close = close;
 
 		final String pointsAttr = element.getString("points");
@@ -446,18 +450,20 @@ public class PShapeSVG extends PShape {
 			vertices = new double[vertexCount][2];
 			for (int i = 0; i < vertexCount; i++) {
 				final String pb[] = PApplet.split(pointsBuffer[i], ',');
-				vertices[i][X] = Float.valueOf(pb[0]).floatValue();
-				vertices[i][Y] = Float.valueOf(pb[1]).floatValue();
+				vertices[i][PConstants.X] = Float.valueOf(pb[0]).floatValue();
+				vertices[i][PConstants.Y] = Float.valueOf(pb[1]).floatValue();
 			}
 		}
 	}
 
 	protected void parsePath() {
-		family = PATH;
+		family = PShape.PATH;
 		kind = 0;
 
 		final String pathData = element.getString("d");
-		if ((pathData == null) || (PApplet.trim(pathData).length() == 0)) { return; }
+		if ((pathData == null) || (PApplet.trim(pathData).length() == 0)) {
+			return;
+		}
 		final char[] pathDataChars = pathData.toCharArray();
 
 		final StringBuffer pathBuffer = new StringBuffer();
@@ -469,8 +475,10 @@ public class PShapeSVG extends PShape {
 
 			if ((c == 'M') || (c == 'm') || (c == 'L') || (c == 'l') || (c == 'H') || (c == 'h') || (c == 'V')
 			        || (c == 'v') || (c == 'C') || (c == 'c') || // beziers
-			        (c == 'S') || (c == 's') || (c == 'Q') || (c == 'q') || // quadratic beziers
-			        (c == 'T') || (c == 't') || (// c == 'A' || c == 'a' || // elliptical arc
+			        (c == 'S') || (c == 's') || (c == 'Q') || (c == 'q') || // quadratic
+			                                                                // beziers
+			        (c == 'T') || (c == 't') || (// c == 'A' || c == 'a' || //
+			                                     // elliptical arc
 			        c == 'Z') || (c == 'z') || // closepath
 			        (c == ',')) {
 				separate = true;
@@ -498,7 +506,7 @@ public class PShapeSVG extends PShape {
 		}
 
 		// use whitespace constant to get rid of extra spaces and CR or LF
-		final String[] pathTokens = PApplet.splitTokens(pathBuffer.toString(), "|" + WHITESPACE);
+		final String[] pathTokens = PApplet.splitTokens(pathBuffer.toString(), "|" + PConstants.WHITESPACE);
 		vertices = new double[pathTokens.length][2];
 		vertexCodes = new int[pathTokens.length];
 
@@ -615,27 +623,33 @@ public class PShapeSVG extends PShape {
 				break;
 
 			// S - curve to shorthand (absolute)
-			// Draws a cubic Bézier curve from the current point to (x,y). The first
-			// control point is assumed to be the reflection of the second control
+			// Draws a cubic Bézier curve from the current point to (x,y). The
+			// first
+			// control point is assumed to be the reflection of the second
+			// control
 			// point on the previous command relative to the current point.
 			// (x2,y2) is the second control point (i.e., the control point
 			// at the end of the curve). S (uppercase) indicates that absolute
 			// coordinates will follow; s (lowercase) indicates that relative
-			// coordinates will follow. Multiple sets of coordinates may be specified
-			// to draw a polybézier. At the end of the command, the new current point
+			// coordinates will follow. Multiple sets of coordinates may be
+			// specified
+			// to draw a polybézier. At the end of the command, the new current
+			// point
 			// becomes the final (x,y) coordinate pair used in the polybézier.
 			case 'S': {
-				// (If there is no previous command or if the previous command was not
-				// an C, c, S or s, assume the first control point is coincident with
+				// (If there is no previous command or if the previous command
+				// was not
+				// an C, c, S or s, assume the first control point is coincident
+				// with
 				// the current point.)
 				if (!prevCurve) {
 					ctrlX = cx;
 					ctrlY = cy;
 				} else {
-					final double ppx = vertices[vertexCount - 2][X];
-					final double ppy = vertices[vertexCount - 2][Y];
-					final double px = vertices[vertexCount - 1][X];
-					final double py = vertices[vertexCount - 1][Y];
+					final double ppx = vertices[vertexCount - 2][PConstants.X];
+					final double ppy = vertices[vertexCount - 2][PConstants.Y];
+					final double px = vertices[vertexCount - 1][PConstants.X];
+					final double py = vertices[vertexCount - 1][PConstants.Y];
 					ctrlX = px + (px - ppx);
 					ctrlY = py + (py - ppy);
 				}
@@ -657,10 +671,10 @@ public class PShapeSVG extends PShape {
 					ctrlX = cx;
 					ctrlY = cy;
 				} else {
-					final double ppx = vertices[vertexCount - 2][X];
-					final double ppy = vertices[vertexCount - 2][Y];
-					final double px = vertices[vertexCount - 1][X];
-					final double py = vertices[vertexCount - 1][Y];
+					final double ppx = vertices[vertexCount - 2][PConstants.X];
+					final double ppy = vertices[vertexCount - 2][PConstants.Y];
+					final double px = vertices[vertexCount - 1][PConstants.X];
+					final double py = vertices[vertexCount - 1][PConstants.Y];
 					ctrlX = px + (px - ppx);
 					ctrlY = py + (py - ppy);
 				}
@@ -677,11 +691,15 @@ public class PShapeSVG extends PShape {
 				break;
 
 			// Q - quadratic curve to (absolute)
-			// Draws a quadratic Bézier curve from the current point to (x,y) using
-			// (x1,y1) as the control point. Q (uppercase) indicates that absolute
+			// Draws a quadratic Bézier curve from the current point to (x,y)
+			// using
+			// (x1,y1) as the control point. Q (uppercase) indicates that
+			// absolute
 			// coordinates will follow; q (lowercase) indicates that relative
-			// coordinates will follow. Multiple sets of coordinates may be specified
-			// to draw a polybézier. At the end of the command, the new current point
+			// coordinates will follow. Multiple sets of coordinates may be
+			// specified
+			// to draw a polybézier. At the end of the command, the new current
+			// point
 			// becomes the final (x,y) coordinate pair used in the polybézier.
 			case 'Q': {
 				ctrlX = PApplet.parseFloat(pathTokens[i + 1]);
@@ -716,17 +734,18 @@ public class PShapeSVG extends PShape {
 			// The control point is assumed to be the reflection of the control
 			// point on the previous command relative to the current point.
 			case 'T': {
-				// If there is no previous command or if the previous command was
+				// If there is no previous command or if the previous command
+				// was
 				// not a Q, q, T or t, assume the control point is coincident
 				// with the current point.
 				if (!prevCurve) {
 					ctrlX = cx;
 					ctrlY = cy;
 				} else {
-					final double ppx = vertices[vertexCount - 2][X];
-					final double ppy = vertices[vertexCount - 2][Y];
-					final double px = vertices[vertexCount - 1][X];
-					final double py = vertices[vertexCount - 1][Y];
+					final double ppx = vertices[vertexCount - 2][PConstants.X];
+					final double ppy = vertices[vertexCount - 2][PConstants.Y];
+					final double px = vertices[vertexCount - 1][PConstants.X];
+					final double py = vertices[vertexCount - 1][PConstants.Y];
 					ctrlX = px + (px - ppx);
 					ctrlY = py + (py - ppy);
 				}
@@ -747,10 +766,10 @@ public class PShapeSVG extends PShape {
 					ctrlX = cx;
 					ctrlY = cy;
 				} else {
-					final double ppx = vertices[vertexCount - 2][X];
-					final double ppy = vertices[vertexCount - 2][Y];
-					final double px = vertices[vertexCount - 1][X];
-					final double py = vertices[vertexCount - 1][Y];
+					final double ppx = vertices[vertexCount - 2][PConstants.X];
+					final double ppy = vertices[vertexCount - 2][PConstants.Y];
+					final double px = vertices[vertexCount - 1][PConstants.X];
+					final double py = vertices[vertexCount - 1][PConstants.Y];
 					ctrlX = px + (px - ppx);
 					ctrlY = py + (py - ppy);
 				}
@@ -808,8 +827,8 @@ public class PShapeSVG extends PShape {
 			System.arraycopy(vertices, 0, temp, 0, vertexCount);
 			vertices = temp;
 		}
-		vertices[vertexCount][X] = x;
-		vertices[vertexCount][Y] = y;
+		vertices[vertexCount][PConstants.X] = x;
+		vertices[vertexCount][PConstants.Y] = y;
 		vertexCount++;
 	}
 
@@ -822,20 +841,20 @@ public class PShapeSVG extends PShape {
 
 	private void parsePathMoveto(final double px, final double py) {
 		if (vertexCount > 0) {
-			parsePathCode(BREAK);
+			parsePathCode(PConstants.BREAK);
 		}
-		parsePathCode(VERTEX);
+		parsePathCode(PConstants.VERTEX);
 		parsePathVertex(px, py);
 	}
 
 	private void parsePathLineto(final double px, final double py) {
-		parsePathCode(VERTEX);
+		parsePathCode(PConstants.VERTEX);
 		parsePathVertex(px, py);
 	}
 
 	private void parsePathCurveto(final double x1, final double y1, final double x2, final double y2, final double x3,
 	        final double y3) {
-		parsePathCode(BEZIER_VERTEX);
+		parsePathCode(PConstants.BEZIER_VERTEX);
 		parsePathVertex(x1, y1);
 		parsePathVertex(x2, y2);
 		parsePathVertex(x3, y3);
@@ -844,7 +863,8 @@ public class PShapeSVG extends PShape {
 	// private void parsePathQuadto(double x1, double y1,
 	// double cx, double cy,
 	// double x2, double y2) {
-	// //System.out.println("quadto: " + x1 + "," + y1 + " " + cx + "," + cy + " " + x2 + "," + y2);
+	// //System.out.println("quadto: " + x1 + "," + y1 + " " + cx + "," + cy +
+	// " " + x2 + "," + y2);
 	// // parsePathCode(BEZIER_VERTEX);
 	// parsePathCode(QUAD_BEZIER_VERTEX);
 	// // x1/y1 already covered by last moveto, lineto, or curveto
@@ -855,10 +875,11 @@ public class PShapeSVG extends PShape {
 	// }
 
 	private void parsePathQuadto(final double cx, final double cy, final double x2, final double y2) {
-		// System.out.println("quadto: " + x1 + "," + y1 + " " + cx + "," + cy + " " + x2 + "," +
+		// System.out.println("quadto: " + x1 + "," + y1 + " " + cx + "," + cy +
+		// " " + x2 + "," +
 		// y2);
 		// parsePathCode(BEZIER_VERTEX);
-		parsePathCode(QUAD_BEZIER_VERTEX);
+		parsePathCode(PConstants.QUAD_BEZIER_VERTEX);
 		// x1/y1 already covered by last moveto, lineto, or curveto
 		parsePathVertex(cx, cy);
 		parsePathVertex(x2, y2);
@@ -880,7 +901,7 @@ public class PShapeSVG extends PShape {
 		int start = 0;
 		int stop = -1;
 		while ((stop = matrixStr.indexOf(')', start)) != -1) {
-			final PMatrix2D m = parseSingleTransform(matrixStr.substring(start, stop + 1));
+			final PMatrix2D m = PShapeSVG.parseSingleTransform(matrixStr.substring(start, stop + 1));
 			if (outgoing == null) {
 				outgoing = m;
 			} else {
@@ -892,7 +913,8 @@ public class PShapeSVG extends PShape {
 	}
 
 	static protected PMatrix2D parseSingleTransform(final String matrixStr) {
-		// String[] pieces = PApplet.match(matrixStr, "^\\s*(\\w+)\\((.*)\\)\\s*$");
+		// String[] pieces = PApplet.match(matrixStr,
+		// "^\\s*(\\w+)\\((.*)\\)\\s*$");
 		final String[] pieces = PApplet.match(matrixStr, "[,\\s]*(\\w+)\\((.*)\\)");
 		if (pieces == null) {
 			System.err.println("Could not parse transform " + matrixStr);
@@ -933,7 +955,9 @@ public class PShapeSVG extends PShape {
 		} else if (pieces[1].equals("skewX")) {
 			return new PMatrix2D(1, 0, 1, PApplet.tan(m[0]), 0, 0);
 
-		} else if (pieces[1].equals("skewY")) { return new PMatrix2D(1, 0, 1, 0, PApplet.tan(m[0]), 0); }
+		} else if (pieces[1].equals("skewY")) {
+			return new PMatrix2D(1, 0, 1, 0, PApplet.tan(m[0]), 0);
+		}
 		return null;
 	}
 
@@ -954,9 +978,10 @@ public class PShapeSVG extends PShape {
 		}
 
 		if (properties.hasAttribute("stroke-width")) {
-			// if NaN (i.e. if it's 'inherit') then default back to the inherit setting
+			// if NaN (i.e. if it's 'inherit') then default back to the inherit
+			// setting
 			final String lineweight = properties.getString("stroke-width");
-			setStrokeWeight(lineweight);
+			this.setStrokeWeight(lineweight);
 		}
 
 		if (properties.hasAttribute("stroke-linejoin")) {
@@ -1002,7 +1027,7 @@ public class PShapeSVG extends PShape {
 					setColor(tokens[1], false);
 
 				} else if (tokens[0].equals("stroke-width")) {
-					setStrokeWeight(tokens[1]);
+					this.setStrokeWeight(tokens[1]);
 
 				} else if (tokens[0].equals("stroke-linecap")) {
 					setStrokeCap(tokens[1]);
@@ -1030,7 +1055,7 @@ public class PShapeSVG extends PShape {
 	}
 
 	void setStrokeWeight(final String lineweight) {
-		strokeWeight = parseUnitSize(lineweight);
+		strokeWeight = PShapeSVG.parseUnitSize(lineweight);
 	}
 
 	void setStrokeOpacity(final String opacityText) {
@@ -1094,7 +1119,7 @@ public class PShapeSVG extends PShape {
 			color = opacityMask | ((Integer.parseInt(colorText.substring(1), 16)) & 0xFFFFFF);
 			// System.out.println("hex for fill is " + PApplet.hex(fillColor));
 		} else if (colorText.startsWith("rgb")) {
-			color = opacityMask | parseRGB(colorText);
+			color = opacityMask | PShapeSVG.parseRGB(colorText);
 		} else if (colorText.startsWith("url(#")) {
 			name = colorText.substring(5, colorText.length() - 1);
 			// PApplet.println("looking for " + name);
@@ -1154,7 +1179,7 @@ public class PShapeSVG extends PShape {
 	 */
 	static protected double getFloatWithUnit(final XML element, final String attribute) {
 		final String val = element.getString(attribute);
-		return (val == null) ? 0 : parseUnitSize(val);
+		return (val == null) ? 0 : PShapeSVG.parseUnitSize(val);
 	}
 
 	/**
@@ -1216,7 +1241,7 @@ public class PShapeSVG extends PShape {
 					}
 					offset[count] = PApplet.parseFloat(offsetAttr) / div;
 					final String style = elem.getString("style");
-					final HashMap<String, String> styles = parseStyleAttributes(style);
+					final HashMap<String, String> styles = PShapeSVG.parseStyleAttributes(style);
 
 					String colorStr = styles.get("stop-color");
 					if (colorStr == null) {
@@ -1242,15 +1267,15 @@ public class PShapeSVG extends PShape {
 		public LinearGradient(final PShapeSVG parent, final XML properties) {
 			super(parent, properties);
 
-			x1 = getFloatWithUnit(properties, "x1");
-			y1 = getFloatWithUnit(properties, "y1");
-			x2 = getFloatWithUnit(properties, "x2");
-			y2 = getFloatWithUnit(properties, "y2");
+			x1 = PShapeSVG.getFloatWithUnit(properties, "x1");
+			y1 = PShapeSVG.getFloatWithUnit(properties, "y1");
+			x2 = PShapeSVG.getFloatWithUnit(properties, "x2");
+			y2 = PShapeSVG.getFloatWithUnit(properties, "y2");
 
 			final String transformStr = properties.getString("gradientTransform");
 
 			if (transformStr != null) {
-				final double t[] = parseTransform(transformStr).get(null);
+				final double t[] = PShapeSVG.parseTransform(transformStr).get(null);
 				transform = new AffineTransform(t[0], t[3], t[1], t[4], t[2], t[5]);
 
 				final Point2D t1 = transform.transform(new Point2D.Double(x1, y1), null);
@@ -1270,14 +1295,14 @@ public class PShapeSVG extends PShape {
 		public RadialGradient(final PShapeSVG parent, final XML properties) {
 			super(parent, properties);
 
-			cx = getFloatWithUnit(properties, "cx");
-			cy = getFloatWithUnit(properties, "cy");
-			r = getFloatWithUnit(properties, "r");
+			cx = PShapeSVG.getFloatWithUnit(properties, "cx");
+			cy = PShapeSVG.getFloatWithUnit(properties, "cy");
+			r = PShapeSVG.getFloatWithUnit(properties, "r");
 
 			final String transformStr = properties.getString("gradientTransform");
 
 			if (transformStr != null) {
-				final double t[] = parseTransform(transformStr).get(null);
+				final double t[] = PShapeSVG.parseTransform(transformStr).get(null);
 				transform = new AffineTransform(t[0], t[3], t[1], t[4], t[2], t[5]);
 
 				final Point2D t1 = transform.transform(new Point2D.Double(cx, cy), null);
@@ -1317,7 +1342,8 @@ public class PShapeSVG extends PShape {
 		}
 
 		public int getTransparency() {
-			return TRANSLUCENT; // why not.. rather than checking each color
+			return Transparency.TRANSLUCENT; // why not.. rather than checking
+			                                 // each color
 		}
 
 		public class LinearGradientContext implements PaintContext {
@@ -1380,7 +1406,8 @@ public class PShapeSVG extends PShape {
 							interp[j][1] = (int) PApplet.lerp((c0 >> 8) & 0xff, (c1 >> 8) & 0xff, btwn);
 							interp[j][2] = (int) PApplet.lerp(c0 & 0xff, c1 & 0xff, btwn);
 							interp[j][3] = (int) (PApplet.lerp((c0 >> 24) & 0xff, (c1 >> 24) & 0xff, btwn) * opacity);
-							// System.out.println(j + " " + interp[j][0] + " " + interp[j][1] + " "
+							// System.out.println(j + " " + interp[j][0] + " " +
+							// interp[j][1] + " "
 							// + interp[j][2]);
 						}
 						prev = last;
@@ -1389,20 +1416,25 @@ public class PShapeSVG extends PShape {
 					int index = 0;
 					for (int j = 0; j < h; j++) {
 						for (int i = 0; i < w; i++) {
-							// double distance = 0; //PApplet.dist(cx, cy, x + i, y + j);
-							// int which = PApplet.min((int) (distance * ACCURACY),
+							// double distance = 0; //PApplet.dist(cx, cy, x +
+							// i, y + j);
+							// int which = PApplet.min((int) (distance *
+							// ACCURACY),
 							// interp.length-1);
 							final double px = (x + i) - tx1;
 							final double py = (y + j) - ty1;
-							// distance up the line is the dot product of the normalized
-							// vector of the gradient start/stop by the point being tested
+							// distance up the line is the dot product of the
+							// normalized
+							// vector of the gradient start/stop by the point
+							// being tested
 							int which = (int) (((px * nx) + (py * ny)) * ACCURACY);
 							if (which < 0) {
 								which = 0;
 							}
 							if (which > (interp.length - 1)) {
 								which = interp.length - 1;
-								// if (which > 138) System.out.println("grabbing " + which);
+								// if (which > 138)
+								// System.out.println("grabbing " + which);
 							}
 
 							data[index++] = interp[which][0];
@@ -1443,7 +1475,7 @@ public class PShapeSVG extends PShape {
 		}
 
 		public int getTransparency() {
-			return TRANSLUCENT;
+			return Transparency.TRANSLUCENT;
 		}
 
 		public class RadialGradientContext implements PaintContext {
@@ -1544,14 +1576,16 @@ public class PShapeSVG extends PShape {
 				p2d.strokeGradient = true;
 				p2d.strokeGradientObject = strokeGradientPaint;
 			} else {
-				// need to shut off, in case parent object has a gradient applied
+				// need to shut off, in case parent object has a gradient
+				// applied
 				// p2d.strokeGradient = false;
 			}
 			if (fillGradient != null) {
 				p2d.fillGradient = true;
 				p2d.fillGradientObject = fillGradientPaint;
 			} else {
-				// need to shut off, in case parent object has a gradient applied
+				// need to shut off, in case parent object has a gradient
+				// applied
 				// p2d.fillGradient = false;
 			}
 		}
@@ -1636,7 +1670,8 @@ public class PShapeSVG extends PShape {
 				final FontGlyph fg = unicodeGlyphs.get(new Character(element2));
 				if (fg != null) {
 					fg.draw(g);
-					// add horizAdvX/unitsPerEm to the x coordinate along the way
+					// add horizAdvX/unitsPerEm to the x coordinate along the
+					// way
 					g.translate(fg.horizAdvX, 0);
 				} else {
 					System.err.println("'" + element2 + "' not available.");
@@ -1734,7 +1769,8 @@ public class PShapeSVG extends PShape {
 			}
 		}
 
-		protected boolean isLegit() { // TODO need a better way to handle this...
+		protected boolean isLegit() { // TODO need a better way to handle
+			                          // this...
 			return vertexCount != 0;
 		}
 	}

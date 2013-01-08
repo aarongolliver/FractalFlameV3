@@ -34,21 +34,21 @@ public class JAppleMenuBar {
 			temp.mkdirs(); // create a directory out of it
 			temp.deleteOnExit();
 
-			final File jnilibFile = new File(temp, FILENAME);
-			final InputStream input = JAppleMenuBar.class.getResourceAsStream(FILENAME);
+			final File jnilibFile = new File(temp, JAppleMenuBar.FILENAME);
+			final InputStream input = JAppleMenuBar.class.getResourceAsStream(JAppleMenuBar.FILENAME);
 			if (input != null) {
 				if (PApplet.saveStream(jnilibFile, input)) {
 					System.load(jnilibFile.getAbsolutePath());
-					instance = new JAppleMenuBar();
+					JAppleMenuBar.instance = new JAppleMenuBar();
 
 				} else {
-					sadness("Problem saving " + FILENAME + " for full screen use.");
+					JAppleMenuBar.sadness("Problem saving " + JAppleMenuBar.FILENAME + " for full screen use.");
 				}
 			} else {
-				sadness("Could not load " + FILENAME + " from core.jar");
+				JAppleMenuBar.sadness("Could not load " + JAppleMenuBar.FILENAME + " from core.jar");
 			}
 		} catch (final IOException e) {
-			sadness("Unknown error, here's the stack trace.");
+			JAppleMenuBar.sadness("Unknown error, here's the stack trace.");
 			e.printStackTrace();
 		}
 	}
@@ -62,7 +62,7 @@ public class JAppleMenuBar {
 	// }
 
 	static public void hide() {
-		instance.setVisible(false, false);
+		JAppleMenuBar.instance.setVisible(false, false);
 	}
 
 	public native void setVisible(boolean visibility, boolean kioskMode);

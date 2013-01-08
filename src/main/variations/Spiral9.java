@@ -1,9 +1,5 @@
 package main.variations;
 
-import static java.lang.Math.atan2;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
 
@@ -19,12 +15,12 @@ public final class Spiral9 extends Variation {
 		final double x = pIn.x;
 		final double y = pIn.y;
 		final double rsq = (x * x) + (y * y);
-		final double r = sqrt(rsq);
-		final double t = atan2(x, y);
-		final double p = atan2(y, x);
+		final double r = Math.sqrt(rsq);
+		final double t = Math.atan2(x, y);
+		final double p = Math.atan2(y, x);
 
-		pOut.x = (cos(t) + sin(r)) / r;
-		pOut.y = (sin(t) - cos(r)) / r;
+		pOut.x = (Math.cos(t) + Math.sin(r)) / r;
+		pOut.y = (Math.sin(t) - Math.cos(r)) / r;
 
 		return pOut;
 	}

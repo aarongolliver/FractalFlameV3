@@ -24,7 +24,7 @@ public class KeyEvent extends Event {
 	public KeyEvent(final Object nativeObject, final long millis, final int action, final int modifiers,
 	        final char key, final int keyCode) {
 		super(nativeObject, millis, action, modifiers);
-		flavor = KEY;
+		flavor = Event.KEY;
 		this.key = key;
 		this.keyCode = keyCode;
 	}

@@ -28,8 +28,8 @@ import java.io.Serializable;
  * Instead, we'll need to do some "vector" math, which is made easy by the methods inside the
  * <b>PVector</b> class.<br />
  * <br />
- * The methods for this class are extensive. For a complete list, visit the <a
- * href="http://processing.googlecode.com/svn/trunk/processing/build/javadoc/core/">developer's
+ * The methods for this class are extensive. For a complete list, visit the <a href =
+ * "http://processing.googlecode.com/svn/trunk/processing/build/javadoc/core/" >developer's
  * reference.</a> ( end auto-generated ) A class to describe a two or three dimensional vector.
  * <p>
  * The result of all functions are applied to the vector itself, with the exception of cross(),
@@ -175,7 +175,7 @@ public class PVector implements Serializable {
 	 * @see PVector#random3D()
 	 */
 	static public PVector random2D() {
-		return random2D(null, null);
+		return PVector.random2D(null, null);
 	}
 
 	/**
@@ -187,7 +187,7 @@ public class PVector implements Serializable {
 	 * @return the random PVector
 	 */
 	static public PVector random2D(final PApplet parent) {
-		return random2D(null, parent);
+		return PVector.random2D(null, parent);
 	}
 
 	/**
@@ -198,7 +198,7 @@ public class PVector implements Serializable {
 	 * @return the random PVector
 	 */
 	static public PVector random2D(final PVector target) {
-		return random2D(target, null);
+		return PVector.random2D(target, null);
 	}
 
 	/**
@@ -208,9 +208,9 @@ public class PVector implements Serializable {
 	 */
 	static public PVector random2D(final PVector target, final PApplet parent) {
 		if (parent == null) {
-			return fromAngle(Math.random() * Math.PI * 2, target);
+			return PVector.fromAngle(Math.random() * Math.PI * 2, target);
 		} else {
-			return fromAngle(parent.random(PConstants.TWO_PI), target);
+			return PVector.fromAngle(parent.random(PConstants.TWO_PI), target);
 		}
 	}
 
@@ -226,7 +226,7 @@ public class PVector implements Serializable {
 	 * @see PVector#random2D()
 	 */
 	static public PVector random3D() {
-		return random3D(null, null);
+		return PVector.random3D(null, null);
 	}
 
 	/**
@@ -238,7 +238,7 @@ public class PVector implements Serializable {
 	 * @return the random PVector
 	 */
 	static public PVector random3D(final PApplet parent) {
-		return random3D(null, parent);
+		return PVector.random3D(null, parent);
 	}
 
 	/**
@@ -249,7 +249,7 @@ public class PVector implements Serializable {
 	 * @return the random PVector
 	 */
 	static public PVector random3D(final PVector target) {
-		return random3D(target, null);
+		return PVector.random3D(target, null);
 	}
 
 	/**
@@ -290,7 +290,7 @@ public class PVector implements Serializable {
 	 * @return the new unit PVector
 	 */
 	static public PVector fromAngle(final double angle) {
-		return fromAngle(angle, null);
+		return PVector.fromAngle(angle, null);
 	}
 
 	/**
@@ -325,7 +325,9 @@ public class PVector implements Serializable {
 	 * @param target
 	 */
 	public double[] get(final double[] target) {
-		if (target == null) { return new double[] { x, y, z }; }
+		if (target == null) {
+			return new double[] { x, y, z };
+		}
 		if (target.length >= 2) {
 			target[0] = x;
 			target[1] = y;
@@ -410,7 +412,7 @@ public class PVector implements Serializable {
 	 *            another vector
 	 */
 	static public PVector add(final PVector v1, final PVector v2) {
-		return add(v1, v2, null);
+		return PVector.add(v1, v2, null);
 	}
 
 	/**
@@ -471,7 +473,7 @@ public class PVector implements Serializable {
 	 *            the x, y, and z components of a PVector object
 	 */
 	static public PVector sub(final PVector v1, final PVector v2) {
-		return sub(v1, v2, null);
+		return PVector.sub(v1, v2, null);
 	}
 
 	/**
@@ -514,7 +516,7 @@ public class PVector implements Serializable {
 	 *            the vector to multiply by the scalar
 	 */
 	static public PVector mult(final PVector v, final double n) {
-		return mult(v, n, null);
+		return PVector.mult(v, n, null);
 	}
 
 	/**
@@ -545,7 +547,7 @@ public class PVector implements Serializable {
 	 *            the x, y, and z components of a PVector
 	 */
 	static public PVector mult(final PVector v1, final PVector v2) {
-		return mult(v1, v2, null);
+		return PVector.mult(v1, v2, null);
 	}
 
 	static public PVector mult(final PVector v1, final PVector v2, PVector target) {
@@ -583,7 +585,7 @@ public class PVector implements Serializable {
 	 * @return a new vector that is v1 / n
 	 */
 	static public PVector div(final PVector v, final double n) {
-		return div(v, n, null);
+		return PVector.div(v, n, null);
 	}
 
 	/**
@@ -619,7 +621,7 @@ public class PVector implements Serializable {
 	 * the result as a new PVector.
 	 */
 	static public PVector div(final PVector v1, final PVector v2) {
-		return div(v1, v2, null);
+		return PVector.div(v1, v2, null);
 	}
 
 	static public PVector div(final PVector v1, final PVector v2, PVector target) {
@@ -709,7 +711,7 @@ public class PVector implements Serializable {
 	 * @brief Calculate and return the cross product
 	 */
 	public PVector cross(final PVector v) {
-		return cross(v, null);
+		return this.cross(v, null);
 	}
 
 	/**
@@ -763,7 +765,7 @@ public class PVector implements Serializable {
 	public void normalize() {
 		final double m = mag();
 		if ((m != 0) && (m != 1)) {
-			div(m);
+			this.div(m);
 		}
 	}
 
@@ -797,8 +799,8 @@ public class PVector implements Serializable {
 	 */
 	public void limit(final double max) {
 		if (magSq() > (max * max)) {
-			normalize();
-			mult(max);
+			this.normalize();
+			this.mult(max);
 		}
 	}
 
@@ -813,8 +815,8 @@ public class PVector implements Serializable {
 	 * @brief Set the magnitude of the vector
 	 */
 	public void setMag(final double len) {
-		normalize();
-		mult(len);
+		this.normalize();
+		this.mult(len);
 	}
 
 	/**
@@ -827,7 +829,7 @@ public class PVector implements Serializable {
 	 * @return a new vector (if target was null), or target
 	 */
 	public PVector setMag(PVector target, final double len) {
-		target = normalize(target);
+		target = this.normalize(target);
 		target.mult(len);
 		return target;
 	}
@@ -863,7 +865,8 @@ public class PVector implements Serializable {
 	 */
 	public void rotate(final double theta) {
 		final double xTemp = x;
-		// Might need to check for rounding errors like with angleBetween function?
+		// Might need to check for rounding errors like with angleBetween
+		// function?
 		x = (x * PApplet.cos(theta)) - (y * PApplet.sin(theta));
 		y = (xTemp * PApplet.sin(theta)) + (y * PApplet.cos(theta));
 	}
@@ -975,7 +978,9 @@ public class PVector implements Serializable {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (!(obj instanceof PVector)) { return false; }
+		if (!(obj instanceof PVector)) {
+			return false;
+		}
 		final PVector p = (PVector) obj;
 		return (x == p.x) && (y == p.y) && (z == p.z);
 	}

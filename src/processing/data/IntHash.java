@@ -72,7 +72,8 @@ public class IntHash {
 		// boolean csv = (lines[0].indexOf('\t') == -1);
 		for (final String line : lines) {
 			// if (lines[i].trim().length() != 0) {
-			// String[] pieces = csv ? Table.splitLineCSV(lines[i]) : PApplet.split(lines[i], '\t');
+			// String[] pieces = csv ? Table.splitLineCSV(lines[i]) :
+			// PApplet.split(lines[i], '\t');
 			final String[] pieces = PApplet.split(line, '\t');
 			if (pieces.length == 2) {
 				keys[count] = pieces[0];
@@ -132,7 +133,9 @@ public class IntHash {
 
 	public int get(final String what) {
 		final int index = index(what);
-		if (index == -1) { return 0; }
+		if (index == -1) {
+			return 0;
+		}
 		return values[index];
 	}
 
@@ -233,7 +236,9 @@ public class IntHash {
 			@Override
 			public float compare(final int a, final int b) {
 				final int result = keys[a].compareToIgnoreCase(keys[b]);
-				if (result != 0) { return result; }
+				if (result != 0) {
+					return result;
+				}
 				return values[b] - values[a];
 			}
 
@@ -249,7 +254,7 @@ public class IntHash {
 	 * Sort by values in descending order (largest value will be at [0]).
 	 */
 	public void sortValues() {
-		sortValues(true);
+		this.sortValues(true);
 	}
 
 	/**

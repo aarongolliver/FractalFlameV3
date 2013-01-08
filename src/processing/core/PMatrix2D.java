@@ -28,15 +28,15 @@ public class PMatrix2D implements PMatrix {
 
 	public PMatrix2D(final double m00, final double m01, final double m02, final double m10, final double m11,
 	        final double m12) {
-		set(m00, m01, m02, m10, m11, m12);
+		this.set(m00, m01, m02, m10, m11, m12);
 	}
 
 	public PMatrix2D(final PMatrix matrix) {
-		set(matrix);
+		this.set(matrix);
 	}
 
 	public void reset() {
-		set(1, 0, 0, 0, 1, 0);
+		this.set(1, 0, 0, 0, 1, 0);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class PMatrix2D implements PMatrix {
 	public void set(final PMatrix matrix) {
 		if (matrix instanceof PMatrix2D) {
 			final PMatrix2D src = (PMatrix2D) matrix;
-			set(src.m00, src.m01, src.m02, src.m10, src.m11, src.m12);
+			this.set(src.m00, src.m01, src.m02, src.m10, src.m11, src.m12);
 		} else {
 			throw new IllegalArgumentException("PMatrix2D.set() only accepts PMatrix2D objects.");
 		}
@@ -116,8 +116,8 @@ public class PMatrix2D implements PMatrix {
 
 	// Implementation roughly based on AffineTransform.
 	public void rotate(final double angle) {
-		final double s = sin(angle);
-		final double c = cos(angle);
+		final double s = PMatrix2D.sin(angle);
+		final double c = PMatrix2D.cos(angle);
 
 		double temp1 = m00;
 		double temp2 = m01;
@@ -138,7 +138,7 @@ public class PMatrix2D implements PMatrix {
 	}
 
 	public void rotateZ(final double angle) {
-		rotate(angle);
+		this.rotate(angle);
 	}
 
 	public void rotate(final double angle, final double v0, final double v1, final double v2) {
@@ -146,7 +146,7 @@ public class PMatrix2D implements PMatrix {
 	}
 
 	public void scale(final double s) {
-		scale(s, s);
+		this.scale(s, s);
 	}
 
 	public void scale(final double sx, final double sy) {
@@ -161,23 +161,23 @@ public class PMatrix2D implements PMatrix {
 	}
 
 	public void shearX(final double angle) {
-		apply(1, 0, 1, tan(angle), 0, 0);
+		this.apply(1, 0, 1, PMatrix2D.tan(angle), 0, 0);
 	}
 
 	public void shearY(final double angle) {
-		apply(1, 0, 1, 0, tan(angle), 0);
+		this.apply(1, 0, 1, 0, PMatrix2D.tan(angle), 0);
 	}
 
 	public void apply(final PMatrix source) {
 		if (source instanceof PMatrix2D) {
-			apply((PMatrix2D) source);
+			this.apply((PMatrix2D) source);
 		} else if (source instanceof PMatrix3D) {
-			apply((PMatrix3D) source);
+			this.apply((PMatrix3D) source);
 		}
 	}
 
 	public void apply(final PMatrix2D source) {
-		apply(source.m00, source.m01, source.m02, source.m10, source.m11, source.m12);
+		this.apply(source.m00, source.m01, source.m02, source.m10, source.m11, source.m12);
 	}
 
 	public void apply(final PMatrix3D source) {
@@ -209,7 +209,7 @@ public class PMatrix2D implements PMatrix {
 	 * Apply another matrix to the left of this one.
 	 */
 	public void preApply(final PMatrix2D left) {
-		preApply(left.m00, left.m01, left.m02, left.m10, left.m11, left.m12);
+		this.preApply(left.m00, left.m01, left.m02, left.m10, left.m11, left.m12);
 	}
 
 	public void preApply(final PMatrix3D left) {
@@ -302,7 +302,9 @@ public class PMatrix2D implements PMatrix {
 	 */
 	public boolean invert() {
 		final double determinant = determinant();
-		if (Math.abs(determinant) <= Float.MIN_VALUE) { return false; }
+		if (Math.abs(determinant) <= Float.MIN_VALUE) {
+			return false;
+		}
 
 		final double t00 = m00;
 		final double t01 = m01;
@@ -331,7 +333,9 @@ public class PMatrix2D implements PMatrix {
 	// ////////////////////////////////////////////////////////////
 
 	public void print() {
-		int big = (int) abs(max(PApplet.max(abs(m00), abs(m01), abs(m02)), PApplet.max(abs(m10), abs(m11), abs(m12))));
+		int big = (int) PMatrix2D.abs(PMatrix2D.max(
+		        PApplet.max(PMatrix2D.abs(m00), PMatrix2D.abs(m01), PMatrix2D.abs(m02)),
+		        PApplet.max(PMatrix2D.abs(m10), PMatrix2D.abs(m11), PMatrix2D.abs(m12))));
 
 		int digits = 1;
 		if (Float.isNaN(big) || Float.isInfinite(big)) { // avoid infinite loop

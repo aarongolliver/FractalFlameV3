@@ -46,7 +46,7 @@ public final class FractalThread extends Thread {
 
 	@Override
 	public final void run() {
-		this.setPriority(MIN_PRIORITY);
+		setPriority(Thread.MIN_PRIORITY);
 		final Vec2D tmpVec = new Vec2D(0, 0);
 		final Vec2D addVec = new Vec2D(0, 0);
 		final Vec2D pAffined = new Vec2D(0, 0);
@@ -76,7 +76,6 @@ public final class FractalThread extends Thread {
 				pAffined.set(affine(pAffined, genome.finalTransformMatrices[j]));
 				currentColor.hit(genome.finalColor[j]);
 			}
-
 
 			p.set(pAffined);
 

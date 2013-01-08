@@ -17,23 +17,23 @@ import processing.core.PApplet;
 public class TableODS extends Table {
 
 	public TableODS(final File odsFile) {
-		this(getContentXML(odsFile), null, false);
+		this(TableODS.getContentXML(odsFile), null, false);
 	}
 
 	public TableODS(final File odsFile, final boolean actual) {
-		this(getContentXML(odsFile), null, actual);
+		this(TableODS.getContentXML(odsFile), null, actual);
 	}
 
 	public TableODS(final PApplet parent, final String filename) {
-		this(getContentXML(parent.createInput(filename)), null, false);
+		this(TableODS.getContentXML(parent.createInput(filename)), null, false);
 	}
 
 	public TableODS(final PApplet parent, final String filename, final boolean actual) {
-		this(getContentXML(parent.createInput(filename)), null, actual);
+		this(TableODS.getContentXML(parent.createInput(filename)), null, actual);
 	}
 
 	public TableODS(final PApplet parent, final String filename, final String worksheet, final boolean actual) {
-		this(getContentXML(parent.createInput(filename)), worksheet, actual);
+		this(TableODS.getContentXML(parent.createInput(filename)), worksheet, actual);
 	}
 
 	/**
@@ -60,7 +60,8 @@ public class TableODS extends Table {
 		}
 	}
 
-	// protected void read(BufferedReader reader, String worksheet, boolean actual) throws
+	// protected void read(BufferedReader reader, String worksheet, boolean
+	// actual) throws
 	// IOException, ParserConfigurationException, SAXException {
 	// XML xml = new XML(reader);
 	protected void read(final InputStream input, final String worksheet, final boolean actual) throws IOException,
@@ -68,15 +69,20 @@ public class TableODS extends Table {
 		final XML xml = new XML(input);
 
 		// XML x = new XML(reader);
-		// PApplet.saveStrings(new File("/Users/fry/Desktop/namespacefix.xml"), new String[] {
+		// PApplet.saveStrings(new File("/Users/fry/Desktop/namespacefix.xml"),
+		// new String[] {
 		// xml.toString() });
-		// PApplet.saveStrings(new File("/Users/fry/Desktop/newparser.xml"), new String[] {
+		// PApplet.saveStrings(new File("/Users/fry/Desktop/newparser.xml"), new
+		// String[] {
 		// x.toString() });
 
 		// table files will have multiple sheets.. argh
-		// <table:table table:name="Sheet1" table:style-name="ta1" table:print="false">
-		// <table:table table:name="Sheet2" table:style-name="ta1" table:print="false">
-		// <table:table table:name="Sheet3" table:style-name="ta1" table:print="false">
+		// <table:table table:name="Sheet1" table:style-name="ta1"
+		// table:print="false">
+		// <table:table table:name="Sheet2" table:style-name="ta1"
+		// table:print="false">
+		// <table:table table:name="Sheet3" table:style-name="ta1"
+		// table:print="false">
 
 		final XML[] sheets = xml.getChildren("office:body/office:spreadsheet/table:table");
 		// xml.getChildren("office:body/office:spreadsheet/table:table/table");
@@ -98,7 +104,8 @@ public class TableODS extends Table {
 		for (final XML row : rows) {
 			final int rowRepeat = row.getInt("table:number-rows-repeated", 1);
 			// if (rowRepeat != 1) {
-			// System.out.println(rowRepeat + " " + rowCount + " " + (rowCount + rowRepeat));
+			// System.out.println(rowRepeat + " " + rowCount + " " + (rowCount +
+			// rowRepeat));
 			// }
 			boolean rowNotNull = false;
 			final XML[] cells = row.getChildren();
@@ -107,7 +114,8 @@ public class TableODS extends Table {
 			for (final XML cell : cells) {
 				final int cellRepeat = cell.getInt("table:number-columns-repeated", 1);
 
-				// <table:table-cell table:formula="of:=SUM([.E7:.E8])" office:value-type="float"
+				// <table:table-cell table:formula="of:=SUM([.E7:.E8])"
+				// office:value-type="float"
 				// office:value="4150">
 				// <text:p>4150.00</text:p>
 				// </table:table-cell>
@@ -127,10 +135,13 @@ public class TableODS extends Table {
 						}
 						final XML textp = paragraphElements[0];
 						final String textpContent = textp.getContent();
-						// if there are sub-elements, the content shows up as a child element
-						// (for which getName() returns null.. which seems wrong)
+						// if there are sub-elements, the content shows up as a
+						// child element
+						// (for which getName() returns null.. which seems
+						// wrong)
 						if (textpContent != null) {
-							cellData = textpContent; // nothing fancy, the text is in the text:p
+							cellData = textpContent; // nothing fancy, the text
+							                         // is in the text:p
 							                         // element
 						} else {
 							final XML[] textpKids = textp.getChildren();
@@ -149,7 +160,8 @@ public class TableODS extends Table {
 									appendNotNull(kid, cellBuffer);
 
 								} else if (kidName.equals("text:a")) {
-									// <text:a xlink:href="http://blah.com/">blah.com</text:a>
+									// <text:a
+									// xlink:href="http://blah.com/">blah.com</text:a>
 									if (actual) {
 										cellBuffer.append(kid.getString("xlink:href"));
 									} else {
@@ -158,21 +170,24 @@ public class TableODS extends Table {
 
 								} else {
 									appendNotNull(kid, cellBuffer);
-									System.err.println(getClass().getName() + ": don't understand: " + kid);
-									// throw new RuntimeException("I'm not used to this.");
+									System.err.println(this.getClass().getName() + ": don't understand: " + kid);
+									// throw new
+									// RuntimeException("I'm not used to this.");
 								}
 							}
 							cellData = cellBuffer.toString();
 						}
-						// setString(rowIndex, columnIndex, c); //text[0].getContent());
+						// setString(rowIndex, columnIndex, c);
+						// //text[0].getContent());
 						// columnIndex++;
 					}
 				}
 				for (int r = 0; r < cellRepeat; r++) {
 					if (cellData != null) {
-						// System.out.println("setting " + rowIndex + "," + columnIndex + " to " +
+						// System.out.println("setting " + rowIndex + "," +
+						// columnIndex + " to " +
 						// cellData);
-						setString(rowIndex, columnIndex, cellData);
+						this.setString(rowIndex, columnIndex, cellData);
 					}
 					columnIndex++;
 					if (cellData != null) {
@@ -186,7 +201,7 @@ public class TableODS extends Table {
 			if (rowNotNull && (rowRepeat > 1)) {
 				final String[] rowStrings = getStringRow(rowIndex);
 				for (int r = 1; r < rowRepeat; r++) {
-					addRow(rowStrings);
+					this.addRow(rowStrings);
 				}
 			}
 			rowIndex += rowRepeat;
@@ -195,11 +210,13 @@ public class TableODS extends Table {
 			// }
 		}
 		// if (rowMax != getRowCount()) {
-		// System.out.println("removing empty rows: " + rowMax + " instead of " + getRowCount());
+		// System.out.println("removing empty rows: " + rowMax + " instead of "
+		// + getRowCount());
 		// setRowCount(rowMax);
 		// }
 		// if (columnMax != getColumnCount()) {
-		// System.out.println("removing empty columns: " + columnMax + " instead of " +
+		// System.out.println("removing empty columns: " + columnMax +
+		// " instead of " +
 		// getColumnCount());
 		// setColumnCount(columnMax);
 		// }
@@ -244,12 +261,13 @@ public class TableODS extends Table {
 		ZipEntry entry = null;
 		try {
 			while ((entry = zis.getNextEntry()) != null) {
-				if (entry.getName().equals("content.xml")) { return zis;
-				// InputStreamReader isr = new InputStreamReader(zis);
-				// BufferedReader reader = new BufferedReader(isr);
-				// read(reader, actual);
-				// break;
-				// return entry.getInputStream();
+				if (entry.getName().equals("content.xml")) {
+					return zis;
+					// InputStreamReader isr = new InputStreamReader(zis);
+					// BufferedReader reader = new BufferedReader(isr);
+					// read(reader, actual);
+					// break;
+					// return entry.getInputStream();
 				}
 			}
 		} catch (final IOException e) {

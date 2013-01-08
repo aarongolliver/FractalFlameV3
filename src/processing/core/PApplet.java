@@ -202,7 +202,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * uses floats, it's safer for this to be a double because there's no good way to specify a
 	 * double with the preproc.
 	 */
-	public static final double	javaVersion	     = new Float(javaVersionName.substring(0, 3)).floatValue();
+	public static final double	javaVersion	     = new Float(PApplet.javaVersionName.substring(0, 3)).floatValue();
 
 	/**
 	 * Current platform in use.
@@ -224,16 +224,16 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		final String osname = System.getProperty("os.name");
 
 		if (osname.indexOf("Mac") != -1) {
-			platform = MACOSX;
+			PApplet.platform = PConstants.MACOSX;
 
 		} else if (osname.indexOf("Windows") != -1) {
-			platform = WINDOWS;
+			PApplet.platform = PConstants.WINDOWS;
 
 		} else if (osname.equals("Linux")) { // true for the ibm vm
-			platform = LINUX;
+			PApplet.platform = PConstants.LINUX;
 
 		} else {
-			platform = OTHER;
+			PApplet.platform = PConstants.OTHER;
 		}
 	}
 
@@ -264,7 +264,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * native folder selector, except on Mac OS X. On OS X, the native folder selector will be used
 	 * unless useNativeSelect is set to false.
 	 */
-	static public boolean	   useNativeSelect	 = (platform != LINUX);
+	static public boolean	   useNativeSelect	 = (PApplet.platform != PConstants.LINUX);
 
 	// /**
 	// * Modifier flags for the shortcut key used to trigger menus.
@@ -330,7 +330,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	public String[]	           args;
 
 	/** Path to sketch folder */
-	public String	           sketchPath;	                                                                // folder;
+	public String	           sketchPath;	                                                                        // folder;
 
 	static final boolean	   DEBUG	         = false;
 
@@ -790,7 +790,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// send tab keys through to the PApplet
 		setFocusTraversalKeysEnabled(false);
 
-		// millisOffset = System.currentTimeMillis(); // moved to the variable declaration
+		// millisOffset = System.currentTimeMillis(); // moved to the variable
+		// declaration
 
 		finished = false; // just for clarity
 
@@ -824,15 +825,20 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		} catch (final Exception e) {
 		} // may be a security problem
 
-		final Dimension size = getSize();
+		final Dimension size = this.getSize();
 		if ((size.width != 0) && (size.height != 0)) {
-			// When this PApplet is embedded inside a Java application with other
-			// Component objects, its size() may already be set externally (perhaps
-			// by a LayoutManager). In this case, honor that size as the default.
+			// When this PApplet is embedded inside a Java application with
+			// other
+			// Component objects, its size() may already be set externally
+			// (perhaps
+			// by a LayoutManager). In this case, honor that size as the
+			// default.
 			// Size of the component is set, just create a renderer.
 			g = makeGraphics(size.width, size.height, sketchRenderer(), null, true);
-			// This doesn't call setSize() or setPreferredSize() because the fact
-			// that a size was already set means that someone is already doing it.
+			// This doesn't call setSize() or setPreferredSize() because the
+			// fact
+			// that a size was already set means that someone is already doing
+			// it.
 
 		} else {
 			// Set the default size, until the user specifies otherwise
@@ -841,7 +847,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			final int h = sketchHeight();
 			g = makeGraphics(w, h, sketchRenderer(), null, true);
 			// Fire component resize event
-			setSize(w, h);
+			this.setSize(w, h);
 			setPreferredSize(new Dimension(w, h));
 		}
 		width = g.width;
@@ -860,7 +866,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				// resizeHeight = bounds.height;
 
 				if (!looping) {
-					redraw();
+					PApplet.this.redraw();
 				}
 			}
 		});
@@ -881,15 +887,15 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public int sketchWidth() {
-		return DEFAULT_WIDTH;
+		return PApplet.DEFAULT_WIDTH;
 	}
 
 	public int sketchHeight() {
-		return DEFAULT_HEIGHT;
+		return PApplet.DEFAULT_HEIGHT;
 	}
 
 	public String sketchRenderer() {
-		return JAVA2D;
+		return PConstants.JAVA2D;
 	}
 
 	public boolean sketchFullScreen() {
@@ -911,21 +917,21 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	@Override
 	public void start() {
-		debug("start() called");
+		PApplet.debug("start() called");
 		// new Exception().printStackTrace(System.out);
 
 		paused = false; // unpause the thread
 
 		resume();
 		// resumeMethods.handle();
-		handleMethods("resume");
+		this.handleMethods("resume");
 
-		debug("un-pausing thread");
+		PApplet.debug("un-pausing thread");
 		synchronized (pauseObject) {
-			debug("start() calling pauseObject.notifyAll()");
+			PApplet.debug("start() calling pauseObject.notifyAll()");
 			// try {
 			pauseObject.notifyAll(); // wake up the animation thread
-			debug("un-pausing thread 3");
+			PApplet.debug("un-pausing thread 3");
 			// } catch (InterruptedException e) { }
 		}
 	}
@@ -952,11 +958,12 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// }
 		// }
 
-		// on the next trip through the animation thread, things will go sleepy-by
+		// on the next trip through the animation thread, things will go
+		// sleepy-by
 		paused = true; // causes animation thread to sleep
 
 		pause();
-		handleMethods("pause");
+		this.handleMethods("pause");
 
 		// actual pause will happen in the run() method
 
@@ -1016,7 +1023,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		Object[]	emptyArgs	= new Object[] {};
 
 		void handle() {
-			handle(emptyArgs);
+			this.handle(emptyArgs);
 		}
 
 		void handle(final Object[] args) {
@@ -1058,7 +1065,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				methods[count] = method;
 				count++;
 			} else {
-				die(method.getName() + "() already added for this instance of " + object.getClass().getName());
+				PApplet.this.die(method.getName() + "() already added for this instance of "
+				        + object.getClass().getName());
 			}
 		}
 
@@ -1089,9 +1097,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			for (int i = 0; i < count; i++) {
 				if (objects[i] == object) {
 					// if (objects[i] == object && methods[i].equals(method)) {
-					// objects[i].equals() might be overridden, so use == for safety
+					// objects[i].equals() might be overridden, so use == for
+					// safety
 					// since here we do care about actual object identity
-					// methods[i]==method is never true even for same method, so must use
+					// methods[i]==method is never true even for same method, so
+					// must use
 					// equals(), this should be safe because of object identity
 					return i;
 				}
@@ -1153,10 +1163,10 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			meth.add(o, method);
 
 		} catch (final NoSuchMethodException nsme) {
-			die("There is no public " + name + "() method in the class " + o.getClass().getName());
+			this.die("There is no public " + name + "() method in the class " + o.getClass().getName());
 
 		} catch (final Exception e) {
-			die("Could not register " + name + " + () for " + o, e);
+			this.die("Could not register " + name + " + () for " + o, e);
 		}
 	}
 
@@ -1172,28 +1182,29 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			meth.add(o, method);
 
 		} catch (final NoSuchMethodException nsme) {
-			die("There is no public " + name + "() method in the class " + o.getClass().getName());
+			this.die("There is no public " + name + "() method in the class " + o.getClass().getName());
 
 		} catch (final Exception e) {
-			die("Could not register " + name + " + () for " + o, e);
+			this.die("Could not register " + name + " + () for " + o, e);
 		}
 	}
 
-	// public void registerMethod(String methodName, Object target, Object... args) {
+	// public void registerMethod(String methodName, Object target, Object...
+	// args) {
 	// registerWithArgs(methodName, target, args);
 	// }
 
 	public void unregisterMethod(final String name, final Object target) {
 		final RegisteredMethods meth = registerMap.get(name);
 		if (meth == null) {
-			die("No registered methods with the name " + name + "() were found.");
+			this.die("No registered methods with the name " + name + "() were found.");
 		}
 		try {
 			// Method method = o.getClass().getMethod(name, new Class[] {});
 			// meth.remove(o, method);
 			meth.remove(target);
 		} catch (final Exception e) {
-			die("Could not unregister " + name + "() for " + target, e);
+			this.die("Could not unregister " + name + "() for " + target, e);
 		}
 	}
 
@@ -1291,19 +1302,20 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			}
 			mouseEventMethods.add(o, method);
 		} catch (final Exception e) {
-			die("Could not register mouseEvent() for " + o, e);
+			this.die("Could not register mouseEvent() for " + o, e);
 		}
 	}
 
 	@Deprecated
 	public void unregisterMouseEvent(final Object o) {
 		try {
-			// Method method = o.getClass().getMethod("mouseEvent", new Class[] { MouseEvent.class
+			// Method method = o.getClass().getMethod("mouseEvent", new Class[]
+			// { MouseEvent.class
 			// });
 			// mouseEventMethods.remove(o, method);
 			mouseEventMethods.remove(o);
 		} catch (final Exception e) {
-			die("Could not unregister mouseEvent() for " + o, e);
+			this.die("Could not unregister mouseEvent() for " + o, e);
 		}
 	}
 
@@ -1318,18 +1330,19 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			}
 			keyEventMethods.add(o, method);
 		} catch (final Exception e) {
-			die("Could not register keyEvent() for " + o, e);
+			this.die("Could not register keyEvent() for " + o, e);
 		}
 	}
 
 	@Deprecated
 	public void unregisterKeyEvent(final Object o) {
 		try {
-			// Method method = o.getClass().getMethod("keyEvent", new Class[] { KeyEvent.class });
+			// Method method = o.getClass().getMethod("keyEvent", new Class[] {
+			// KeyEvent.class });
 			// keyEventMethods.remove(o, method);
 			keyEventMethods.remove(o);
 		} catch (final Exception e) {
-			die("Could not unregister keyEvent() for " + o, e);
+			this.die("Could not unregister keyEvent() for " + o, e);
 		}
 	}
 
@@ -1384,9 +1397,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	// ////////////////////////////////////////////////////////////
 
 	protected void resizeRenderer(final int newWidth, final int newHeight) {
-		debug("resizeRenderer request for " + newWidth + " " + newHeight);
+		PApplet.debug("resizeRenderer request for " + newWidth + " " + newHeight);
 		if ((width != newWidth) || (height != newHeight)) {
-			debug("  former size was " + width + " " + height);
+			PApplet.debug("  former size was " + width + " " + height);
 			g.setSize(newWidth, newHeight);
 			width = newWidth;
 			height = newHeight;
@@ -1450,7 +1463,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 *            height of the display window in units of pixels
 	 */
 	public void size(final int w, final int h) {
-		size(w, h, JAVA2D, null);
+		this.size(w, h, PConstants.JAVA2D, null);
 	}
 
 	/**
@@ -1458,7 +1471,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 *            Either P2D, P3D, or PDF
 	 */
 	public void size(final int w, final int h, final String renderer) {
-		size(w, h, renderer, null);
+		this.size(w, h, renderer, null);
 	}
 
 	/**
@@ -1468,9 +1481,10 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// Run this from the EDT, just cuz it's AWT stuff (or maybe later Swing)
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				// Set the preferred size so that the layout managers can handle it
-				setPreferredSize(new Dimension(w, h));
-				setSize(w, h);
+				// Set the preferred size so that the layout managers can handle
+				// it
+				PApplet.this.setPreferredSize(new Dimension(w, h));
+				PApplet.this.setSize(w, h);
 			}
 		});
 
@@ -1507,7 +1521,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public PGraphics createGraphics(final int w, final int h) {
-		return createGraphics(w, h, JAVA2D);
+		return this.createGraphics(w, h, PConstants.JAVA2D);
 	}
 
 	/**
@@ -1608,15 +1622,18 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	        final boolean primary) {
 		final String openglError = external ? "Before using OpenGL, first select "
 		        + "Import Library > OpenGL from the Sketch menu."
-		        : "The Java classpath and native library path is not " + // welcome to Java
+		        : "The Java classpath and native library path is not " + // welcome
+		                                                                 // to
+		                                                                 // Java
 		                                                                 // programming!
 		                "properly set for using the OpenGL library.";
 
 		if (!primary && !g.isGL()) {
-			if (renderer.equals(P2D)) {
+			if (renderer.equals(PConstants.P2D)) {
 				throw new RuntimeException("createGraphics() with P2D requires size() to use P2D or P3D");
-			} else if (renderer.equals(P3D)) { throw new RuntimeException(
-			        "createGraphics() with P3D or OPENGL requires size() to use P2D or P3D"); }
+			} else if (renderer.equals(PConstants.P3D)) {
+				throw new RuntimeException("createGraphics() with P3D or OPENGL requires size() to use P2D or P3D");
+			}
 		}
 
 		try {
@@ -1643,7 +1660,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			} else {
 				ite.getTargetException().printStackTrace();
 				final Throwable target = ite.getTargetException();
-				if (platform == MACOSX) {
+				if (PApplet.platform == PConstants.MACOSX) {
 					target.printStackTrace(System.out); // bug
 				}
 				// neither of these help, or work
@@ -1675,7 +1692,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 					throw new RuntimeException(msg);
 				}
 			} else {
-				if (platform == MACOSX) {
+				if (PApplet.platform == PConstants.MACOSX) {
 					e.printStackTrace(System.out);
 				}
 				throw new RuntimeException(e.getMessage());
@@ -1720,11 +1737,12 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * image.parent = this; // make save() work return image; }
 	 */
 
-	// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+	// . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
+	// .
 
 	@Override
 	public void update(final Graphics screen) {
-		paint(screen);
+		this.paint(screen);
 	}
 
 	@Override
@@ -1792,7 +1810,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			final Graphics screen = getGraphics();
 			if (screen != null) {
 				if (g != null) {
-					// added synchronization for 0194 because of flicker issues with JAVA2D
+					// added synchronization for 0194 because of flicker issues
+					// with JAVA2D
 					// http://code.google.com/p/processing/issues/detail?id=558
 					if (g.image != null) {
 						System.out.println("active paint");
@@ -1836,17 +1855,17 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 		while ((Thread.currentThread() == thread) && !finished) {
 			if (paused) {
-				debug("PApplet.run() paused, calling object wait...");
+				PApplet.debug("PApplet.run() paused, calling object wait...");
 				synchronized (pauseObject) {
 					try {
 						pauseObject.wait();
-						debug("out of wait");
+						PApplet.debug("out of wait");
 					} catch (final InterruptedException e) {
 						// waiting for this interrupt on a start() (resume) call
 					}
 				}
 			}
-			debug("done with pause");
+			PApplet.debug("done with pause");
 			// while (paused) {
 			// debug("paused...");
 			// try {
@@ -1854,14 +1873,15 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			// } catch (InterruptedException e) { } // ignored
 			// }
 
-			// Don't resize the renderer from the EDT (i.e. from a ComponentEvent),
+			// Don't resize the renderer from the EDT (i.e. from a
+			// ComponentEvent),
 			// otherwise it may attempt a resize mid-render.
 			// if (resizeRequest) {
 			// resizeRenderer(resizeWidth, resizeHeight);
 			// resizeRequest = false;
 			// }
 			if (g != null) {
-				getSize(currentSize);
+				this.getSize(currentSize);
 				if ((currentSize.width != g.width) || (currentSize.height != g.height)) {
 					resizeRenderer(currentSize.width, currentSize.height);
 				}
@@ -1877,17 +1897,20 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				// for 2.0a6, moving this request to the EDT
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
-						// Call the request focus event once the image is sure to be on
-						// screen and the component is valid. The OpenGL renderer will
+						// Call the request focus event once the image is sure
+						// to be on
+						// screen and the component is valid. The OpenGL
+						// renderer will
 						// request focus for its canvas inside beginDraw().
 						// http://java.sun.com/j2se/1.4.2/docs/api/java/awt/doc-files/FocusSpec.html
-						// Disabling for 0185, because it causes an assertion failure on OS X
+						// Disabling for 0185, because it causes an assertion
+						// failure on OS X
 						// http://code.google.com/p/processing/issues/detail?id=258
 						// requestFocus();
 
 						// Changing to this version for 0187
 						// http://code.google.com/p/processing/issues/detail?id=279
-						requestFocusInWindow();
+						PApplet.this.requestFocusInWindow();
 					}
 				});
 			}
@@ -1904,7 +1927,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 			if (sleepTime > 0) { // some time left in this cycle
 				try {
-					// Thread.sleep(sleepTime / 1000000L); // nanoseconds -> milliseconds
+					// Thread.sleep(sleepTime / 1000000L); // nanoseconds ->
+					// milliseconds
 					Thread.sleep(sleepTime / 1000000L, (int) (sleepTime % 1000000L));
 					noDelays = 0; // Got some sleep, not delaying anymore
 				} catch (final InterruptedException ex) {
@@ -1937,10 +1961,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 	// synchronized public void handleDisplay() {
 	public void handleDraw() {
-		debug("handleDraw() " + g + " " + looping + " " + redraw + " valid:" + isValid() + " visible:" + isVisible());
+		PApplet.debug("handleDraw() " + g + " " + looping + " " + redraw + " valid:" + isValid() + " visible:"
+		        + isVisible());
 		if ((g != null) && (looping || redraw)) {
 			if (!g.canDraw()) {
-				debug("g.canDraw() is false");
+				PApplet.debug("g.canDraw() is false");
 				// Don't draw if the renderer is not yet ready.
 				// (e.g. OpenGL has to wait for a peer to be on screen)
 				return;
@@ -1955,9 +1980,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 			if (frameCount == 0) {
 				final GraphicsConfiguration gc = getGraphicsConfiguration();
-				if (gc == null) { return; }
+				if (gc == null) {
+					return;
+				}
 				final GraphicsDevice displayDevice = getGraphicsConfiguration().getDevice();
-				if (displayDevice == null) { return; }
+				if (displayDevice == null) {
+					return;
+				}
 				final Rectangle screenRect = displayDevice.getDefaultConfiguration().getBounds();
 				// screenX = screenRect.x;
 				// screenY = screenRect.y;
@@ -1970,7 +1999,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 					// println("Done with setup()");
 
 				} catch (final RendererChangeException e) {
-					// Give up, instead set the new renderer and re-attempt setup()
+					// Give up, instead set the new renderer and re-attempt
+					// setup()
 					return;
 				}
 				defaultSize = false;
@@ -1982,7 +2012,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				frameRate = (frameRate * 0.9f) + (instantaneousRate * 0.1f);
 
 				if (frameCount != 0) {
-					handleMethods("pre");
+					this.handleMethods("pre");
 				}
 
 				// use dmouseX/Y as previous mouse pos, since this is the
@@ -2006,7 +2036,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				// dequeueMouseEvents();
 				// dequeueKeyEvents();
 
-				handleMethods("draw");
+				this.handleMethods("draw");
 
 				redraw = false; // unset 'redraw' flag in case it was set
 				// (only do this once draw() has run, not just setup())
@@ -2018,11 +2048,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			}
 
 			// 1.5.1 version
-			repaint();
+			this.repaint();
 			getToolkit().sync(); // force repaint now (proper method)
 
 			if (frameCount != 0) {
-				handleMethods("post");
+				this.handleMethods("post");
 			}
 
 			frameRateLastNanos = now;
@@ -2208,13 +2238,15 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 		synchronized void add(final Event e) {
 			if (count == queue.length) {
-				queue = (Event[]) expand(queue);
+				queue = (Event[]) PApplet.expand(queue);
 			}
 			queue[count++] = e;
 		}
 
 		synchronized Event remove() {
-			if (offset == count) { throw new RuntimeException("Nothing left on the event queue."); }
+			if (offset == count) {
+				throw new RuntimeException("Nothing left on the event queue.");
+			}
 			final Event outgoing = queue[offset++];
 			if (offset == count) {
 				// All done, time to reset
@@ -2376,31 +2408,31 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			break;
 		}
 
-		handleMethods("mouseEvent", new Object[] { event });
+		this.handleMethods("mouseEvent", new Object[] { event });
 
 		switch (event.getAction()) {
 		case MouseEvent.PRESS:
 			// mousePressed = true;
-			mousePressed(event);
+			this.mousePressed(event);
 			break;
 		case MouseEvent.RELEASE:
 			// mousePressed = false;
-			mouseReleased(event);
+			this.mouseReleased(event);
 			break;
 		case MouseEvent.CLICK:
-			mouseClicked(event);
+			this.mouseClicked(event);
 			break;
 		case MouseEvent.DRAG:
-			mouseDragged(event);
+			this.mouseDragged(event);
 			break;
 		case MouseEvent.MOVE:
-			mouseMoved(event);
+			this.mouseMoved(event);
 			break;
 		case MouseEvent.ENTER:
-			mouseEntered(event);
+			this.mouseEntered(event);
 			break;
 		case MouseEvent.EXIT:
-			mouseExited(event);
+			this.mouseExited(event);
 			break;
 		}
 
@@ -2467,24 +2499,24 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// peButton = RIGHT;
 		// }
 		if ((modifiers & InputEvent.BUTTON1_MASK) != 0) {
-			peButton = LEFT;
+			peButton = PConstants.LEFT;
 		} else if ((modifiers & InputEvent.BUTTON2_MASK) != 0) {
-			peButton = CENTER;
+			peButton = PConstants.CENTER;
 		} else if ((modifiers & InputEvent.BUTTON3_MASK) != 0) {
-			peButton = RIGHT;
+			peButton = PConstants.RIGHT;
 		}
 
 		// If running on macos, allow ctrl-click as right mouse. Prior to 0215,
 		// this used isPopupTrigger() on the native event, but that doesn't work
 		// for mouseClicked and mouseReleased (or others).
-		if (platform == MACOSX) {
+		if (PApplet.platform == PConstants.MACOSX) {
 			// if (nativeEvent.isPopupTrigger()) {
 			if ((modifiers & InputEvent.CTRL_MASK) != 0) {
-				peButton = RIGHT;
+				peButton = PConstants.RIGHT;
 			}
 		}
 
-		postEvent(new MouseEvent(nativeEvent, nativeEvent.getWhen(), peAction, peModifiers, nativeEvent.getX(),
+		this.postEvent(new MouseEvent(nativeEvent, nativeEvent.getWhen(), peAction, peModifiers, nativeEvent.getX(),
 		        nativeEvent.getY(), peButton, nativeEvent.getClickCount()));
 	}
 
@@ -2562,7 +2594,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public void mousePressed(final MouseEvent event) {
-		mousePressed();
+		this.mousePressed();
 	}
 
 	/**
@@ -2582,7 +2614,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public void mouseReleased(final MouseEvent event) {
-		mouseReleased();
+		this.mouseReleased();
 	}
 
 	/**
@@ -2604,7 +2636,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public void mouseClicked(final MouseEvent event) {
-		mouseClicked();
+		this.mouseClicked();
 	}
 
 	/**
@@ -2623,7 +2655,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public void mouseDragged(final MouseEvent event) {
-		mouseDragged();
+		this.mouseDragged();
 	}
 
 	/**
@@ -2642,21 +2674,21 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public void mouseMoved(final MouseEvent event) {
-		mouseMoved();
+		this.mouseMoved();
 	}
 
 	public void mouseEntered() {
 	}
 
 	public void mouseEntered(final MouseEvent event) {
-		mouseEntered();
+		this.mouseEntered();
 	}
 
 	public void mouseExited() {
 	}
 
 	public void mouseExited(final MouseEvent event) {
-		mouseExited();
+		this.mouseExited();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -2734,14 +2766,14 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		switch (event.getAction()) {
 		case KeyEvent.PRESS:
 			keyPressed = true;
-			keyPressed(keyEvent);
+			this.keyPressed(keyEvent);
 			break;
 		case KeyEvent.RELEASE:
 			keyPressed = false;
-			keyReleased(keyEvent);
+			this.keyReleased(keyEvent);
 			break;
 		case KeyEvent.TYPE:
-			keyTyped(keyEvent);
+			this.keyTyped(keyEvent);
 			break;
 		}
 
@@ -2749,13 +2781,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			keyEventMethods.handle(new Object[] { event.getNative() });
 		}
 
-		handleMethods("keyEvent", new Object[] { event });
+		this.handleMethods("keyEvent", new Object[] { event });
 
 		// if someone else wants to intercept the key, they should
 		// set key to zero (or something besides the ESC).
 		if (event.getAction() == KeyEvent.PRESS) {
 			// if (key == java.awt.event.KeyEvent.VK_ESCAPE) {
-			if (key == ESC) {
+			if (key == PConstants.ESC) {
 				exit();
 			}
 			// When running tethered to the Processing application, respond to
@@ -2764,10 +2796,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			// embedded inside an application that has its own close behavior.
 			if (external
 			        && (event.getKeyCode() == 'W')
-			        && ((event.isMetaDown() && (platform == MACOSX)) || (event.isControlDown() && (platform != MACOSX)))) {
-				// Can't use this native stuff b/c the native event might be NEWT
-				// if (external && event.getNative() instanceof java.awt.event.KeyEvent &&
-				// ((java.awt.event.KeyEvent) event.getNative()).getModifiers() ==
+			        && ((event.isMetaDown() && (PApplet.platform == PConstants.MACOSX)) || (event.isControlDown() && (PApplet.platform != PConstants.MACOSX)))) {
+				// Can't use this native stuff b/c the native event might be
+				// NEWT
+				// if (external && event.getNative() instanceof
+				// java.awt.event.KeyEvent &&
+				// ((java.awt.event.KeyEvent) event.getNative()).getModifiers()
+				// ==
 				// Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() &&
 				// event.getKeyCode() == 'W') {
 				exit();
@@ -2797,7 +2832,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		final int peModifiers = event.getModifiers()
 		        & (InputEvent.SHIFT_MASK | InputEvent.CTRL_MASK | InputEvent.META_MASK | InputEvent.ALT_MASK);
 
-		postEvent(new KeyEvent(event, event.getWhen(), peAction, peModifiers, event.getKeyChar(), event.getKeyCode()));
+		this.postEvent(new KeyEvent(event, event.getWhen(), peAction, peModifiers, event.getKeyChar(), event
+		        .getKeyCode()));
 	}
 
 	/**
@@ -2894,7 +2930,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public void keyPressed(final KeyEvent event) {
-		keyPressed();
+		this.keyPressed();
 	}
 
 	/**
@@ -2912,7 +2948,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public void keyReleased(final KeyEvent event) {
-		keyReleased();
+		this.keyReleased();
 	}
 
 	/**
@@ -2932,7 +2968,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	public void keyTyped(final KeyEvent event) {
-		keyTyped();
+		this.keyTyped();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -2946,7 +2982,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 	public void focusGained(final FocusEvent e) {
 		focused = true;
-		focusGained();
+		this.focusGained();
 	}
 
 	public void focusLost() {
@@ -2954,7 +2990,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 	public void focusLost(final FocusEvent e) {
 		focused = false;
-		focusLost();
+		this.focusLost();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -3179,7 +3215,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				Desktop.getDesktop().browse(new URI(url));
 			} else {
 				// Just pass it off to open() and hope for the best
-				open(url);
+				PApplet.open(url);
 			}
 		} catch (final IOException e) {
 			e.printStackTrace();
@@ -3211,7 +3247,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @deprecated the 'target' parameter is no longer relevant with the removal of applets
 	 */
 	public void link(final String url, final String target) {
-		link(url);
+		this.link(url);
 		/*
 		 * try { if (platform == WINDOWS) { // the following uses a shell execute to launch the
 		 * .html file // note that under cygwin, the .html files have to be chmodded +x // after
@@ -3267,7 +3303,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @usage Application
 	 */
 	static public void open(final String filename) {
-		open(new String[] { filename });
+		PApplet.open(new String[] { filename });
 	}
 
 	static String	openLauncher;
@@ -3283,41 +3319,42 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public Process open(final String argv[]) {
 		String[] params = null;
 
-		if (platform == WINDOWS) {
+		if (PApplet.platform == PConstants.WINDOWS) {
 			// just launching the .html file via the shell works
 			// but make sure to chmod +x the .html files first
 			// also place quotes around it in case there's a space
 			// in the user.dir part of the url
 			params = new String[] { "cmd", "/c" };
 
-		} else if (platform == MACOSX) {
+		} else if (PApplet.platform == PConstants.MACOSX) {
 			params = new String[] { "open" };
 
-		} else if (platform == LINUX) {
-			if (openLauncher == null) {
+		} else if (PApplet.platform == PConstants.LINUX) {
+			if (PApplet.openLauncher == null) {
 				// Attempt to use gnome-open
 				try {
 					final Process p = Runtime.getRuntime().exec(new String[] { "gnome-open" });
 					/* int result = */p.waitFor();
-					// Not installed will throw an IOException (JDK 1.4.2, Ubuntu 7.04)
-					openLauncher = "gnome-open";
+					// Not installed will throw an IOException (JDK 1.4.2,
+					// Ubuntu 7.04)
+					PApplet.openLauncher = "gnome-open";
 				} catch (final Exception e) {
 				}
 			}
-			if (openLauncher == null) {
+			if (PApplet.openLauncher == null) {
 				// Attempt with kde-open
 				try {
 					final Process p = Runtime.getRuntime().exec(new String[] { "kde-open" });
 					/* int result = */p.waitFor();
-					openLauncher = "kde-open";
+					PApplet.openLauncher = "kde-open";
 				} catch (final Exception e) {
 				}
 			}
-			if (openLauncher == null) {
+			if (PApplet.openLauncher == null) {
 				System.err.println("Could not find gnome-open or kde-open, " + "the open() command may not work.");
 			}
-			if (openLauncher != null) {
-				params = new String[] { openLauncher };
+			if (PApplet.openLauncher != null) {
+				params = new String[] { PApplet.openLauncher };
 			}
 			// } else { // give up and just pass it to Runtime.exec()
 			// open(new String[] { filename });
@@ -3327,13 +3364,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			// If the 'open', 'gnome-open' or 'cmd' are already included
 			if (params[0].equals(argv[0])) {
 				// then don't prepend those params again
-				return exec(argv);
+				return PApplet.exec(argv);
 			} else {
-				params = concat(params, argv);
-				return exec(params);
+				params = PApplet.concat(params, argv);
+				return PApplet.exec(params);
 			}
 		} else {
-			return exec(argv);
+			return PApplet.exec(argv);
 		}
 	}
 
@@ -3342,7 +3379,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			return Runtime.getRuntime().exec(argv);
 		} catch (final Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException("Could not open " + join(argv, ' '));
+			throw new RuntimeException("Could not open " + PApplet.join(argv, ' '));
 		}
 	}
 
@@ -3364,7 +3401,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		if (e != null) {
 			e.printStackTrace();
 		}
-		die(what);
+		this.die(what);
 	}
 
 	/**
@@ -3433,7 +3470,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				g.dispose();
 			}
 			// run dispose() methods registered by libraries
-			handleMethods("dispose");
+			this.handleMethods("dispose");
 		}
 	}
 
@@ -3448,7 +3485,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	public void method(final String name) {
 		try {
-			final Method method = getClass().getMethod(name, new Class[] {});
+			final Method method = this.getClass().getMethod(name, new Class[] {});
 			method.invoke(this, new Object[] {});
 
 		} catch (final IllegalArgumentException e) {
@@ -3458,7 +3495,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		} catch (final InvocationTargetException e) {
 			e.getTargetException().printStackTrace();
 		} catch (final NoSuchMethodException nsme) {
-			System.err.println("There is no public " + name + "() method " + "in the class " + getClass().getName());
+			System.err.println("There is no public " + name + "() method " + "in the class "
+			        + this.getClass().getName());
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}
@@ -3476,7 +3514,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		final Thread later = new Thread() {
 			@Override
 			public void run() {
-				method(name);
+				PApplet.this.method(name);
 			}
 		};
 		later.start();
@@ -3511,7 +3549,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
    */
 	public void saveFrame() {
 		try {
-			g.save(savePath("screen-" + nf(frameCount, 4) + ".tif"));
+			g.save(savePath("screen-" + PApplet.nf(frameCount, 4) + ".tif"));
 		} catch (final SecurityException se) {
 			System.err.println("Can't use saveFrame() when running in a browser, " + "unless using a signed applet.");
 		}
@@ -3566,7 +3604,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			final String prefix = what.substring(0, first);
 			final int count = (last - first) + 1;
 			final String suffix = what.substring(last + 1);
-			return prefix + nf(frameCount, count) + suffix;
+			return prefix + PApplet.nf(frameCount, count) + suffix;
 		}
 		return what; // no change
 	}
@@ -3577,9 +3615,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 	//
 
-	int	    cursorType	  = ARROW;	// cursor type
+	int	    cursorType	  = PConstants.ARROW; // cursor type
 
-	boolean	cursorVisible	= true; // cursor visibility flag
+	boolean	cursorVisible	= true;	      // cursor visibility flag
 
 	PImage	invisibleCursor;
 
@@ -3600,7 +3638,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * the center of the image.
 	 */
 	public void cursor(final PImage img) {
-		cursor(img, img.width / 2, img.height / 2);
+		this.cursor(img, img.width / 2, img.height / 2);
 	}
 
 	/**
@@ -3632,7 +3670,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// don't set this as cursor type, instead use cursor_type
 		// to save the last cursor used in case cursor() is called
 		// cursor_type = Cursor.CUSTOM_CURSOR;
-		final Image jimage = createImage(new MemoryImageSource(img.width, img.height, img.pixels, 0, img.width));
+		final Image jimage = this.createImage(new MemoryImageSource(img.width, img.height, img.pixels, 0, img.width));
 		final Point hotspot = new Point(x, y);
 		final Toolkit tk = Toolkit.getDefaultToolkit();
 		final Cursor cursor = tk.createCustomCursor(jimage, hotspot, "Custom Cursor");
@@ -3666,15 +3704,16 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @usage Application
 	 */
 	public void noCursor() {
-		if (!cursorVisible) { return; // don't hide if already hidden.
+		if (!cursorVisible) {
+			return; // don't hide if already hidden.
 		}
 
 		if (invisibleCursor == null) {
-			invisibleCursor = new PImage(16, 16, ARGB);
+			invisibleCursor = new PImage(16, 16, PConstants.ARGB);
 		}
 		// was formerly 16x16, but the 0x0 was added by jdf as a fix
 		// for macosx, which wasn't honoring the invisible cursor
-		cursor(invisibleCursor, 8, 8);
+		this.cursor(invisibleCursor, 8, 8);
 		cursorVisible = false;
 	}
 
@@ -3898,8 +3937,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public void debug(final String msg) {
-		if (DEBUG) {
-			println(msg);
+		if (PApplet.DEBUG) {
+			PApplet.println(msg);
 		}
 	}
 
@@ -4073,7 +4112,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 *            array of numbers to compare
 	 */
 	static public final int max(final int[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(PApplet.ERROR_MIN_MAX);
+		}
 		int max = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] > max) {
@@ -4084,7 +4125,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public final long max(final long[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(PApplet.ERROR_MIN_MAX);
+		}
 		long max = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] > max) {
@@ -4095,7 +4138,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public final double max(final double[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(PApplet.ERROR_MIN_MAX);
+		}
 		double max = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] > max) {
@@ -4171,7 +4216,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 *            array of numbers to compare
 	 */
 	static public final int min(final int[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(PApplet.ERROR_MIN_MAX);
+		}
 		int min = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] < min) {
@@ -4182,7 +4229,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public final long min(final long[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(PApplet.ERROR_MIN_MAX);
+		}
 		long min = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] < min) {
@@ -4193,7 +4242,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public final double min(final double[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(PApplet.ERROR_MIN_MAX);
+		}
 		double min = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] < min) {
@@ -4378,7 +4429,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#radians(double)
 	 */
 	static public final double degrees(final double radians) {
-		return radians * RAD_TO_DEG;
+		return radians * PConstants.RAD_TO_DEG;
 	}
 
 	/**
@@ -4394,7 +4445,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#degrees(double)
 	 */
 	static public final double radians(final double degrees) {
-		return degrees * DEG_TO_RAD;
+		return degrees * PConstants.DEG_TO_RAD;
 	}
 
 	/**
@@ -4465,7 +4516,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public final double dist(final double x1, final double y1, final double x2, final double y2) {
-		return sqrt(sq(x2 - x1) + sq(y2 - y1));
+		return PApplet.sqrt(PApplet.sq(x2 - x1) + PApplet.sq(y2 - y1));
 	}
 
 	/**
@@ -4488,7 +4539,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	static public final double dist(final double x1, final double y1, final double z1, final double x2,
 	        final double y2, final double z2) {
-		return sqrt(sq(x2 - x1) + sq(y2 - y1) + sq(z2 - z1));
+		return PApplet.sqrt(PApplet.sq(x2 - x1) + PApplet.sq(y2 - y1) + PApplet.sq(z2 - z1));
 	}
 
 	/**
@@ -4583,7 +4634,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// so a check was added to avoid the inclusion of 'howbig'
 
 		// avoid an infinite loop
-		if (high == 0) { return 0; }
+		if (high == 0) {
+			return 0;
+		}
 
 		// internal random number object
 		if (internalRandom == null) {
@@ -4618,9 +4671,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#noise(double, double, double)
 	 */
 	public final double random(final double low, final double high) {
-		if (low >= high) { return low; }
+		if (low >= high) {
+			return low;
+		}
 		final double diff = high - low;
-		return random(diff) + low;
+		return this.random(diff) + low;
 	}
 
 	/**
@@ -4661,17 +4716,17 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 	static final int	PERLIN_YWRAPB	= 4;
 
-	static final int	PERLIN_YWRAP	= 1 << PERLIN_YWRAPB;
+	static final int	PERLIN_YWRAP	= 1 << PApplet.PERLIN_YWRAPB;
 
 	static final int	PERLIN_ZWRAPB	= 8;
 
-	static final int	PERLIN_ZWRAP	= 1 << PERLIN_ZWRAPB;
+	static final int	PERLIN_ZWRAP	= 1 << PApplet.PERLIN_ZWRAPB;
 
 	static final int	PERLIN_SIZE	    = 4095;
 
-	int	             perlin_octaves	    = 4;	              // default to medium smooth
+	int	             perlin_octaves	    = 4;	                      // default to medium smooth
 
-	double	         perlin_amp_falloff	= 0.5f;	          // 50% reduction/octave
+	double	         perlin_amp_falloff	= 0.5f;	                  // 50% reduction/octave
 
 	// [toxi 031112]
 	// new vars needed due to recent change of cos table in PGraphics
@@ -4687,13 +4742,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
    */
 	public double noise(final double x) {
 		// is this legit? it's a dumb way to do it (but repair it later)
-		return noise(x, 0f, 0f);
+		return this.noise(x, 0f, 0f);
 	}
 
 	/**
    */
 	public double noise(final double x, final double y) {
-		return noise(x, y, 0f);
+		return this.noise(x, y, 0f);
 	}
 
 	/**
@@ -4738,8 +4793,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			if (perlinRandom == null) {
 				perlinRandom = new Random();
 			}
-			perlin = new double[PERLIN_SIZE + 1];
-			for (int i = 0; i < (PERLIN_SIZE + 1); i++) {
+			perlin = new double[PApplet.PERLIN_SIZE + 1];
+			for (int i = 0; i < (PApplet.PERLIN_SIZE + 1); i++) {
 				perlin[i] = perlinRandom.nextFloat(); // (double)Math.random();
 			}
 			// [toxi 031112]
@@ -4772,22 +4827,22 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		double n1, n2, n3;
 
 		for (int i = 0; i < perlin_octaves; i++) {
-			int of = xi + (yi << PERLIN_YWRAPB) + (zi << PERLIN_ZWRAPB);
+			int of = xi + (yi << PApplet.PERLIN_YWRAPB) + (zi << PApplet.PERLIN_ZWRAPB);
 
 			rxf = noise_fsc(xf);
 			ryf = noise_fsc(yf);
 
-			n1 = perlin[of & PERLIN_SIZE];
-			n1 += rxf * (perlin[(of + 1) & PERLIN_SIZE] - n1);
-			n2 = perlin[(of + PERLIN_YWRAP) & PERLIN_SIZE];
-			n2 += rxf * (perlin[(of + PERLIN_YWRAP + 1) & PERLIN_SIZE] - n2);
+			n1 = perlin[of & PApplet.PERLIN_SIZE];
+			n1 += rxf * (perlin[(of + 1) & PApplet.PERLIN_SIZE] - n1);
+			n2 = perlin[(of + PApplet.PERLIN_YWRAP) & PApplet.PERLIN_SIZE];
+			n2 += rxf * (perlin[(of + PApplet.PERLIN_YWRAP + 1) & PApplet.PERLIN_SIZE] - n2);
 			n1 += ryf * (n2 - n1);
 
-			of += PERLIN_ZWRAP;
-			n2 = perlin[of & PERLIN_SIZE];
-			n2 += rxf * (perlin[(of + 1) & PERLIN_SIZE] - n2);
-			n3 = perlin[(of + PERLIN_YWRAP) & PERLIN_SIZE];
-			n3 += rxf * (perlin[(of + PERLIN_YWRAP + 1) & PERLIN_SIZE] - n3);
+			of += PApplet.PERLIN_ZWRAP;
+			n2 = perlin[of & PApplet.PERLIN_SIZE];
+			n2 += rxf * (perlin[(of + 1) & PApplet.PERLIN_SIZE] - n2);
+			n3 = perlin[(of + PApplet.PERLIN_YWRAP) & PApplet.PERLIN_SIZE];
+			n3 += rxf * (perlin[(of + PApplet.PERLIN_YWRAP + 1) & PApplet.PERLIN_SIZE] - n3);
 			n2 += ryf * (n3 - n2);
 
 			n1 += noise_fsc(zf) * (n2 - n1);
@@ -4937,11 +4992,12 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	public PImage loadImage(final String filename) {
 		// return loadImage(filename, null, null);
-		return loadImage(filename, null);
+		return this.loadImage(filename, null);
 	}
 
 	// /**
-	// * @param extension the type of image to load, for example "png", "gif", "jpg"
+	// * @param extension the type of image to load, for example "png", "gif",
+	// "jpg"
 	// */
 	// public PImage loadImage(String filename, String extension) {
 	// return loadImage(filename, extension, null);
@@ -4958,7 +5014,10 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @param extension
 	 *            type of image to load, for example "png", "gif", "jpg"
 	 */
-	public PImage loadImage(final String filename, String extension) { // , Object params) {
+	public PImage loadImage(final String filename, String extension) { // ,
+		                                                               // Object
+		                                                               // params)
+		                                                               // {
 		if (extension == null) {
 			final String lower = filename.toLowerCase();
 			final int dot = filename.lastIndexOf('.');
@@ -4992,7 +5051,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		}
 
 		if (extension.equals("tif") || extension.equals("tiff")) {
-			final byte bytes[] = loadBytes(filename);
+			final byte bytes[] = this.loadBytes(filename);
 			final PImage image = (bytes == null) ? null : PImage.loadTIFF(bytes);
 			// if (params != null) {
 			// image.setParams(g, params);
@@ -5006,7 +5065,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		try {
 			if (extension.equals("jpg") || extension.equals("jpeg") || extension.equals("gif")
 			        || extension.equals("png") || extension.equals("unknown")) {
-				final byte bytes[] = loadBytes(filename);
+				final byte bytes[] = this.loadBytes(filename);
 				if (bytes == null) {
 					return null;
 				} else {
@@ -5037,12 +5096,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		}
 		if (loadImageFormats != null) {
 			for (final String loadImageFormat : loadImageFormats) {
-				if (extension.equals(loadImageFormat)) { return loadImageIO(filename);
-				// PImage image = loadImageIO(filename);
-				// if (params != null) {
-				// image.setParams(g, params);
-				// }
-				// return image;
+				if (extension.equals(loadImageFormat)) {
+					return loadImageIO(filename);
+					// PImage image = loadImageIO(filename);
+					// if (params != null) {
+					// image.setParams(g, params);
+					// }
+					// return image;
 				}
 			}
 		}
@@ -5054,7 +5114,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 	public PImage requestImage(final String filename) {
 		// return requestImage(filename, null, null);
-		return requestImage(filename, null);
+		return this.requestImage(filename, null);
 	}
 
 	/**
@@ -5079,7 +5139,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PImage#PImage
 	 */
 	public PImage requestImage(final String filename, final String extension) {
-		final PImage vessel = createImage(0, 0, ARGB);
+		final PImage vessel = this.createImage(0, 0, PConstants.ARGB);
 		final AsyncImageLoader ail = new AsyncImageLoader(filename, extension, vessel);
 		ail.start();
 		return vessel;
@@ -5088,7 +5148,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	// /**
 	// * @nowebref
 	// */
-	// public PImage requestImage(String filename, String extension, Object params) {
+	// public PImage requestImage(String filename, String extension, Object
+	// params) {
 	// PImage vessel = createImage(0, 0, ARGB, params);
 	// AsyncImageLoader ail =
 	// new AsyncImageLoader(filename, extension, vessel);
@@ -5131,7 +5192,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			}
 			requestImageCount++;
 
-			final PImage actual = loadImage(filename, extension);
+			final PImage actual = PApplet.this.loadImage(filename, extension);
 
 			// An error message should have already printed
 			if (actual == null) {
@@ -5170,7 +5231,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * Use Java 1.4 ImageIO methods to load an image.
 	 */
 	protected PImage loadImageIO(final String filename) {
-		final InputStream stream = createInput(filename);
+		final InputStream stream = this.createInput(filename);
 		if (stream == null) {
 			System.err.println("The image " + filename + " could not be found.");
 			return null;
@@ -5187,7 +5248,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			// was gonna call getType() on the image to see if RGB or ARGB,
 			// but it's not actually useful, since gif images will come through
 			// as TYPE_BYTE_INDEXED, which means it'll still have to check for
-			// the transparency. also, would have to iterate through all the other
+			// the transparency. also, would have to iterate through all the
+			// other
 			// types and guess whether alpha was in there, so.. just gonna stick
 			// with the old method.
 			outgoing.checkAlpha();
@@ -5209,14 +5271,18 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * files).
 	 */
 	protected PImage loadImageTGA(final String filename) throws IOException {
-		final InputStream is = createInput(filename);
-		if (is == null) { return null; }
+		final InputStream is = this.createInput(filename);
+		if (is == null) {
+			return null;
+		}
 
 		final byte header[] = new byte[18];
 		int offset = 0;
 		do {
 			final int count = is.read(header, offset, header.length - offset);
-			if (count == -1) { return null; }
+			if (count == -1) {
+				return null;
+			}
 			offset += count;
 		} while (offset < 18);
 
@@ -5232,17 +5298,19 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 		if (((header[2] == 3) || (header[2] == 11)) && // B&W, plus RLE or not
 		        (header[16] == 8) && // 8 bits
-		        ((header[17] == 0x8) || (header[17] == 0x28))) { // origin, 32 bit
-			format = ALPHA;
+		        ((header[17] == 0x8) || (header[17] == 0x28))) { // origin, 32
+			                                                     // bit
+			format = PConstants.ALPHA;
 
 		} else if (((header[2] == 2) || (header[2] == 10)) && // RGB, RLE or not
 		        (header[16] == 24) && // 24 bits
 		        ((header[17] == 0x20) || (header[17] == 0))) { // origin
-			format = RGB;
+			format = PConstants.RGB;
 
 		} else if (((header[2] == 2) || (header[2] == 10)) && (header[16] == 32)
-		        && ((header[17] == 0x8) || (header[17] == 0x28))) { // origin, 32
-			format = ARGB;
+		        && ((header[17] == 0x8) || (header[17] == 0x28))) { // origin,
+			                                                        // 32
+			format = PConstants.ARGB;
 		}
 
 		if (format == 0) {
@@ -5255,7 +5323,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 		final int w = ((header[13] & 0xff) << 8) + (header[12] & 0xff);
 		final int h = ((header[15] & 0xff) << 8) + (header[14] & 0xff);
-		final PImage outgoing = createImage(w, h, format);
+		final PImage outgoing = this.createImage(w, h, format);
 
 		// where "reversed" means upper-left corner (normal for most of
 		// the modernized world, but "reversed" for the tga spec)
@@ -5412,13 +5480,14 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#loadTable(String)
 	 */
 	public XML loadXML(final String filename) {
-		return loadXML(filename, null);
+		return this.loadXML(filename, null);
 	}
 
-	// version that uses 'options' though there are currently no supported options
+	// version that uses 'options' though there are currently no supported
+	// options
 	public XML loadXML(final String filename, final String options) {
 		try {
-			return new XML(createInput(filename), options);
+			return new XML(this.createInput(filename), options);
 		} catch (final Exception e) {
 			e.printStackTrace();
 			return null;
@@ -5436,7 +5505,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#saveXML(String)
 	 */
 	public XML parseXML(final String xmlString) {
-		return parseXML(xmlString, null);
+		return this.parseXML(xmlString, null);
 	}
 
 	public XML parseXML(final String xmlString, final String options) {
@@ -5459,7 +5528,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#parseXML(String)
 	 */
 	public boolean saveXML(final XML xml, final String filename) {
-		return saveXML(xml, filename, null);
+		return this.saveXML(xml, filename, null);
 	}
 
 	public boolean saveXML(final XML xml, final String filename, final String options) {
@@ -5486,7 +5555,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#loadXML(String)
 	 */
 	public Table loadTable(final String filename) {
-		return loadTable(filename, null);
+		return this.loadTable(filename, null);
 	}
 
 	/**
@@ -5505,7 +5574,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 					}
 				}
 			}
-			return new Table(createInput(filename), options);
+			return new Table(this.createInput(filename), options);
 
 		} catch (final IOException e) {
 			e.printStackTrace();
@@ -5523,7 +5592,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#loadTable(String)
 	 */
 	public boolean saveTable(final Table table, final String filename) {
-		return saveTable(table, filename, null);
+		return this.saveTable(table, filename, null);
 	}
 
 	/**
@@ -5542,7 +5611,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 	protected String checkExtension(final String filename) {
 		final int index = filename.lastIndexOf('.');
-		if (index == -1) { return null; }
+		if (index == -1) {
+			return null;
+		}
 		return filename.substring(index + 1).toLowerCase();
 	}
 
@@ -5579,11 +5650,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	public PFont loadFont(final String filename) {
 		try {
-			final InputStream input = createInput(filename);
+			final InputStream input = this.createInput(filename);
 			return new PFont(input);
 
 		} catch (final Exception e) {
-			die("Could not load font " + filename + ". " + "Make sure that the font has been copied "
+			this.die("Could not load font " + filename + ". " + "Make sure that the font has been copied "
 			        + "to the data folder of your sketch.", e);
 		}
 		return null;
@@ -5597,15 +5668,15 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// println("n: " + f.getName());
 		// println("fn: " + f.getFontName());
 		// println("ps: " + f.getPSName());
-		return createFont("Lucida Sans", size, true, null);
+		return this.createFont("Lucida Sans", size, true, null);
 	}
 
 	public PFont createFont(final String name, final double size) {
-		return createFont(name, size, true, null);
+		return this.createFont(name, size, true, null);
 	}
 
 	public PFont createFont(final String name, final double size, final boolean smooth) {
-		return createFont(name, size, smooth, null);
+		return this.createFont(name, size, smooth, null);
 	}
 
 	/**
@@ -5658,13 +5729,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		try {
 			InputStream stream = null;
 			if (lowerName.endsWith(".otf") || lowerName.endsWith(".ttf")) {
-				stream = createInput(name);
+				stream = this.createInput(name);
 				if (stream == null) {
 					System.err.println("The font \"" + name + "\" " + "is missing or inaccessible, make sure "
 					        + "the URL is valid or that the file has been " + "added to your sketch and is readable.");
 					return null;
 				}
-				baseFont = Font.createFont(Font.TRUETYPE_FONT, createInput(name));
+				baseFont = Font.createFont(Font.TRUETYPE_FONT, this.createInput(name));
 
 			} else {
 				baseFont = PFont.findFont(name);
@@ -5736,20 +5807,20 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 *            name of the method to be called when the selection is made
 	 */
 	public void selectInput(final String prompt, final String callback) {
-		selectInput(prompt, callback, null);
+		this.selectInput(prompt, callback, null);
 	}
 
 	public void selectInput(final String prompt, final String callback, final File file) {
-		selectInput(prompt, callback, file, this);
+		this.selectInput(prompt, callback, file, this);
 	}
 
 	public void selectInput(final String prompt, final String callback, final File file, final Object callbackObject) {
-		selectInput(prompt, callback, file, callbackObject, selectFrame());
+		PApplet.selectInput(prompt, callback, file, callbackObject, selectFrame());
 	}
 
 	static public void selectInput(final String prompt, final String callbackMethod, final File file,
 	        final Object callbackObject, final Frame parent) {
-		selectImpl(prompt, callbackMethod, file, callbackObject, parent, FileDialog.LOAD);
+		PApplet.selectImpl(prompt, callbackMethod, file, callbackObject, parent, FileDialog.LOAD);
 	}
 
 	/**
@@ -5762,20 +5833,20 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 *            name of the method to be called when the selection is made
 	 */
 	public void selectOutput(final String prompt, final String callback) {
-		selectOutput(prompt, callback, null);
+		this.selectOutput(prompt, callback, null);
 	}
 
 	public void selectOutput(final String prompt, final String callback, final File file) {
-		selectOutput(prompt, callback, file, this);
+		this.selectOutput(prompt, callback, file, this);
 	}
 
 	public void selectOutput(final String prompt, final String callback, final File file, final Object callbackObject) {
-		selectOutput(prompt, callback, file, callbackObject, selectFrame());
+		PApplet.selectOutput(prompt, callback, file, callbackObject, selectFrame());
 	}
 
 	static public void selectOutput(final String prompt, final String callbackMethod, final File file,
 	        final Object callbackObject, final Frame parent) {
-		selectImpl(prompt, callbackMethod, file, callbackObject, parent, FileDialog.SAVE);
+		PApplet.selectImpl(prompt, callbackMethod, file, callbackObject, parent, FileDialog.SAVE);
 	}
 
 	static protected void selectImpl(final String prompt, final String callbackMethod, final File defaultSelection,
@@ -5784,7 +5855,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			public void run() {
 				File selectedFile = null;
 
-				if (useNativeSelect) {
+				if (PApplet.useNativeSelect) {
 					final FileDialog dialog = new FileDialog(parentFrame, prompt, mode);
 					if (defaultSelection != null) {
 						dialog.setDirectory(defaultSelection.getParent());
@@ -5814,7 +5885,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 						selectedFile = chooser.getSelectedFile();
 					}
 				}
-				selectCallback(selectedFile, callbackMethod, callbackObject);
+				PApplet.selectCallback(selectedFile, callbackMethod, callbackObject);
 			}
 		});
 	}
@@ -5829,15 +5900,15 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 *            name of the method to be called when the selection is made
 	 */
 	public void selectFolder(final String prompt, final String callback) {
-		selectFolder(prompt, callback, null);
+		this.selectFolder(prompt, callback, null);
 	}
 
 	public void selectFolder(final String prompt, final String callback, final File file) {
-		selectFolder(prompt, callback, file, this);
+		this.selectFolder(prompt, callback, file, this);
 	}
 
 	public void selectFolder(final String prompt, final String callback, final File file, final Object callbackObject) {
-		selectFolder(prompt, callback, file, callbackObject, selectFrame());
+		PApplet.selectFolder(prompt, callback, file, callbackObject, selectFrame());
 	}
 
 	static public void selectFolder(final String prompt, final String callbackMethod, final File defaultSelection,
@@ -5846,7 +5917,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			public void run() {
 				File selectedFile = null;
 
-				if ((platform == MACOSX) && (useNativeSelect != false)) {
+				if ((PApplet.platform == PConstants.MACOSX) && (PApplet.useNativeSelect != false)) {
 					final FileDialog fileDialog = new FileDialog(parentFrame, prompt, FileDialog.LOAD);
 					System.setProperty("apple.awt.fileDialogForDirectories", "true");
 					fileDialog.setVisible(true);
@@ -5868,7 +5939,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 						selectedFile = fileChooser.getSelectedFile();
 					}
 				}
-				selectCallback(selectedFile, callbackMethod, callbackObject);
+				PApplet.selectCallback(selectedFile, callbackMethod, callbackObject);
 			}
 		});
 	}
@@ -5912,12 +5983,12 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	public BufferedReader createReader(final String filename) {
 		try {
-			final InputStream is = createInput(filename);
+			final InputStream is = this.createInput(filename);
 			if (is == null) {
 				System.err.println(filename + " does not exist or could not be read");
 				return null;
 			}
-			return createReader(is);
+			return PApplet.createReader(is);
 
 		} catch (final Exception e) {
 			if (filename == null) {
@@ -5938,7 +6009,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			if (file.getName().toLowerCase().endsWith(".gz")) {
 				is = new GZIPInputStream(is);
 			}
-			return createReader(is);
+			return PApplet.createReader(is);
 
 		} catch (final Exception e) {
 			if (file == null) {
@@ -5982,7 +6053,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see BufferedReader
 	 */
 	public PrintWriter createWriter(final String filename) {
-		return createWriter(saveFile(filename));
+		return PApplet.createWriter(saveFile(filename));
 	}
 
 	/**
@@ -5991,12 +6062,12 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	static public PrintWriter createWriter(final File file) {
 		try {
-			createPath(file); // make sure in-between folders exist
+			PApplet.createPath(file); // make sure in-between folders exist
 			OutputStream output = new FileOutputStream(file);
 			if (file.getName().toLowerCase().endsWith(".gz")) {
 				output = new GZIPOutputStream(output);
 			}
-			return createWriter(output);
+			return PApplet.createWriter(output);
 
 		} catch (final Exception e) {
 			if (file == null) {
@@ -6031,7 +6102,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @deprecated As of release 0136, use createInput() instead.
 	 */
 	public InputStream openStream(final String filename) {
-		return createInput(filename);
+		return this.createInput(filename);
 	}
 
 	/**
@@ -6109,7 +6180,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	public InputStream createInputRaw(final String filename) {
 		InputStream stream = null;
 
-		if (filename == null) { return null; }
+		if (filename == null) {
+			return null;
+		}
 
 		if (filename.length() == 0) {
 			// an error will be called by the parent function
@@ -6129,7 +6202,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				// not a url, that's fine
 
 			} catch (final FileNotFoundException fnfe) {
-				// Java 1.5 likes to throw this when URL not available. (fix for 0119)
+				// Java 1.5 likes to throw this when URL not available. (fix for
+				// 0119)
 				// http://dev.processing.org/bugs/show_bug.cgi?id=403
 
 			} catch (final IOException e) {
@@ -6137,7 +6211,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				e.printStackTrace();
 				// System.err.println("Error downloading from URL " + filename);
 				return null;
-				// throw new RuntimeException("Error downloading from URL " + filename);
+				// throw new RuntimeException("Error downloading from URL " +
+				// filename);
 			}
 		}
 
@@ -6152,7 +6227,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				// next see if it's just in the sketch folder
 				file = new File(sketchPath, filename);
 			}
-			if (file.isDirectory()) { return null; }
+			if (file.isDirectory()) {
+				return null;
+			}
 			if (file.exists()) {
 				try {
 					// handle case sensitivity check
@@ -6164,15 +6241,19 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 					// differently, warn the user.
 					// if (filenameActual.equalsIgnoreCase(filenameShort) &&
 					// !filenameActual.equals(filenameShort)) {
-					if (!filenameActual.equals(filenameShort)) { throw new RuntimeException("This file is named "
-					        + filenameActual + " not " + filename + ". Rename the file " + "or change your code."); }
+					if (!filenameActual.equals(filenameShort)) {
+						throw new RuntimeException("This file is named " + filenameActual + " not " + filename
+						        + ". Rename the file " + "or change your code.");
+					}
 				} catch (final IOException e) {
 				}
 			}
 
 			// if this file is ok, may as well just load it
 			stream = new FileInputStream(file);
-			if (stream != null) { return stream; }
+			if (stream != null) {
+				return stream;
+			}
 
 			// have to break these out because a general Exception might
 			// catch the RuntimeException being thrown above
@@ -6184,7 +6265,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// to slashes or requiring a slash at the beginning.
 		// (a slash as a prefix means that it'll load from the root of
 		// the jar, rather than trying to dig into the package location)
-		final ClassLoader cl = getClass().getClassLoader();
+		final ClassLoader cl = this.getClass().getClassLoader();
 
 		// by default, data files are exported to the root path of the jar.
 		// (not the data folder) so check there first.
@@ -6195,7 +6276,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			// a non-null stream for an object that doesn't exist. like all good
 			// things, this is probably introduced in java 1.5. awesome!
 			// http://dev.processing.org/bugs/show_bug.cgi?id=359
-			if (!cn.equals("sun.plugin.cache.EmptyInputStream")) { return stream; }
+			if (!cn.equals("sun.plugin.cache.EmptyInputStream")) {
+				return stream;
+			}
 		}
 
 		// When used with an online script, also need to check without the
@@ -6204,7 +6287,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		stream = cl.getResourceAsStream(filename);
 		if (stream != null) {
 			final String cn = stream.getClass().getName();
-			if (!cn.equals("sun.plugin.cache.EmptyInputStream")) { return stream; }
+			if (!cn.equals("sun.plugin.cache.EmptyInputStream")) {
+				return stream;
+			}
 		}
 
 		// Finally, something special for the Internet Explorer users. Turns out
@@ -6226,7 +6311,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		} catch (final Exception e) {
 		} // IO or NPE or...
 
-		// Now try it with a 'data' subfolder. getting kinda desperate for data...
+		// Now try it with a 'data' subfolder. getting kinda desperate for
+		// data...
 		try {
 			final URL base = getDocumentBase();
 			if (base != null) {
@@ -6243,19 +6329,25 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			try { // first try to catch any security exceptions
 				try {
 					stream = new FileInputStream(dataPath(filename));
-					if (stream != null) { return stream; }
+					if (stream != null) {
+						return stream;
+					}
 				} catch (final IOException e2) {
 				}
 
 				try {
 					stream = new FileInputStream(sketchPath(filename));
-					if (stream != null) { return stream; }
+					if (stream != null) {
+						return stream;
+					}
 				} catch (final Exception e) {
 				} // ignored
 
 				try {
 					stream = new FileInputStream(filename);
-					if (stream != null) { return stream; }
+					if (stream != null) {
+						return stream;
+					}
 				} catch (final IOException e1) {
 				}
 
@@ -6274,10 +6366,14 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @nowebref
 	 */
 	static public InputStream createInput(final File file) {
-		if (file == null) { throw new IllegalArgumentException("File passed to createInput() was null"); }
+		if (file == null) {
+			throw new IllegalArgumentException("File passed to createInput() was null");
+		}
 		try {
 			final InputStream input = new FileInputStream(file);
-			if (file.getName().toLowerCase().endsWith(".gz")) { return new GZIPInputStream(input); }
+			if (file.getName().toLowerCase().endsWith(".gz")) {
+				return new GZIPInputStream(input);
+			}
 			return input;
 
 		} catch (final IOException e) {
@@ -6305,8 +6401,10 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#saveBytes(String, byte[])
 	 */
 	public byte[] loadBytes(final String filename) {
-		final InputStream is = createInput(filename);
-		if (is != null) { return loadBytes(is); }
+		final InputStream is = this.createInput(filename);
+		if (is != null) {
+			return PApplet.loadBytes(is);
+		}
 
 		System.err.println("The file \"" + filename + "\" " + "is missing or inaccessible, make sure "
 		        + "the URL is valid or that the file has been " + "added to your sketch and is readable.");
@@ -6339,16 +6437,18 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @nowebref
 	 */
 	static public byte[] loadBytes(final File file) {
-		final InputStream is = createInput(file);
-		return loadBytes(is);
+		final InputStream is = PApplet.createInput(file);
+		return PApplet.loadBytes(is);
 	}
 
 	/**
 	 * @nowebref
 	 */
 	static public String[] loadStrings(final File file) {
-		final InputStream is = createInput(file);
-		if (is != null) { return loadStrings(is); }
+		final InputStream is = PApplet.createInput(file);
+		if (is != null) {
+			return PApplet.loadStrings(is);
+		}
 		return null;
 	}
 
@@ -6386,8 +6486,10 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#saveBytes(String, byte[])
 	 */
 	public String[] loadStrings(final String filename) {
-		final InputStream is = createInput(filename);
-		if (is != null) { return loadStrings(is); }
+		final InputStream is = this.createInput(filename);
+		if (is != null) {
+			return PApplet.loadStrings(is);
+		}
 
 		System.err.println("The file \"" + filename + "\" " + "is missing or inaccessible, make sure "
 		        + "the URL is valid or that the file has been " + "added to your sketch and is readable.");
@@ -6400,7 +6502,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public String[] loadStrings(final InputStream input) {
 		try {
 			final BufferedReader reader = new BufferedReader(new InputStreamReader(input, "UTF-8"));
-			return loadStrings(reader);
+			return PApplet.loadStrings(reader);
 		} catch (final IOException e) {
 			e.printStackTrace();
 		}
@@ -6422,7 +6524,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			}
 			reader.close();
 
-			if (lineCount == lines.length) { return lines; }
+			if (lineCount == lines.length) {
+				return lines;
+			}
 
 			// resize array to appropriate amount for these lines
 			final String output[] = new String[lineCount];
@@ -6463,7 +6567,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#selectOutput()
 	 */
 	public OutputStream createOutput(final String filename) {
-		return createOutput(saveFile(filename));
+		return PApplet.createOutput(saveFile(filename));
 	}
 
 	/**
@@ -6471,9 +6575,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	static public OutputStream createOutput(final File file) {
 		try {
-			createPath(file); // make sure the path exists
+			PApplet.createPath(file); // make sure the path exists
 			final FileOutputStream fos = new FileOutputStream(file);
-			if (file.getName().toLowerCase().endsWith(".gz")) { return new GZIPOutputStream(fos); }
+			if (file.getName().toLowerCase().endsWith(".gz")) {
+				return new GZIPOutputStream(fos);
+			}
 			return fos;
 
 		} catch (final IOException e) {
@@ -6499,7 +6605,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#createOutput(String)
 	 */
 	public boolean saveStream(final String target, final String source) {
-		return saveStream(saveFile(target), source);
+		return this.saveStream(saveFile(target), source);
 	}
 
 	/**
@@ -6510,14 +6616,14 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * files.
 	 */
 	public boolean saveStream(final File target, final String source) {
-		return saveStream(target, createInputRaw(source));
+		return PApplet.saveStream(target, createInputRaw(source));
 	}
 
 	/**
 	 * @nowebref
 	 */
 	public boolean saveStream(final String target, final InputStream source) {
-		return saveStream(saveFile(target), source);
+		return PApplet.saveStream(saveFile(target), source);
 	}
 
 	/**
@@ -6528,11 +6634,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		try {
 			final File parentDir = target.getParentFile();
 			// make sure that this path actually exists before writing
-			createPath(target);
+			PApplet.createPath(target);
 			tempFile = File.createTempFile(target.getName(), null, parentDir);
 			FileOutputStream targetStream = new FileOutputStream(tempFile);
 
-			saveStream(targetStream, source);
+			PApplet.saveStream(targetStream, source);
 			targetStream.close();
 			targetStream = null;
 
@@ -6593,7 +6699,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#saveStrings(String, String[])
 	 */
 	public void saveBytes(final String filename, final byte[] data) {
-		saveBytes(saveFile(filename), data);
+		PApplet.saveBytes(saveFile(filename), data);
 	}
 
 	/**
@@ -6605,8 +6711,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			final File parentDir = file.getParentFile();
 			tempFile = File.createTempFile(file.getName(), null, parentDir);
 
-			OutputStream output = createOutput(tempFile);
-			saveBytes(output, data);
+			OutputStream output = PApplet.createOutput(tempFile);
+			PApplet.saveBytes(output, data);
 			output.close();
 			output = null;
 
@@ -6668,21 +6774,21 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#saveBytes(String, byte[])
 	 */
 	public void saveStrings(final String filename, final String data[]) {
-		saveStrings(saveFile(filename), data);
+		PApplet.saveStrings(saveFile(filename), data);
 	}
 
 	/**
 	 * @nowebref
 	 */
 	static public void saveStrings(final File file, final String data[]) {
-		saveStrings(createOutput(file), data);
+		PApplet.saveStrings(PApplet.createOutput(file), data);
 	}
 
 	/**
 	 * @nowebref
 	 */
 	static public void saveStrings(final OutputStream output, final String[] data) {
-		final PrintWriter writer = createWriter(output);
+		final PrintWriter writer = PApplet.createWriter(output);
 		for (final String element : data) {
 			writer.println(element);
 		}
@@ -6704,16 +6810,20 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * of init(), see the examples in the main description text for PApplet.
 	 */
 	public String sketchPath(final String where) {
-		if (sketchPath == null) { return where;
-		// throw new RuntimeException("The applet was not inited properly, " +
-		// "or security restrictions prevented " +
-		// "it from determining its path.");
+		if (sketchPath == null) {
+			return where;
+			// throw new RuntimeException("The applet was not inited properly, "
+			// +
+			// "or security restrictions prevented " +
+			// "it from determining its path.");
 		}
 		// isAbsolute() could throw an access exception, but so will writing
 		// to the local disk using the sketch path, so this is safe here.
 		// for 0120, added a try/catch anyways.
 		try {
-			if (new File(where).isAbsolute()) { return where; }
+			if (new File(where).isAbsolute()) {
+				return where;
+			}
 		} catch (final Exception e) {
 		}
 
@@ -6736,9 +6846,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * and want to save to the data folder, use <TT>saveXxxx("data/blah.dat")</TT>.
 	 */
 	public String savePath(final String where) {
-		if (where == null) { return null; }
+		if (where == null) {
+			return null;
+		}
 		final String filename = sketchPath(where);
-		createPath(filename);
+		PApplet.createPath(filename);
 		return filename;
 	}
 
@@ -6775,13 +6887,15 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// isAbsolute() could throw an access exception, but so will writing
 		// to the local disk using the sketch path, so this is safe here.
 		final File why = new File(where);
-		if (why.isAbsolute()) { return why; }
+		if (why.isAbsolute()) {
+			return why;
+		}
 
-		final String jarPath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		final String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 		if (jarPath.contains("Contents/Resources/Java/")) {
 			// The path will be URL encoded (%20 for spaces) coming from above
 			// http://code.google.com/p/processing/issues/detail?id=1073
-			final File containingFolder = new File(urlDecode(jarPath)).getParentFile();
+			final File containingFolder = new File(PApplet.urlDecode(jarPath)).getParentFile();
 			final File dataFolder = new File(containingFolder, "data");
 			return new File(dataFolder, where);
 		}
@@ -6804,7 +6918,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * trying to save to a subfolder that may not actually exist.
 	 */
 	static public void createPath(final String path) {
-		createPath(new File(path));
+		PApplet.createPath(new File(path));
 	}
 
 	static public void createPath(final File file) {
@@ -6856,7 +6970,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public String urlDecode(final String str) {
 		try {
 			return URLDecoder.decode(str, "UTF-8");
-		} catch (final UnsupportedEncodingException e) { // safe per the JDK source
+		} catch (final UnsupportedEncodingException e) { // safe per the JDK
+			                                             // source
 			return null;
 		}
 	}
@@ -6879,7 +6994,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#reverse(boolean[])
 	 */
 	static public byte[] sort(final byte list[]) {
-		return sort(list, list.length);
+		return PApplet.sort(list, list.length);
 	}
 
 	/**
@@ -6894,7 +7009,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public char[] sort(final char list[]) {
-		return sort(list, list.length);
+		return PApplet.sort(list, list.length);
 	}
 
 	static public char[] sort(final char[] list, final int count) {
@@ -6905,7 +7020,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public int[] sort(final int list[]) {
-		return sort(list, list.length);
+		return PApplet.sort(list, list.length);
 	}
 
 	static public int[] sort(final int[] list, final int count) {
@@ -6916,7 +7031,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public double[] sort(final double list[]) {
-		return sort(list, list.length);
+		return PApplet.sort(list, list.length);
 	}
 
 	static public double[] sort(final double[] list, final int count) {
@@ -6927,7 +7042,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public String[] sort(final String list[]) {
-		return sort(list, list.length);
+		return PApplet.sort(list, list.length);
 	}
 
 	static public String[] sort(final String[] list, final int count) {
@@ -7023,7 +7138,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#shorten(boolean[])
 	 */
 	static public boolean[] expand(final boolean list[]) {
-		return expand(list, list.length << 1);
+		return PApplet.expand(list, list.length << 1);
 	}
 
 	/**
@@ -7037,7 +7152,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public byte[] expand(final byte list[]) {
-		return expand(list, list.length << 1);
+		return PApplet.expand(list, list.length << 1);
 	}
 
 	static public byte[] expand(final byte list[], final int newSize) {
@@ -7047,7 +7162,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public char[] expand(final char list[]) {
-		return expand(list, list.length << 1);
+		return PApplet.expand(list, list.length << 1);
 	}
 
 	static public char[] expand(final char list[], final int newSize) {
@@ -7057,7 +7172,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public int[] expand(final int list[]) {
-		return expand(list, list.length << 1);
+		return PApplet.expand(list, list.length << 1);
 	}
 
 	static public int[] expand(final int list[], final int newSize) {
@@ -7067,7 +7182,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public long[] expand(final long list[]) {
-		return expand(list, list.length << 1);
+		return PApplet.expand(list, list.length << 1);
 	}
 
 	static public long[] expand(final long list[], final int newSize) {
@@ -7077,7 +7192,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public double[] expand(final double list[]) {
-		return expand(list, list.length << 1);
+		return PApplet.expand(list, list.length << 1);
 	}
 
 	static public double[] expand(final double list[], final int newSize) {
@@ -7087,7 +7202,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public String[] expand(final String list[]) {
-		return expand(list, list.length << 1);
+		return PApplet.expand(list, list.length << 1);
 	}
 
 	static public String[] expand(final String list[], final int newSize) {
@@ -7101,7 +7216,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @nowebref
 	 */
 	static public Object expand(final Object array) {
-		return expand(array, Array.getLength(array) << 1);
+		return PApplet.expand(array, Array.getLength(array) << 1);
 	}
 
 	static public Object expand(final Object list, final int newSize) {
@@ -7132,38 +7247,38 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#expand(boolean[])
 	 */
 	static public byte[] append(byte array[], final byte value) {
-		array = expand(array, array.length + 1);
+		array = PApplet.expand(array, array.length + 1);
 		array[array.length - 1] = value;
 		return array;
 	}
 
 	static public char[] append(char array[], final char value) {
-		array = expand(array, array.length + 1);
+		array = PApplet.expand(array, array.length + 1);
 		array[array.length - 1] = value;
 		return array;
 	}
 
 	static public int[] append(int array[], final int value) {
-		array = expand(array, array.length + 1);
+		array = PApplet.expand(array, array.length + 1);
 		array[array.length - 1] = value;
 		return array;
 	}
 
 	static public double[] append(double array[], final double value) {
-		array = expand(array, array.length + 1);
+		array = PApplet.expand(array, array.length + 1);
 		array[array.length - 1] = value;
 		return array;
 	}
 
 	static public String[] append(String array[], final String value) {
-		array = expand(array, array.length + 1);
+		array = PApplet.expand(array, array.length + 1);
 		array[array.length - 1] = value;
 		return array;
 	}
 
 	static public Object append(Object array, final Object value) {
 		final int length = Array.getLength(array);
-		array = expand(array, length + 1);
+		array = PApplet.expand(array, length + 1);
 		Array.set(array, length, value);
 		return array;
 	}
@@ -7183,32 +7298,32 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#expand(boolean[])
 	 */
 	static public boolean[] shorten(final boolean list[]) {
-		return subset(list, 0, list.length - 1);
+		return PApplet.subset(list, 0, list.length - 1);
 	}
 
 	static public byte[] shorten(final byte list[]) {
-		return subset(list, 0, list.length - 1);
+		return PApplet.subset(list, 0, list.length - 1);
 	}
 
 	static public char[] shorten(final char list[]) {
-		return subset(list, 0, list.length - 1);
+		return PApplet.subset(list, 0, list.length - 1);
 	}
 
 	static public int[] shorten(final int list[]) {
-		return subset(list, 0, list.length - 1);
+		return PApplet.subset(list, 0, list.length - 1);
 	}
 
 	static public double[] shorten(final double list[]) {
-		return subset(list, 0, list.length - 1);
+		return PApplet.subset(list, 0, list.length - 1);
 	}
 
 	static public String[] shorten(final String list[]) {
-		return subset(list, 0, list.length - 1);
+		return PApplet.subset(list, 0, list.length - 1);
 	}
 
 	static public Object shorten(final Object list) {
 		final int length = Array.getLength(list);
-		return subset(list, 0, length - 1);
+		return PApplet.subset(list, 0, length - 1);
 	}
 
 	/**
@@ -7349,7 +7464,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public boolean[] subset(final boolean list[], final int start) {
-		return subset(list, start, list.length - start);
+		return PApplet.subset(list, start, list.length - start);
 	}
 
 	/**
@@ -7380,7 +7495,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public byte[] subset(final byte list[], final int start) {
-		return subset(list, start, list.length - start);
+		return PApplet.subset(list, start, list.length - start);
 	}
 
 	static public byte[] subset(final byte list[], final int start, final int count) {
@@ -7390,7 +7505,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public char[] subset(final char list[], final int start) {
-		return subset(list, start, list.length - start);
+		return PApplet.subset(list, start, list.length - start);
 	}
 
 	static public char[] subset(final char list[], final int start, final int count) {
@@ -7400,7 +7515,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public int[] subset(final int list[], final int start) {
-		return subset(list, start, list.length - start);
+		return PApplet.subset(list, start, list.length - start);
 	}
 
 	static public int[] subset(final int list[], final int start, final int count) {
@@ -7410,7 +7525,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public double[] subset(final double list[], final int start) {
-		return subset(list, start, list.length - start);
+		return PApplet.subset(list, start, list.length - start);
 	}
 
 	static public double[] subset(final double list[], final int start, final int count) {
@@ -7420,7 +7535,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public String[] subset(final String list[], final int start) {
-		return subset(list, start, list.length - start);
+		return PApplet.subset(list, start, list.length - start);
 	}
 
 	static public String[] subset(final String list[], final int start, final int count) {
@@ -7431,7 +7546,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 	static public Object subset(final Object list, final int start) {
 		final int length = Array.getLength(list);
-		return subset(list, start, length - start);
+		return PApplet.subset(list, start, length - start);
 	}
 
 	static public Object subset(final Object list, final int start, final int count) {
@@ -7636,7 +7751,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#nfs(double, int, int)
 	 */
 	static public String join(final String[] list, final char separator) {
-		return join(list, String.valueOf(separator));
+		return PApplet.join(list, String.valueOf(separator));
 	}
 
 	static public String join(final String[] list, final String separator) {
@@ -7651,7 +7766,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static public String[] splitTokens(final String value) {
-		return splitTokens(value, WHITESPACE);
+		return PApplet.splitTokens(value, PConstants.WHITESPACE);
 	}
 
 	/**
@@ -7715,8 +7830,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public String[] split(final String value, final char delim) {
 		// do this so that the exception occurs inside the user's
 		// program, rather than appearing to be a bug inside split()
-		if (value == null) { return null;
-		// return split(what, String.valueOf(delim)); // huh
+		if (value == null) {
+			return null;
+			// return split(what, String.valueOf(delim)); // huh
 		}
 
 		final char chars[] = value.toCharArray();
@@ -7771,24 +7887,29 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 
 	static Pattern matchPattern(final String regexp) {
 		Pattern p = null;
-		if (matchPatterns == null) {
-			matchPatterns = new HashMap<String, Pattern>();
+		if (PApplet.matchPatterns == null) {
+			PApplet.matchPatterns = new HashMap<String, Pattern>();
 		} else {
-			p = matchPatterns.get(regexp);
+			p = PApplet.matchPatterns.get(regexp);
 		}
 		if (p == null) {
-			if (matchPatterns.size() == 10) {
-				// Just clear out the match patterns here if more than 10 are being
-				// used. It's not terribly efficient, but changes that you have >10
+			if (PApplet.matchPatterns.size() == 10) {
+				// Just clear out the match patterns here if more than 10 are
+				// being
+				// used. It's not terribly efficient, but changes that you have
+				// >10
 				// different match patterns are very slim, unless you're doing
-				// something really tricky (like custom match() methods), in which
-				// case match() won't be efficient anyway. (And you should just be
-				// using your own Java code.) The alternative is using a queue here,
+				// something really tricky (like custom match() methods), in
+				// which
+				// case match() won't be efficient anyway. (And you should just
+				// be
+				// using your own Java code.) The alternative is using a queue
+				// here,
 				// but that's a silly amount of work for negligible benefit.
-				matchPatterns.clear();
+				PApplet.matchPatterns.clear();
 			}
 			p = Pattern.compile(regexp, Pattern.MULTILINE | Pattern.DOTALL);
-			matchPatterns.put(regexp, p);
+			PApplet.matchPatterns.put(regexp, p);
 		}
 		return p;
 	}
@@ -7824,7 +7945,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#trim(String)
 	 */
 	static public String[] match(final String str, final String regexp) {
-		final Pattern p = matchPattern(regexp);
+		final Pattern p = PApplet.matchPattern(regexp);
 		final Matcher m = p.matcher(str);
 		if (m.find()) {
 			final int count = m.groupCount() + 1;
@@ -7869,7 +7990,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#trim(String)
 	 */
 	static public String[][] matchAll(final String str, final String regexp) {
-		final Pattern p = matchPattern(regexp);
+		final Pattern p = PApplet.matchPattern(regexp);
 		final Matcher m = p.matcher(str);
 		final ArrayList<String[]> results = new ArrayList<String[]>();
 		final int count = m.groupCount() + 1;
@@ -7880,7 +8001,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			}
 			results.add(groups);
 		}
-		if (results.isEmpty()) { return null; }
+		if (results.isEmpty()) {
+			return null;
+		}
 		final String[][] matches = new String[results.size()][count];
 		for (int i = 0; i < matches.length; i++) {
 			matches[i] = results.get(i);
@@ -8127,7 +8250,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * Parse a String into an int value. Returns 0 if the value is bad.
 	 */
 	static final public int parseInt(final String what) {
-		return parseInt(what, 0);
+		return PApplet.parseInt(what, 0);
 	}
 
 	/**
@@ -8187,7 +8310,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * parseInt(s); numbers will contain { 1, 300, 44 }
 	 */
 	static public int[] parseInt(final String what[]) {
-		return parseInt(what, 0);
+		return PApplet.parseInt(what, 0);
 	}
 
 	/**
@@ -8223,7 +8346,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static final public float parseFloat(final String what) {
-		return parseFloat(what, Float.NaN);
+		return PApplet.parseFloat(what, Float.NaN);
 	}
 
 	static final public float parseFloat(final String what, final float otherwise) {
@@ -8262,7 +8385,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static final public float[] parseFloat(final String what[]) {
-		return parseFloat(what, Float.NaN);
+		return PApplet.parseFloat(what, Float.NaN);
 	}
 
 	static final public float[] parseFloat(final String what[], final float missing) {
@@ -8286,7 +8409,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	}
 
 	static final public double[] parseDouble(final String what[]) {
-		return parseDouble(what, Float.NaN);
+		return PApplet.parseDouble(what, Float.NaN);
 	}
 
 	static final public double[] parseDouble(final String what[], final double missing) {
@@ -8381,7 +8504,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public String[] nf(final int num[], final int digits) {
 		final String formatted[] = new String[num.length];
 		for (int i = 0; i < formatted.length; i++) {
-			formatted[i] = nf(num[i], digits);
+			formatted[i] = PApplet.nf(num[i], digits);
 		}
 		return formatted;
 	}
@@ -8408,14 +8531,16 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#int(double)
 	 */
 	static public String nf(final int num, final int digits) {
-		if ((int_nf != null) && (int_nf_digits == digits) && !int_nf_commas) { return int_nf.format(num); }
+		if ((PApplet.int_nf != null) && (PApplet.int_nf_digits == digits) && !PApplet.int_nf_commas) {
+			return PApplet.int_nf.format(num);
+		}
 
-		int_nf = NumberFormat.getInstance();
-		int_nf.setGroupingUsed(false); // no commas
-		int_nf_commas = false;
-		int_nf.setMinimumIntegerDigits(digits);
-		int_nf_digits = digits;
-		return int_nf.format(num);
+		PApplet.int_nf = NumberFormat.getInstance();
+		PApplet.int_nf.setGroupingUsed(false); // no commas
+		PApplet.int_nf_commas = false;
+		PApplet.int_nf.setMinimumIntegerDigits(digits);
+		PApplet.int_nf_digits = digits;
+		return PApplet.int_nf.format(num);
 	}
 
 	/**
@@ -8437,7 +8562,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public String[] nfc(final int num[]) {
 		final String formatted[] = new String[num.length];
 		for (int i = 0; i < formatted.length; i++) {
-			formatted[i] = nfc(num[i]);
+			formatted[i] = PApplet.nfc(num[i]);
 		}
 		return formatted;
 	}
@@ -8448,14 +8573,16 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * it'll use whatever makes sense for the locale.
 	 */
 	static public String nfc(final int num) {
-		if ((int_nf != null) && (int_nf_digits == 0) && int_nf_commas) { return int_nf.format(num); }
+		if ((PApplet.int_nf != null) && (PApplet.int_nf_digits == 0) && PApplet.int_nf_commas) {
+			return PApplet.int_nf.format(num);
+		}
 
-		int_nf = NumberFormat.getInstance();
-		int_nf.setGroupingUsed(true);
-		int_nf_commas = true;
-		int_nf.setMinimumIntegerDigits(0);
-		int_nf_digits = 0;
-		return int_nf.format(num);
+		PApplet.int_nf = NumberFormat.getInstance();
+		PApplet.int_nf.setGroupingUsed(true);
+		PApplet.int_nf_commas = true;
+		PApplet.int_nf.setMinimumIntegerDigits(0);
+		PApplet.int_nf_digits = 0;
+		return PApplet.int_nf.format(num);
 	}
 
 	/**
@@ -8481,13 +8608,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#nfc(double, int)
 	 */
 	static public String nfs(final int num, final int digits) {
-		return (num < 0) ? nf(num, digits) : (' ' + nf(num, digits));
+		return (num < 0) ? PApplet.nf(num, digits) : (' ' + PApplet.nf(num, digits));
 	}
 
 	static public String[] nfs(final int num[], final int digits) {
 		final String formatted[] = new String[num.length];
 		for (int i = 0; i < formatted.length; i++) {
-			formatted[i] = nfs(num[i], digits);
+			formatted[i] = PApplet.nfs(num[i], digits);
 		}
 		return formatted;
 	}
@@ -8515,13 +8642,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#nfc(double, int)
 	 */
 	static public String nfp(final int num, final int digits) {
-		return (num < 0) ? nf(num, digits) : ('+' + nf(num, digits));
+		return (num < 0) ? PApplet.nf(num, digits) : ('+' + PApplet.nf(num, digits));
 	}
 
 	static public String[] nfp(final int num[], final int digits) {
 		final String formatted[] = new String[num.length];
 		for (int i = 0; i < formatted.length; i++) {
-			formatted[i] = nfp(num[i], digits);
+			formatted[i] = PApplet.nfp(num[i], digits);
 		}
 		return formatted;
 	}
@@ -8539,7 +8666,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public String[] nf(final double num[], final int left, final int right) {
 		final String formatted[] = new String[num.length];
 		for (int i = 0; i < formatted.length; i++) {
-			formatted[i] = nf(num[i], left, right);
+			formatted[i] = PApplet.nf(num[i], left, right);
 		}
 		return formatted;
 	}
@@ -8553,23 +8680,25 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 *            number of digits to the right of the decimal point
 	 */
 	static public String nf(final double num, final int left, final int right) {
-		if ((float_nf != null) && (float_nf_left == left) && (float_nf_right == right) && !float_nf_commas) { return float_nf
-		        .format(num); }
+		if ((PApplet.float_nf != null) && (PApplet.float_nf_left == left) && (PApplet.float_nf_right == right)
+		        && !PApplet.float_nf_commas) {
+			return PApplet.float_nf.format(num);
+		}
 
-		float_nf = NumberFormat.getInstance();
-		float_nf.setGroupingUsed(false);
-		float_nf_commas = false;
+		PApplet.float_nf = NumberFormat.getInstance();
+		PApplet.float_nf.setGroupingUsed(false);
+		PApplet.float_nf_commas = false;
 
 		if (left != 0) {
-			float_nf.setMinimumIntegerDigits(left);
+			PApplet.float_nf.setMinimumIntegerDigits(left);
 		}
 		if (right != 0) {
-			float_nf.setMinimumFractionDigits(right);
-			float_nf.setMaximumFractionDigits(right);
+			PApplet.float_nf.setMinimumFractionDigits(right);
+			PApplet.float_nf.setMaximumFractionDigits(right);
 		}
-		float_nf_left = left;
-		float_nf_right = right;
-		return float_nf.format(num);
+		PApplet.float_nf_left = left;
+		PApplet.float_nf_right = right;
+		return PApplet.float_nf.format(num);
 	}
 
 	/**
@@ -8581,26 +8710,28 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public String[] nfc(final double num[], final int right) {
 		final String formatted[] = new String[num.length];
 		for (int i = 0; i < formatted.length; i++) {
-			formatted[i] = nfc(num[i], right);
+			formatted[i] = PApplet.nfc(num[i], right);
 		}
 		return formatted;
 	}
 
 	static public String nfc(final double num, final int right) {
-		if ((float_nf != null) && (float_nf_left == 0) && (float_nf_right == right) && float_nf_commas) { return float_nf
-		        .format(num); }
+		if ((PApplet.float_nf != null) && (PApplet.float_nf_left == 0) && (PApplet.float_nf_right == right)
+		        && PApplet.float_nf_commas) {
+			return PApplet.float_nf.format(num);
+		}
 
-		float_nf = NumberFormat.getInstance();
-		float_nf.setGroupingUsed(true);
-		float_nf_commas = true;
+		PApplet.float_nf = NumberFormat.getInstance();
+		PApplet.float_nf.setGroupingUsed(true);
+		PApplet.float_nf_commas = true;
 
 		if (right != 0) {
-			float_nf.setMinimumFractionDigits(right);
-			float_nf.setMaximumFractionDigits(right);
+			PApplet.float_nf.setMinimumFractionDigits(right);
+			PApplet.float_nf.setMaximumFractionDigits(right);
 		}
-		float_nf_left = 0;
-		float_nf_right = right;
-		return float_nf.format(num);
+		PApplet.float_nf_left = 0;
+		PApplet.float_nf_right = right;
+		return PApplet.float_nf.format(num);
 	}
 
 	/**
@@ -8614,13 +8745,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public String[] nfs(final double num[], final int left, final int right) {
 		final String formatted[] = new String[num.length];
 		for (int i = 0; i < formatted.length; i++) {
-			formatted[i] = nfs(num[i], left, right);
+			formatted[i] = PApplet.nfs(num[i], left, right);
 		}
 		return formatted;
 	}
 
 	static public String nfs(final double num, final int left, final int right) {
-		return (num < 0) ? nf(num, left, right) : (' ' + nf(num, left, right));
+		return (num < 0) ? PApplet.nf(num, left, right) : (' ' + PApplet.nf(num, left, right));
 	}
 
 	/**
@@ -8632,13 +8763,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public String[] nfp(final double num[], final int left, final int right) {
 		final String formatted[] = new String[num.length];
 		for (int i = 0; i < formatted.length; i++) {
-			formatted[i] = nfp(num[i], left, right);
+			formatted[i] = PApplet.nfp(num[i], left, right);
 		}
 		return formatted;
 	}
 
 	static public String nfp(final double num, final int left, final int right) {
-		return (num < 0) ? nf(num, left, right) : ('+' + nf(num, left, right));
+		return (num < 0) ? PApplet.nf(num, left, right) : ('+' + PApplet.nf(num, left, right));
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -8663,15 +8794,15 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#unbinary(String)
 	 */
 	static final public String hex(final byte value) {
-		return hex(value, 2);
+		return PApplet.hex(value, 2);
 	}
 
 	static final public String hex(final char value) {
-		return hex(value, 4);
+		return PApplet.hex(value, 4);
 	}
 
 	static final public String hex(final int value) {
-		return hex(value, 8);
+		return PApplet.hex(value, 8);
 	}
 
 	/**
@@ -8688,7 +8819,9 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		if (length > digits) {
 			return stuff.substring(length - digits);
 
-		} else if (length < digits) { return "00000000".substring(8 - (digits - length)) + stuff; }
+		} else if (length < digits) {
+			return "00000000".substring(8 - (digits - length)) + stuff;
+		}
 		return stuff;
 	}
 
@@ -8704,7 +8837,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * @see PApplet#unbinary(String)
 	 */
 	static final public int unhex(final String value) {
-		// has to parse as a Long so that it'll work for numbers bigger than 2^31
+		// has to parse as a Long so that it'll work for numbers bigger than
+		// 2^31
 		return (int) (Long.parseLong(value, 16));
 	}
 
@@ -8715,7 +8849,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * have 8 digits.
 	 */
 	static final public String binary(final byte value) {
-		return binary(value, 8);
+		return PApplet.binary(value, 8);
 	}
 
 	/**
@@ -8723,7 +8857,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * have 16 digits because chars are two bytes long.
 	 */
 	static final public String binary(final char value) {
-		return binary(value, 16);
+		return PApplet.binary(value, 16);
 	}
 
 	/**
@@ -8732,7 +8866,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * to specify how many.
 	 */
 	static final public String binary(final int value) {
-		return binary(value, 32);
+		return PApplet.binary(value, 32);
 	}
 
 	/*
@@ -9029,7 +9163,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				// System.err.println(PApplet.EXTERNAL_QUIT);
 				// System.err.flush(); // important
 				// System.exit(0);
-				exit(); // don't quit, need to just shut everything down (0133)
+				PApplet.this.exit(); // don't quit, need to just shut everything
+				                     // down (0133)
 			}
 		});
 	}
@@ -9057,10 +9192,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 						final Dimension windowSize = farm.getSize();
 						final Rectangle newBounds = new Rectangle(insets.left, insets.top, windowSize.width
 						        - insets.left - insets.right, windowSize.height - insets.top - insets.bottom);
-						final Rectangle oldBounds = getBounds();
+						final Rectangle oldBounds = PApplet.this.getBounds();
 						if (!newBounds.equals(oldBounds)) {
-							// the ComponentListener in PApplet will handle calling size()
-							setBounds(newBounds);
+							// the ComponentListener in PApplet will handle
+							// calling size()
+							PApplet.this.setBounds(newBounds);
 						}
 					}
 				}
@@ -9075,13 +9211,17 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	// 71, 73, 70, 56, 57, 97, 16, 0, 16, 0, -77, 0, 0, 0, 0, 0, -1, -1, -1, 12,
 	// 12, 13, -15, -15, -14, 45, 57, 74, 54, 80, 111, 47, 71, 97, 62, 88, 117,
 	// 1, 14, 27, 7, 41, 73, 15, 52, 85, 2, 31, 55, 4, 54, 94, 18, 69, 109, 37,
-	// 87, 126, -1, -1, -1, 33, -7, 4, 1, 0, 0, 15, 0, 44, 0, 0, 0, 0, 16, 0, 16,
+	// 87, 126, -1, -1, -1, 33, -7, 4, 1, 0, 0, 15, 0, 44, 0, 0, 0, 0, 16, 0,
+	// 16,
 	// 0, 0, 4, 122, -16, -107, 114, -86, -67, 83, 30, -42, 26, -17, -100, -45,
-	// 56, -57, -108, 48, 40, 122, -90, 104, 67, -91, -51, 32, -53, 77, -78, -100,
+	// 56, -57, -108, 48, 40, 122, -90, 104, 67, -91, -51, 32, -53, 77, -78,
+	// -100,
 	// 47, -86, 12, 76, -110, -20, -74, -101, 97, -93, 27, 40, 20, -65, 65, 48,
-	// -111, 99, -20, -112, -117, -123, -47, -105, 24, 114, -112, 74, 69, 84, 25,
+	// -111, 99, -20, -112, -117, -123, -47, -105, 24, 114, -112, 74, 69, 84,
+	// 25,
 	// 93, 88, -75, 9, 46, 2, 49, 88, -116, -67, 7, -19, -83, 60, 38, 3, -34, 2,
-	// 66, -95, 27, -98, 13, 4, -17, 55, 33, 109, 11, 11, -2, -128, 121, 123, 62,
+	// 66, -95, 27, -98, 13, 4, -17, 55, 33, 109, 11, 11, -2, -128, 121, 123,
+	// 62,
 	// 91, 120, -128, 127, 122, 115, 102, 2, 119, 0, -116, -113, -119, 6, 102,
 	// 121, -108, -126, 5, 18, 6, 4, -102, -101, -100, 114, 15, 17, 0, 59
 	// };
@@ -9091,24 +9231,27 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	protected void setIconImage(final Frame frame) {
 		// On OS X, this only affects what shows up in the dock when minimized.
 		// So this is actually a step backwards. Brilliant.
-		if (platform != MACOSX) {
-			// Image image = Toolkit.getDefaultToolkit().createImage(ICON_IMAGE);
+		if (PApplet.platform != PConstants.MACOSX) {
+			// Image image =
+			// Toolkit.getDefaultToolkit().createImage(ICON_IMAGE);
 			// frame.setIconImage(image);
 			try {
-				if (iconImages == null) {
-					iconImages = new ArrayList<Image>();
+				if (PApplet.iconImages == null) {
+					PApplet.iconImages = new ArrayList<Image>();
 					final int[] sizes = { 16, 24, 32, 48, 64 };
 
 					for (final int sz : sizes) {
-						final URL url = getClass().getResource("/icon/icon-" + sz + ".png");
+						final URL url = this.getClass().getResource("/icon/icon-" + sz + ".png");
 						final Image image = Toolkit.getDefaultToolkit().getImage(url);
-						iconImages.add(image);
-						// iconImages.add(Toolkit.getLibImage("icons/pde-" + sz + ".png", frame));
+						PApplet.iconImages.add(image);
+						// iconImages.add(Toolkit.getLibImage("icons/pde-" + sz
+						// + ".png", frame));
 					}
 				}
-				frame.setIconImages(iconImages);
+				frame.setIconImages(PApplet.iconImages);
 			} catch (final Exception e) {
-				// e.printStackTrace(); // more or less harmless; don't spew errors
+				// e.printStackTrace(); // more or less harmless; don't spew
+				// errors
 			}
 		}
 	}
@@ -9181,7 +9324,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 * </PRE>
 	 */
 	static public void main(final String[] args) {
-		runSketch(args, null);
+		PApplet.runSketch(args, null);
 	}
 
 	/**
@@ -9192,7 +9335,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 *            name of the class to load (with package if any)
 	 */
 	static public void main(final String mainClass) {
-		main(mainClass, null);
+		PApplet.main(mainClass, null);
 	}
 
 	/**
@@ -9207,17 +9350,17 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	static public void main(final String mainClass, final String[] passedArgs) {
 		String[] args = new String[] { mainClass };
 		if (passedArgs != null) {
-			args = concat(args, passedArgs);
+			args = PApplet.concat(args, passedArgs);
 		}
-		runSketch(args, null);
+		PApplet.runSketch(args, null);
 	}
 
 	static public void runSketch(final String args[], final PApplet constructedApplet) {
 		// Disable abyssmally slow Sun renderer on OS X 10.5.
-		if (platform == MACOSX) {
+		if (PApplet.platform == PConstants.MACOSX) {
 			// Only run this on OS X otherwise it can cause a permissions error.
 			// http://dev.processing.org/bugs/show_bug.cgi?id=976
-			System.setProperty("apple.awt.graphics.UseQuartz", String.valueOf(useQuartz));
+			System.setProperty("apple.awt.graphics.UseQuartz", String.valueOf(PApplet.useQuartz));
 		}
 
 		// Doesn't seem to do much to help avoid flicker
@@ -9245,7 +9388,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// }
 		//
 		//
-		// static public void runSketchEDT(final String args[], final PApplet constructedApplet) {
+		// static public void runSketchEDT(final String args[], final PApplet
+		// constructedApplet) {
 		boolean external = false;
 		int[] location = null;
 		int[] editorLocation = null;
@@ -9277,11 +9421,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 				param = args[argIndex].substring(0, equals);
 				value = args[argIndex].substring(equals + 1);
 
-				if (param.equals(ARGS_EDITOR_LOCATION)) {
+				if (param.equals(PApplet.ARGS_EDITOR_LOCATION)) {
 					external = true;
-					editorLocation = parseInt(split(value, ','));
+					editorLocation = PApplet.parseInt(PApplet.split(value, ','));
 
-				} else if (param.equals(ARGS_DISPLAY)) {
+				} else if (param.equals(PApplet.ARGS_DISPLAY)) {
 					final int deviceIndex = Integer.parseInt(value);
 
 					final GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -9296,39 +9440,40 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 						}
 					}
 
-				} else if (param.equals(ARGS_BGCOLOR)) {
+				} else if (param.equals(PApplet.ARGS_BGCOLOR)) {
 					if (value.charAt(0) == '#') {
 						value = value.substring(1);
 					}
 					backgroundColor = new Color(Integer.parseInt(value, 16));
 
-				} else if (param.equals(ARGS_STOP_COLOR)) {
+				} else if (param.equals(PApplet.ARGS_STOP_COLOR)) {
 					if (value.charAt(0) == '#') {
 						value = value.substring(1);
 					}
 					stopColor = new Color(Integer.parseInt(value, 16));
 
-				} else if (param.equals(ARGS_SKETCH_FOLDER)) {
+				} else if (param.equals(PApplet.ARGS_SKETCH_FOLDER)) {
 					folder = value;
 
-				} else if (param.equals(ARGS_LOCATION)) {
-					location = parseInt(split(value, ','));
+				} else if (param.equals(PApplet.ARGS_LOCATION)) {
+					location = PApplet.parseInt(PApplet.split(value, ','));
 				}
 
 			} else {
-				if (args[argIndex].equals(ARGS_PRESENT)) { // keep for compatability
+				if (args[argIndex].equals(PApplet.ARGS_PRESENT)) { // keep for
+					                                               // compatability
 					present = true;
 
-				} else if (args[argIndex].equals(ARGS_FULL_SCREEN)) {
+				} else if (args[argIndex].equals(PApplet.ARGS_FULL_SCREEN)) {
 					present = true;
 
 					// } else if (args[argIndex].equals(ARGS_EXCLUSIVE)) {
 					// exclusive = true;
 
-				} else if (args[argIndex].equals(ARGS_HIDE_STOP)) {
+				} else if (args[argIndex].equals(PApplet.ARGS_HIDE_STOP)) {
 					hideStop = true;
 
-				} else if (args[argIndex].equals(ARGS_EXTERNAL)) {
+				} else if (args[argIndex].equals(PApplet.ARGS_EXTERNAL)) {
 					external = true;
 
 				} else {
@@ -9340,7 +9485,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		}
 
 		// Set this property before getting into any GUI init code
-		// System.setProperty("com.apple.mrj.application.apple.menu.about.name", name);
+		// System.setProperty("com.apple.mrj.application.apple.menu.about.name",
+		// name);
 		// This )*)(*@#$ Apple crap don't work no matter where you put it
 		// (static method of the class, at the top of main, wherever)
 
@@ -9383,7 +9529,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// public void componentResized(ComponentEvent e) {
 		// Component c = e.getComponent();
 		// // Rectangle bounds = c.getBounds();
-		// System.out.println("  " + c.getName() + " wants to be: " + c.getSize());
+		// System.out.println("  " + c.getName() + " wants to be: " +
+		// c.getSize());
 		// }
 		// });
 
@@ -9398,10 +9545,13 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// public void componentResized(ComponentEvent e) {
 		// println("frame: " + e + " " + applet.frame.getInsets());
 		// Insets insets = applet.frame.getInsets();
-		// int wide = e.getComponent().getWidth() - (insets.left + insets.right);
-		// int high = e.getComponent().getHeight() - (insets.top + insets.bottom);
+		// int wide = e.getComponent().getWidth() - (insets.left +
+		// insets.right);
+		// int high = e.getComponent().getHeight() - (insets.top +
+		// insets.bottom);
 		// if (applet.getWidth() != wide || applet.getHeight() != high) {
-		// debug("Frame.componentResized() setting applet size " + wide + " " + high);
+		// debug("Frame.componentResized() setting applet size " + wide + " " +
+		// high);
 		// applet.setSize(wide, high);
 		// }
 		// }
@@ -9409,11 +9559,14 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// public void componentMoved(ComponentEvent e) {
 		// //println("frame: " + e + " " + applet.frame.getInsets());
 		// Insets insets = applet.frame.getInsets();
-		// int wide = e.getComponent().getWidth() - (insets.left + insets.right);
-		// int high = e.getComponent().getHeight() - (insets.top + insets.bottom);
+		// int wide = e.getComponent().getWidth() - (insets.left +
+		// insets.right);
+		// int high = e.getComponent().getHeight() - (insets.top +
+		// insets.bottom);
 		// //applet.g.setsi
 		// if (applet.getWidth() != wide || applet.getHeight() != high) {
-		// debug("Frame.componentMoved() setting applet size " + wide + " " + high);
+		// debug("Frame.componentMoved() setting applet size " + wide + " " +
+		// high);
 		// applet.setSize(wide, high);
 		// }
 		// }
@@ -9426,13 +9579,16 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// A handful of things that need to be set before init/start.
 		applet.frame = frame;
 		applet.sketchPath = folder;
-		// If the applet doesn't call for full screen, but the command line does,
-		// enable it. Conversely, if the command line does not, don't disable it.
+		// If the applet doesn't call for full screen, but the command line
+		// does,
+		// enable it. Conversely, if the command line does not, don't disable
+		// it.
 		// applet.fullScreen |= present;
 		// Query the applet to see if it wants to be full screen all the time.
 		present |= applet.sketchFullScreen();
 		// pass everything after the class name in as args to the sketch itself
-		// (fixed for 2.0a5, this was just subsetting by 1, which didn't skip opts)
+		// (fixed for 2.0a5, this was just subsetting by 1, which didn't skip
+		// opts)
 		applet.args = PApplet.subset(args, argIndex + 1);
 		applet.external = external;
 
@@ -9458,8 +9614,10 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// http://dev.processing.org/bugs/show_bug.cgi?id=908
 		if (present) {
 			// if (platform == MACOSX) {
-			// // Call some native code to remove the menu bar on OS X. Not necessary
-			// // on Linux and Windows, who are happy to make full screen windows.
+			// // Call some native code to remove the menu bar on OS X. Not
+			// necessary
+			// // on Linux and Windows, who are happy to make full screen
+			// windows.
 			// japplemenubar.JAppleMenuBar.hide();
 			// }
 
@@ -9487,7 +9645,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// insufficient, places the 100x100 sketches offset strangely
 		// frame.validate();
 
-		// disabling resize has to happen after pack() to avoid apparent Apple bug
+		// disabling resize has to happen after pack() to avoid apparent Apple
+		// bug
 		// http://code.google.com/p/processing/issues/detail?id=467
 		frame.setResizable(false);
 
@@ -9516,15 +9675,19 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		// // bounds will be set below, but can't change to setUndecorated() now
 		// present = true;
 		// }
-		// // Opting not to do this, because we can't remove the decorations on the
-		// // window at this point. And re-opening a new winodw is a lot of mess.
+		// // Opting not to do this, because we can't remove the decorations on
+		// the
+		// // window at this point. And re-opening a new winodw is a lot of
+		// mess.
 		// // Better all around to just encourage the use of sketchFullScreen()
 		// // or cmd/ctrl-shift-R in the PDE.
 
 		if (present) {
-			if (platform == MACOSX) {
-				// Call some native code to remove the menu bar on OS X. Not necessary
-				// on Linux and Windows, who are happy to make full screen windows.
+			if (PApplet.platform == PConstants.MACOSX) {
+				// Call some native code to remove the menu bar on OS X. Not
+				// necessary
+				// on Linux and Windows, who are happy to make full screen
+				// windows.
 				japplemenubar.JAppleMenuBar.hide();
 			}
 
@@ -9563,8 +9726,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 			// frame.pack(); // get insets. get more.
 			final Insets insets = frame.getInsets();
 
-			final int windowW = Math.max(applet.width, MIN_WINDOW_WIDTH) + insets.left + insets.right;
-			final int windowH = Math.max(applet.height, MIN_WINDOW_HEIGHT) + insets.top + insets.bottom;
+			final int windowW = Math.max(applet.width, PApplet.MIN_WINDOW_WIDTH) + insets.left + insets.right;
+			final int windowH = Math.max(applet.height, PApplet.MIN_WINDOW_HEIGHT) + insets.top + insets.bottom;
 
 			frame.setSize(windowW, windowH);
 
@@ -9597,15 +9760,19 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 					frame.setLocation(locationX, locationY);
 				}
 			} else { // just center on screen
-				// Can't use frame.setLocationRelativeTo(null) because it sends the
-				// frame to the main display, which undermines the --display setting.
+				// Can't use frame.setLocationRelativeTo(null) because it sends
+				// the
+				// frame to the main display, which undermines the --display
+				// setting.
 				frame.setLocation(screenRect.x + ((screenRect.width - applet.width) / 2), screenRect.y
 				        + ((screenRect.height - applet.height) / 2));
 			}
 			final Point frameLoc = frame.getLocation();
 			if (frameLoc.y < 0) {
-				// Windows actually allows you to place frames where they can't be
-				// closed. Awesome. http://dev.processing.org/bugs/show_bug.cgi?id=1508
+				// Windows actually allows you to place frames where they can't
+				// be
+				// closed. Awesome.
+				// http://dev.processing.org/bugs/show_bug.cgi?id=1508
 				frame.setLocation(frameLoc.x, 30);
 			}
 
@@ -9665,11 +9832,11 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 		final String className = this.getClass().getSimpleName();
 		final String cleanedClass = className.replaceAll("__[^_]+__\\$", "").replaceAll("\\$\\d+", "");
 		argsWithSketchName[args.length] = cleanedClass;
-		runSketch(argsWithSketchName, this);
+		PApplet.runSketch(argsWithSketchName, this);
 	}
 
 	protected void runSketch() {
-		runSketch(new String[0]);
+		this.runSketch(new String[0]);
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -9694,8 +9861,8 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	public PGraphics beginRecord(final String renderer, String filename) {
 		filename = insertFrame(filename);
-		final PGraphics rec = createGraphics(width, height, renderer, filename);
-		beginRecord(rec);
+		final PGraphics rec = this.createGraphics(width, height, renderer, filename);
+		this.beginRecord(rec);
 		return rec;
 	}
 
@@ -9754,7 +9921,7 @@ public class PApplet extends Applet implements PConstants, Runnable, MouseListen
 	 */
 	public PGraphics beginRaw(final String renderer, String filename) {
 		filename = insertFrame(filename);
-		final PGraphics rec = createGraphics(width, height, renderer, filename);
+		final PGraphics rec = this.createGraphics(width, height, renderer, filename);
 		g.beginRaw(rec);
 		return rec;
 	}

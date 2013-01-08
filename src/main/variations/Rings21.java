@@ -1,9 +1,5 @@
 package main.variations;
 
-import static java.lang.Math.atan2;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
 
@@ -18,9 +14,9 @@ public final class Rings21 extends Variation {
 		final double x = pIn.x;
 		final double y = pIn.y;
 		final double rsq = (x * x) + (y * y);
-		final double r = sqrt(rsq);
-		final double t = atan2(x, y);
-		final double p = atan2(y, x);
+		final double r = Math.sqrt(rsq);
+		final double t = Math.atan2(x, y);
+		final double p = Math.atan2(y, x);
 
 		final double[][] currentMatrix = currentGenome.affineMatrices[currentGenome.currentMatrix];
 		final double a = currentMatrix[0][0];
@@ -31,8 +27,8 @@ public final class Rings21 extends Variation {
 		final double f = currentMatrix[1][2];
 
 		final double multiplier = ((((r + (c * c)) % (2 * c * c)) - (c * c)) + (r * (1 - (c * c))));
-		pOut.x = multiplier * cos(t);
-		pOut.y = multiplier * sin(t);
+		pOut.x = multiplier * Math.cos(t);
+		pOut.y = multiplier * Math.sin(t);
 
 		return pOut;
 	}

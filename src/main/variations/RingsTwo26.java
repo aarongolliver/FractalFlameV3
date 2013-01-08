@@ -1,12 +1,5 @@
 package main.variations;
 
-import static java.lang.Math.atan2;
-import static java.lang.Math.cos;
-import static java.lang.Math.sin;
-import static java.lang.Math.*;
-
-import java.util.concurrent.ThreadLocalRandom;
-
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
 
@@ -16,7 +9,7 @@ public final class RingsTwo26 extends Variation {
 	public RingsTwo26(final FractalGenome currentGenome) {
 		super(currentGenome);
 		ID = 26;
-		p1 = pow(currentGenome.variationParameters[ID][0], 1);
+		p1 = Math.pow(currentGenome.variationParameters[ID][0], 1);
 	}
 
 	@Override
@@ -24,9 +17,9 @@ public final class RingsTwo26 extends Variation {
 		final double x = pIn.x;
 		final double y = pIn.y;
 		final double rsq = (x * x) + (y * y);
-		final double r = sqrt(rsq);
-		final double t = atan2(x, y);
-		final double p = atan2(y, x);
+		final double r = Math.sqrt(rsq);
+		final double t = Math.atan2(x, y);
+		final double p = Math.atan2(y, x);
 
 		final double[][] currentMatrix = currentGenome.affineMatrices[currentGenome.currentMatrix];
 		final double a = currentMatrix[0][0];
@@ -36,10 +29,10 @@ public final class RingsTwo26 extends Variation {
 		final double e = currentMatrix[1][1];
 		final double f = currentMatrix[1][2];
 
-		final double T = r - 2 * p1 * p1 * floor((r + p1 * p1) / (2 * p1 * p1)) + r * (1 - p1 * p1);
+		final double T = (r - (2 * p1 * p1 * Math.floor((r + (p1 * p1)) / (2 * p1 * p1)))) + (r * (1 - (p1 * p1)));
 
-		pOut.x = T * sin(t);
-		pOut.y = T * cos(t);
+		pOut.x = T * Math.sin(t);
+		pOut.y = T * Math.cos(t);
 
 		return pOut;
 	}

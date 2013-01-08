@@ -148,7 +148,8 @@ public class PFont implements PConstants {
 	// /**
 	// * If not null, this font is set to load dynamically. This is the default
 	// * when createFont() method is called without a character set. Bitmap
-	// * versions of characters are only created when prompted by an index() call.
+	// * versions of characters are only created when prompted by an index()
+	// call.
 	// */
 	// protected Font lazyFont;
 	protected BufferedImage	               lazyImage;
@@ -224,7 +225,8 @@ public class PFont implements PConstants {
 		lazyMetrics = lazyGraphics.getFontMetrics();
 		lazySamples = new int[mbox3 * mbox3];
 
-		// These values are terrible/unusable. Verified again for Processing 1.1.
+		// These values are terrible/unusable. Verified again for Processing
+		// 1.1.
 		// They vary widely per-platform and per-font, so instead we'll use the
 		// calculate-by-hand method of measuring pixels in characters.
 		// ascent = lazyMetrics.getAscent();
@@ -260,7 +262,8 @@ public class PFont implements PConstants {
 
 			// foreign font, so just make ascent the max topExtent
 			// for > 1.0.9, not doing this anymore.
-			// instead using getAscent() and getDescent() values for these cases.
+			// instead using getAscent() and getDescent() values for these
+			// cases.
 			// if ((ascent == 0) && (descent == 0)) {
 			// //for (int i = 0; i < charCount; i++) {
 			// for (Glyph glyph : glyphs) {
@@ -285,7 +288,8 @@ public class PFont implements PConstants {
 		// the ascent and descent values for the font. This was tested to only
 		// require 5-10 ms on a 2.4 GHz MacBook Pro.
 		// In versions 1.0.9 and earlier, fonts that could not display d or p
-		// used the max up/down values as calculated by looking through the font.
+		// used the max up/down values as calculated by looking through the
+		// font.
 		// That's no longer valid with the auto-generating fonts, so we'll just
 		// use getAscent() and getDescent() in such (minor) cases.
 		if (ascent == 0) {
@@ -358,8 +362,9 @@ public class PFont implements PConstants {
 
 		// not a roman font, so throw an error and ask to re-build.
 		// that way can avoid a bunch of error checking hacks in here.
-		if ((ascent == 0) && (descent == 0)) { throw new RuntimeException("Please use \"Create Font\" to "
-		        + "re-create this font."); }
+		if ((ascent == 0) && (descent == 0)) {
+			throw new RuntimeException("Please use \"Create Font\" to " + "re-create this font.");
+		}
 
 		for (final Glyph glyph : glyphs) {
 			glyph.readBitmap(is);
@@ -493,7 +498,8 @@ public class PFont implements PConstants {
 	 * Return the native java.awt.Font associated with this PFont (if any).
 	 */
 	public Object getNative() {
-		if (subsetting) { return null; // don't return the font for use
+		if (subsetting) {
+			return null; // don't return the font for use
 		}
 		return font;
 	}
@@ -524,9 +530,12 @@ public class PFont implements PConstants {
 				font = new Font(name, Font.PLAIN, size);
 				// if the ps name matches, then we're in fine shape
 				if (!font.getPSName().equals(psname)) {
-					// on osx java 1.4 (not 1.3.. ugh), you can specify the ps name
-					// of the font, so try that in case this .vlw font was created on pc
-					// and the name is different, but the ps name is found on the
+					// on osx java 1.4 (not 1.3.. ugh), you can specify the ps
+					// name
+					// of the font, so try that in case this .vlw font was
+					// created on pc
+					// and the name is different, but the ps name is found on
+					// the
 					// java 1.4 mac that's currently running this sketch.
 					font = new Font(psname, Font.PLAIN, size);
 				}
@@ -553,7 +562,9 @@ public class PFont implements PConstants {
 	protected int index(final char c) {
 		if (lazy) {
 			final int index = indexActual(c);
-			if (index != -1) { return index; }
+			if (index != -1) {
+				return index;
+			}
 			if ((font != null) && font.canDisplay(c)) {
 				// create the glyph
 				addGlyph(c);
@@ -573,10 +584,14 @@ public class PFont implements PConstants {
 		// degenerate case, but the find function will have trouble
 		// if there are somehow zero chars in the lookup
 		// if (value.length == 0) return -1;
-		if (glyphCount == 0) { return -1; }
+		if (glyphCount == 0) {
+			return -1;
+		}
 
 		// quicker lookup for the ascii fellers
-		if (c < 128) { return ascii[c]; }
+		if (c < 128) {
+			return ascii[c];
+		}
 
 		// some other unicode char, hunt it out
 		// return index_hunt(c, 0, value.length-1);
@@ -587,14 +602,20 @@ public class PFont implements PConstants {
 		final int pivot = (start + stop) / 2;
 
 		// if this is the char, then return it
-		if (c == glyphs[pivot].value) { return pivot; }
+		if (c == glyphs[pivot].value) {
+			return pivot;
+		}
 
 		// char doesn't exist, otherwise would have been the pivot
 		// if (start == stop) return -1;
-		if (start >= stop) { return -1; }
+		if (start >= stop) {
+			return -1;
+		}
 
 		// if it's in the lower half, continue searching that
-		if (c < glyphs[pivot].value) { return indexHunt(c, start, pivot - 1); }
+		if (c < glyphs[pivot].value) {
+			return indexHunt(c, start, pivot - 1);
+		}
 
 		// if it's in the upper half, continue there
 		return indexHunt(c, pivot + 1, stop);
@@ -625,10 +646,14 @@ public class PFont implements PConstants {
 	 * Width of this character for a font of size 1.
 	 */
 	public double width(final char c) {
-		if (c == 32) { return width('i'); }
+		if (c == 32) {
+			return width('i');
+		}
 
 		final int cc = index(c);
-		if (cc == -1) { return 0; }
+		if (cc == -1) {
+			return 0;
+		}
 
 		return ((double) glyphs[cc].setWidth / (double) size);
 	}
@@ -678,13 +703,13 @@ public class PFont implements PConstants {
 	 */
 	static public char[]	CHARSET;
 	static {
-		CHARSET = new char[(126 - 33) + 1 + EXTRA_CHARS.length];
+		PFont.CHARSET = new char[(126 - 33) + 1 + PFont.EXTRA_CHARS.length];
 		int index = 0;
 		for (int i = 33; i <= 126; i++) {
-			CHARSET[index++] = (char) i;
+			PFont.CHARSET[index++] = (char) i;
 		}
-		for (final char element : EXTRA_CHARS) {
-			CHARSET[index++] = element;
+		for (final char element : PFont.EXTRA_CHARS) {
+			PFont.CHARSET[index++] = element;
 		}
 	};
 
@@ -700,23 +725,24 @@ public class PFont implements PConstants {
 	 * @brief Gets a list of the fonts installed on the system
 	 */
 	static public String[] list() {
-		loadFonts();
-		final String list[] = new String[fonts.length];
+		PFont.loadFonts();
+		final String list[] = new String[PFont.fonts.length];
 		for (int i = 0; i < list.length; i++) {
-			list[i] = fonts[i].getName();
+			list[i] = PFont.fonts[i].getName();
 		}
 		return list;
 	}
 
 	static public void loadFonts() {
-		if (fonts == null) {
+		if (PFont.fonts == null) {
 			final GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-			fonts = ge.getAllFonts();
+			PFont.fonts = ge.getAllFonts();
 			if (PApplet.platform == PConstants.MACOSX) {
-				fontDifferent = new HashMap<String, Font>();
-				for (final Font font : fonts) {
-					// getName() returns the PostScript name on OS X 10.6 w/ Java 6.
-					fontDifferent.put(font.getName(), font);
+				PFont.fontDifferent = new HashMap<String, Font>();
+				for (final Font font : PFont.fonts) {
+					// getName() returns the PostScript name on OS X 10.6 w/
+					// Java 6.
+					PFont.fontDifferent.put(font.getName(), font);
 					// fontDifferent.put(font.getPSName(), font);
 				}
 			}
@@ -729,10 +755,12 @@ public class PFont implements PConstants {
 	 * href="http://dev.processing.org/bugs/show_bug.cgi?id=407">Bug 407</a>.
 	 */
 	static public Font findFont(final String name) {
-		loadFonts();
+		PFont.loadFonts();
 		if (PApplet.platform == PConstants.MACOSX) {
-			final Font maybe = fontDifferent.get(name);
-			if (maybe != null) { return maybe; }
+			final Font maybe = PFont.fontDifferent.get(name);
+			if (maybe != null) {
+				return maybe;
+			}
 			// for (int i = 0; i < fonts.length; i++) {
 			// if (name.equals(fonts[i].getName())) {
 			// return fonts[i];
@@ -804,7 +832,7 @@ public class PFont implements PConstants {
 		}
 
 		protected void readBitmap(final DataInputStream is) throws IOException {
-			image = new PImage(width, height, ALPHA);
+			image = new PImage(width, height, PConstants.ALPHA);
 			final int bitmapSize = width * height;
 
 			final byte[] temp = new byte[bitmapSize];
@@ -817,7 +845,8 @@ public class PFont implements PConstants {
 			for (int y = 0; y < h; y++) {
 				for (int x = 0; x < w; x++) {
 					pixels[(y * width) + x] = temp[(y * w) + x] & 0xff;
-					// System.out.print((image.pixels[y*64+x] > 128) ? "*" : ".");
+					// System.out.print((image.pixels[y*64+x] > 128) ? "*" :
+					// ".");
 				}
 				// System.out.println();
 			}
@@ -887,7 +916,7 @@ public class PFont implements PConstants {
 			// offset from left of where coord was drawn
 			leftExtent = minX - size;
 
-			image = new PImage(width, height, ALPHA);
+			image = new PImage(width, height, PConstants.ALPHA);
 			final int[] pixels = image.pixels;
 			for (int y = minY; y <= maxY; y++) {
 				for (int x = minX; x <= maxX; x++) {

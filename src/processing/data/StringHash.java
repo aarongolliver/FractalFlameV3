@@ -47,7 +47,8 @@ public class StringHash {
 		// boolean csv = (lines[0].indexOf('\t') == -1);
 
 		for (final String line : lines) {
-			// String[] pieces = csv ? Table.splitLineCSV(lines[i]) : PApplet.split(lines[i], '\t');
+			// String[] pieces = csv ? Table.splitLineCSV(lines[i]) :
+			// PApplet.split(lines[i], '\t');
 			final String[] pieces = PApplet.split(line, '\t');
 			if (pieces.length == 2) {
 				// keys[count] = pieces[0];
@@ -121,7 +122,9 @@ public class StringHash {
 
 	public String get(final String what) {
 		final int index = keyIndex(what);
-		if (index == -1) { return null; }
+		if (index == -1) {
+			return null;
+		}
 		return values[index];
 	}
 
@@ -150,7 +153,9 @@ public class StringHash {
 
 	public int valueIndex(final String what) {
 		for (int i = 0; i < count; i++) {
-			if (values[i].equals(what)) { return i; }
+			if (values[i].equals(what)) {
+				return i;
+			}
 		}
 		return -1;
 	}
@@ -167,7 +172,7 @@ public class StringHash {
 	}
 
 	public void print() {
-		write(new PrintWriter(System.out));
+		this.write(new PrintWriter(System.out));
 	}
 
 	public void write(final PrintWriter writer) {
@@ -178,7 +183,7 @@ public class StringHash {
 	}
 
 	public void remove(final String which) {
-		remove(keyIndex(which));
+		this.remove(keyIndex(which));
 	}
 
 	public void remove(final int which) {
@@ -215,7 +220,9 @@ public class StringHash {
 			@Override
 			public float compare(final int a, final int b) {
 				final int result = keys[a].compareToIgnoreCase(keys[b]);
-				if (result != 0) { return result; }
+				if (result != 0) {
+					return result;
+				}
 				return values[a].compareToIgnoreCase(values[b]);
 			}
 
@@ -231,11 +238,11 @@ public class StringHash {
 	 * Sort by values in descending order (largest value will be at [0]).
 	 */
 	public void sortValues() {
-		sortValues(true, true);
+		this.sortValues(true, true);
 	}
 
 	public void sortValues(final boolean descending) {
-		sortValues(descending, true);
+		this.sortValues(descending, true);
 	}
 
 	// ascending puts the largest value at the end

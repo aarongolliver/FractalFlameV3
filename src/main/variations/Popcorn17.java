@@ -1,9 +1,5 @@
 package main.variations;
 
-import static java.lang.Math.atan2;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
-import static java.lang.Math.tan;
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
 
@@ -18,9 +14,9 @@ public final class Popcorn17 extends Variation {
 		final double x = pIn.x;
 		final double y = pIn.y;
 		final double rsq = (x * x) + (y * y);
-		final double r = sqrt(rsq);
-		final double t = atan2(x, y);
-		final double p = atan2(y, x);
+		final double r = Math.sqrt(rsq);
+		final double t = Math.atan2(x, y);
+		final double p = Math.atan2(y, x);
 
 		final double[][] currentMatrix = currentGenome.affineMatrices[currentGenome.currentMatrix];
 		final double a = currentMatrix[0][0];
@@ -30,8 +26,8 @@ public final class Popcorn17 extends Variation {
 		final double e = currentMatrix[1][1];
 		final double f = currentMatrix[1][2];
 
-		pOut.x = x + (c * sin(tan(3 * y)));
-		pOut.y = y + (f * sin(tan(3 * x)));
+		pOut.x = x + (c * Math.sin(Math.tan(3 * y)));
+		pOut.y = y + (f * Math.sin(Math.tan(3 * x)));
 
 		return pOut;
 	}

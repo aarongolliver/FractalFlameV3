@@ -72,7 +72,9 @@ public class IntList {
 		 * not there return -1; } }
 		 */
 		for (int i = 0; i < count; i++) {
-			if (data[i] == what) { return i; }
+			if (data[i] == what) {
+				return i;
+			}
 		}
 		return -1;
 	}
@@ -92,7 +94,9 @@ public class IntList {
 		// }
 		// return index(what) != -1;
 		for (int i = 0; i < count; i++) {
-			if (data[i] == what) { return true; }
+			if (data[i] == what) {
+				return true;
+			}
 		}
 		return false;
 	}

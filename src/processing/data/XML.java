@@ -78,7 +78,8 @@ public class XML implements Serializable {
 	// * @throws ParserConfigurationException
 	// * @throws IOException
 	// */
-	// public XML(PApplet parent, String filename) throws IOException, ParserConfigurationException,
+	// public XML(PApplet parent, String filename) throws IOException,
+	// ParserConfigurationException,
 	// SAXException {
 	// this(parent.createReader(filename));
 	// }
@@ -111,7 +112,8 @@ public class XML implements Serializable {
 			// ignore this; Android doesn't like it
 		}
 
-		// without a validating DTD, this doesn't do anything since it doesn't know what is
+		// without a validating DTD, this doesn't do anything since it doesn't
+		// know what is
 		// ignorable
 		// factory.setIgnoringElementContentWhitespace(true);
 
@@ -119,12 +121,14 @@ public class XML implements Serializable {
 		// factory.setExpandEntityReferences(true);
 
 		// factory.setCoalescing(true);
-		// builderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+		// builderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl",
+		// true);
 		final DocumentBuilder builder = factory.newDocumentBuilder();
 		// builder.setEntityResolver()
 
 		// SAXParserFactory spf = SAXParserFactory.newInstance();
-		// spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+		// spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl",
+		// true);
 		// SAXParser p = spf.newSAXParser();
 
 		// builder = DocumentBuilderFactory.newDocumentBuilder();
@@ -141,7 +145,8 @@ public class XML implements Serializable {
 		// NodeList nodeList = document.getDocumentElement().getChildNodes();
 		// for (int i = 0; i < nodeList.getLength(); i++) {
 		// }
-		// print(createWriter("data/1_alt_reparse.html"), document.getDocumentElement(), 0);
+		// print(createWriter("data/1_alt_reparse.html"),
+		// document.getDocumentElement(), 0);
 	}
 
 	// TODO is there a more efficient way of doing this? wow.
@@ -180,11 +185,11 @@ public class XML implements Serializable {
 	}
 
 	protected boolean save(final OutputStream output) {
-		return save(PApplet.createWriter(output));
+		return this.save(PApplet.createWriter(output));
 	}
 
 	public boolean save(final File file, final String options) {
-		return save(PApplet.createWriter(file));
+		return this.save(PApplet.createWriter(file));
 	}
 
 	public boolean save(final PrintWriter output) {
@@ -340,14 +345,19 @@ public class XML implements Serializable {
 	 * @return the first matching element
 	 */
 	public XML getChild(final String name) {
-		if ((name.length() > 0) && (name.charAt(0) == '/')) { throw new IllegalArgumentException(
-		        "getChild() should not begin with a slash"); }
-		if (name.indexOf('/') != -1) { return getChildRecursive(PApplet.split(name, '/'), 0); }
+		if ((name.length() > 0) && (name.charAt(0) == '/')) {
+			throw new IllegalArgumentException("getChild() should not begin with a slash");
+		}
+		if (name.indexOf('/') != -1) {
+			return getChildRecursive(PApplet.split(name, '/'), 0);
+		}
 		final int childCount = getChildCount();
 		for (int i = 0; i < childCount; i++) {
-			final XML kid = getChild(i);
+			final XML kid = this.getChild(i);
 			final String kidName = kid.getName();
-			if ((kidName != null) && kidName.equals(name)) { return kid; }
+			if ((kidName != null) && kidName.equals(name)) {
+				return kid;
+			}
 		}
 		return null;
 	}
@@ -365,7 +375,7 @@ public class XML implements Serializable {
 	protected XML getChildRecursive(final String[] items, final int offset) {
 		// if it's a number, do an index instead
 		if (Character.isDigit(items[offset].charAt(0))) {
-			final XML kid = getChild(Integer.parseInt(items[offset]));
+			final XML kid = this.getChild(Integer.parseInt(items[offset]));
 			if (offset == (items.length - 1)) {
 				return kid;
 			} else {
@@ -374,7 +384,7 @@ public class XML implements Serializable {
 		}
 		final int childCount = getChildCount();
 		for (int i = 0; i < childCount; i++) {
-			final XML kid = getChild(i);
+			final XML kid = this.getChild(i);
 			final String kidName = kid.getName();
 			if ((kidName != null) && kidName.equals(items[offset])) {
 				if (offset == (items.length - 1)) {
@@ -397,17 +407,22 @@ public class XML implements Serializable {
 	 * @author processing.org
 	 */
 	public XML[] getChildren(final String name) {
-		if ((name.length() > 0) && (name.charAt(0) == '/')) { throw new IllegalArgumentException(
-		        "getChildren() should not begin with a slash"); }
-		if (name.indexOf('/') != -1) { return getChildrenRecursive(PApplet.split(name, '/'), 0); }
+		if ((name.length() > 0) && (name.charAt(0) == '/')) {
+			throw new IllegalArgumentException("getChildren() should not begin with a slash");
+		}
+		if (name.indexOf('/') != -1) {
+			return getChildrenRecursive(PApplet.split(name, '/'), 0);
+		}
 		// if it's a number, do an index instead
 		// (returns a single element array, since this will be a single match
-		if (Character.isDigit(name.charAt(0))) { return new XML[] { getChild(Integer.parseInt(name)) }; }
+		if (Character.isDigit(name.charAt(0))) {
+			return new XML[] { this.getChild(Integer.parseInt(name)) };
+		}
 		final int childCount = getChildCount();
 		final XML[] matches = new XML[childCount];
 		int matchCount = 0;
 		for (int i = 0; i < childCount; i++) {
-			final XML kid = getChild(i);
+			final XML kid = this.getChild(i);
 			final String kidName = kid.getName();
 			if ((kidName != null) && kidName.equals(name)) {
 				matches[matchCount++] = kid;
@@ -417,8 +432,10 @@ public class XML implements Serializable {
 	}
 
 	protected XML[] getChildrenRecursive(final String[] items, final int offset) {
-		if (offset == (items.length - 1)) { return getChildren(items[offset]); }
-		final XML[] matches = getChildren(items[offset]);
+		if (offset == (items.length - 1)) {
+			return this.getChildren(items[offset]);
+		}
+		final XML[] matches = this.getChildren(items[offset]);
 		XML[] outgoing = new XML[0];
 		for (final XML matche : matches) {
 			final XML[] kidMatches = matche.getChildrenRecursive(items, offset + 1);
@@ -491,9 +508,11 @@ public class XML implements Serializable {
 	// }
 	//
 	// // possibility, but would have to re-parse the object
-	// // helpdesk.objects.com.au/java/how-do-i-remove-whitespace-from-an-xml-document
+	// //
+	// helpdesk.objects.com.au/java/how-do-i-remove-whitespace-from-an-xml-document
 	// // TransformerFactory factory = TransformerFactory.newInstance();
-	// // Transformer transformer = factory.newTransformer(new StreamSource("strip-space.xsl"));
+	// // Transformer transformer = factory.newTransformer(new
+	// StreamSource("strip-space.xsl"));
 	// // DOMSource source = new DOMSource(document);
 	// // StreamResult result = new StreamResult(System.out);
 	// // transformer.transform(source, result);
@@ -575,7 +594,7 @@ public class XML implements Serializable {
 	 * @brief Gets the content of an element as a String
 	 */
 	public String getString(final String name) {
-		return getString(name, null);
+		return this.getString(name, null);
 	}
 
 	public String getString(final String name, final String defaultValue) {
@@ -596,7 +615,7 @@ public class XML implements Serializable {
 	 * @brief Gets the content of an element as an int
 	 */
 	public int getInt(final String name) {
-		return getInt(name, 0);
+		return this.getInt(name, 0);
 	}
 
 	/**
@@ -617,7 +636,7 @@ public class XML implements Serializable {
 	 * @return the value, or defaultValue if the attribute does not exist.
 	 */
 	public int getInt(final String name, final int defaultValue) {
-		final String value = getString(name);
+		final String value = this.getString(name);
 		return (value == null) ? defaultValue : Integer.parseInt(value);
 	}
 
@@ -639,7 +658,7 @@ public class XML implements Serializable {
 	 * @return the value, or defaultValue if the attribute does not exist.
 	 */
 	public long getLong(final String name, final long defaultValue) {
-		final String value = getString(name);
+		final String value = this.getString(name);
 		return (value == null) ? defaultValue : Long.parseLong(value);
 	}
 
@@ -650,7 +669,7 @@ public class XML implements Serializable {
 	 * @brief Gets the content of an element as a float
 	 */
 	public float getFloat(final String name) {
-		return getFloat(name, 0);
+		return this.getFloat(name, 0);
 	}
 
 	/**
@@ -663,7 +682,7 @@ public class XML implements Serializable {
 	 * @return the value, or defaultValue if the attribute does not exist.
 	 */
 	public float getFloat(final String name, final float defaultValue) {
-		final String value = getString(name);
+		final String value = this.getString(name);
 		return (value == null) ? defaultValue : Float.parseFloat(value);
 	}
 
@@ -676,7 +695,7 @@ public class XML implements Serializable {
 	}
 
 	public double getDouble(final String name) {
-		return getDouble(name, 0);
+		return this.getDouble(name, 0);
 	}
 
 	/**
@@ -689,7 +708,7 @@ public class XML implements Serializable {
 	 * @return the value, or defaultValue if the attribute does not exist.
 	 */
 	public double getDouble(final String name, final double defaultValue) {
-		final String value = getString(name);
+		final String value = this.getString(name);
 		return (value == null) ? defaultValue : Double.parseDouble(value);
 	}
 
@@ -742,7 +761,8 @@ public class XML implements Serializable {
 			}
 			final Transformer transformer = factory.newTransformer();
 
-			// Add the XML declaration at the top if this node is the root and we're
+			// Add the XML declaration at the top if this node is the root and
+			// we're
 			// not writing to a single line (indent = -1 means single line).
 			if ((indent == -1) || (parent == null)) {
 				transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
@@ -750,11 +770,13 @@ public class XML implements Serializable {
 				transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 			}
 
-			// transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "sample.dtd");
+			// transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM,
+			// "sample.dtd");
 
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 
-			// transformer.setOutputProperty(OutputKeys.CDATA_SECTION_ELEMENTS, "yes"); // huh?
+			// transformer.setOutputProperty(OutputKeys.CDATA_SECTION_ELEMENTS,
+			// "yes"); // huh?
 
 			// transformer.setOutputProperty(OutputKeys.DOCTYPE_PUBLIC,
 			// "-//W3C//DTD XHTML 1.0 Transitional//EN");
@@ -780,13 +802,18 @@ public class XML implements Serializable {
 			// System.out.println(key + " -> " + p.get(key));
 			// }
 
-			// If you smell something, that's because this code stinks. No matter
-			// the settings of the Transformer object, if the XML document already
-			// has whitespace elements, it won't bother re-indenting/re-formatting.
+			// If you smell something, that's because this code stinks. No
+			// matter
+			// the settings of the Transformer object, if the XML document
+			// already
+			// has whitespace elements, it won't bother
+			// re-indenting/re-formatting.
 			// So instead, transform the data once into a single line string.
-			// If indent is -1, then we're done. Otherwise re-run and the settings
+			// If indent is -1, then we're done. Otherwise re-run and the
+			// settings
 			// of the factory will kick in. If you know a better way to do this,
-			// please contribute. I've wasted too much of my Sunday on it. But at
+			// please contribute. I've wasted too much of my Sunday on it. But
+			// at
 			// least the Giants are getting blown out by the Falcons.
 
 			final String decl = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
@@ -798,7 +825,8 @@ public class XML implements Serializable {
 			String[] tempLines = PApplet.split(tempWriter.toString(), sep);
 			// PApplet.println(tempLines);
 			if (tempLines[0].startsWith("<?xml")) {
-				// Remove XML declaration from the top before slamming into one line
+				// Remove XML declaration from the top before slamming into one
+				// line
 				final int declEnd = tempLines[0].indexOf("?>") + 2;
 				// if (tempLines[0].length() == decl.length()) {
 				if (tempLines[0].length() == declEnd) {
@@ -807,16 +835,20 @@ public class XML implements Serializable {
 					tempLines = PApplet.subset(tempLines, 1);
 				} else {
 					// PApplet.println("removing part of first line");
-					// If the first node has been moved to this line, be more careful
+					// If the first node has been moved to this line, be more
+					// careful
 					// tempLines[0] = tempLines[0].substring(decl.length());
 					tempLines[0] = tempLines[0].substring(declEnd);
 				}
 			}
 			final String singleLine = PApplet.join(PApplet.trim(tempLines), "");
-			if (indent == -1) { return singleLine; }
+			if (indent == -1) {
+				return singleLine;
+			}
 
 			// Since the indent is not -1, bring back the XML declaration
-			// transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+			// transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,
+			// "no");
 
 			final StringWriter stringWriter = new StringWriter();
 			final StreamResult xmlOutput = new StreamResult(stringWriter);

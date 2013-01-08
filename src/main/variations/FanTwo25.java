@@ -1,15 +1,5 @@
 package main.variations;
 
-import static java.lang.Math.PI;
-import static java.lang.Math.atan2;
-import static java.lang.Math.cos;
-import static java.lang.Math.floor;
-import static java.lang.Math.pow;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
-
-import java.util.concurrent.ThreadLocalRandom;
-
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
 
@@ -28,9 +18,9 @@ public final class FanTwo25 extends Variation {
 		final double x = pIn.x;
 		final double y = pIn.y;
 		final double rsq = (x * x) + (y * y);
-		final double r = sqrt(rsq);
-		final double t = atan2(x, y);
-		final double p = atan2(y, x);
+		final double r = Math.sqrt(rsq);
+		final double t = Math.atan2(x, y);
+		final double p = Math.atan2(y, x);
 
 		final double[][] currentMatrix = currentGenome.affineMatrices[currentGenome.currentMatrix];
 		final double a = currentMatrix[0][0];
@@ -40,13 +30,13 @@ public final class FanTwo25 extends Variation {
 		final double e = currentMatrix[1][1];
 		final double f = currentMatrix[1][2];
 
-		final double T = (t + p2) - (p1 * floor((2 * t * p2) / p1));
+		final double T = (t + p2) - (p1 * Math.floor((2 * t * p2) / p1));
 		if (T > (p1 / 2)) {
-			pOut.x = r * sin(t - (p1 / 2));
-			pOut.y = r * cos(t - (p1 / 2));
+			pOut.x = r * Math.sin(t - (p1 / 2));
+			pOut.y = r * Math.cos(t - (p1 / 2));
 		} else {
-			pOut.x = r * sin(t + (p1 / 2));
-			pOut.y = r * cos(t + (p1 / 2));
+			pOut.x = r * Math.sin(t + (p1 / 2));
+			pOut.y = r * Math.cos(t + (p1 / 2));
 		}
 
 		return pOut;

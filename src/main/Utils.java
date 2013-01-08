@@ -62,7 +62,9 @@ public final class Utils {
 	 *            array of numbers to compare
 	 */
 	static public final int max(final int[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(Utils.ERROR_MIN_MAX);
+		}
 		int max = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] > max) {
@@ -73,7 +75,9 @@ public final class Utils {
 	}
 
 	static public final long max(final long[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(Utils.ERROR_MIN_MAX);
+		}
 		long max = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] > max) {
@@ -84,7 +88,9 @@ public final class Utils {
 	}
 
 	static public final double max(final double[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(Utils.ERROR_MIN_MAX);
+		}
 		double max = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] > max) {
@@ -160,7 +166,9 @@ public final class Utils {
 	 *            array of numbers to compare
 	 */
 	static public final int min(final int[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(Utils.ERROR_MIN_MAX);
+		}
 		int min = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] < min) {
@@ -171,7 +179,9 @@ public final class Utils {
 	}
 
 	static public final long min(final long[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(Utils.ERROR_MIN_MAX);
+		}
 		long min = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] < min) {
@@ -182,7 +192,9 @@ public final class Utils {
 	}
 
 	static public final double min(final double[] list) {
-		if (list.length == 0) { throw new ArrayIndexOutOfBoundsException(ERROR_MIN_MAX); }
+		if (list.length == 0) {
+			throw new ArrayIndexOutOfBoundsException(Utils.ERROR_MIN_MAX);
+		}
 		double min = list[0];
 		for (int i = 1; i < list.length; i++) {
 			if (list[i] < min) {

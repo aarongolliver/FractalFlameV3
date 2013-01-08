@@ -95,7 +95,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	double[]	            curveDrawY;
 
 	int	                    transformCount;
-	AffineTransform	        transformStack[]	= new AffineTransform[MATRIX_STACK_DEPTH];
+	AffineTransform	        transformStack[]	= new AffineTransform[PGraphics.MATRIX_STACK_DEPTH];
 	double[]	            transform	     = new double[6];
 
 	Line2D.Float	        line	         = new Line2D.Float();
@@ -149,7 +149,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		// but didn't see any performance difference (OS X 10.6, Java 6u24).
 		// For 0196, also attempted RGB instead of ARGB, but that causes
 		// strange things to happen with blending.
-		// image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		// image = new BufferedImage(width, height,
+		// BufferedImage.TYPE_INT_ARGB);
 		if (primarySurface) {
 			if (useCanvas) {
 				if (canvas != null) {
@@ -175,11 +176,14 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 				// g2 = (Graphics2D) canvas.getGraphics();
 
 			} else {
-				parent.updateListeners(parent); // in case they're already there
+				parent.updateListeners(parent); // in case they're
+				                                // already there
 
-				// using a compatible image here doesn't seem to provide any performance boost
+				// using a compatible image here doesn't seem to provide any
+				// performance boost
 
-				// Needs to be RGB otherwise there's a major performance hit [0204]
+				// Needs to be RGB otherwise there's a major performance hit
+				// [0204]
 				// http://code.google.com/p/processing/issues/detail?id=729
 				image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 				// GraphicsConfiguration gc = parent.getGraphicsConfiguration();
@@ -189,8 +193,10 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 				g2 = (Graphics2D) offscreen.getGraphics();
 			}
 		} else {
-			// Since this buffer's offscreen anyway, no need for the extra offscreen
-			// buffer. However, unlike the primary surface, this feller needs to be
+			// Since this buffer's offscreen anyway, no need for the extra
+			// offscreen
+			// buffer. However, unlike the primary surface, this feller needs to
+			// be
 			// ARGB so that blending ("alpha" compositing) will work properly.
 			image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 			g2 = (Graphics2D) image.getGraphics();
@@ -240,7 +246,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 				        + caps.getBackBufferCapabilities().isAccelerated());
 			}
 			final GraphicsConfiguration gc = canvas.getGraphicsConfiguration();
-			// if (vimage == null || vimage.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE) {
+			// if (vimage == null || vimage.validate(gc) ==
+			// VolatileImage.IMAGE_INCOMPATIBLE) {
 			// vimage = gc.createCompatibleVolatileImage(width, height);
 			// }
 			// g2 = (Graphics2D) vimage.getGraphics();
@@ -248,7 +255,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 			if ((bimage == null) || (bimage.getWidth() != width) || (bimage.getHeight() != height)) {
 				PApplet.debug("PGraphicsJava2D creating new image");
 				bimage = gc.createCompatibleImage(width, height);
-				// image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+				// image = new BufferedImage(width, height,
+				// BufferedImage.TYPE_INT_ARGB);
 				g2 = bimage.createGraphics();
 				defaultComposite = g2.getComposite();
 			}
@@ -276,8 +284,10 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 				redraw();
 
 			} else {
-				// don't copy the pixels/data elements of the buffered image directly,
-				// since it'll disable the nice speedy pipeline stuff, sending all drawing
+				// don't copy the pixels/data elements of the buffered image
+				// directly,
+				// since it'll disable the nice speedy pipeline stuff, sending
+				// all drawing
 				// into a world of suck that's rough 6 trillion times slower.
 				synchronized (image) {
 					// System.out.println("inside j2d sync");
@@ -293,7 +303,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		// the super class, which just sets the mx1, my1, mx2, my2
 		// coordinates of the modified area. This avoids doing the
 		// full copy of the pixels to the surface in this.updatePixels().
-		setModified();
+		this.setModified();
 		super.updatePixels();
 	}
 
@@ -312,7 +322,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 					bsg.drawImage(bimage, 0, 0, null);
 					// if (parent.frameCount == 0) {
 					// try {
-					// ImageIO.write(image, "jpg", new java.io.File("/Users/fry/Desktop/buff.jpg"));
+					// ImageIO.write(image, "jpg", new
+					// java.io.File("/Users/fry/Desktop/buff.jpg"));
 					// } catch (IOException e) {
 					// e.printStackTrace();
 					// }
@@ -363,9 +374,9 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		// http://code.google.com/p/processing/issues/detail?id=1068
 		// Unfortunately cannot always be enabled, because it makes the
 		// stroke in many standard Processing examples really gross.
-		if (which == ENABLE_STROKE_PURE) {
+		if (which == PConstants.ENABLE_STROKE_PURE) {
 			g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-		} else if (which == DISABLE_STROKE_PURE) {
+		} else if (which == PConstants.DISABLE_STROKE_PURE) {
 			g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
 		}
 	}
@@ -399,7 +410,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void texture(final PImage image) {
-		showMethodWarning("texture");
+		PGraphics.showMethodWarning("texture");
 	}
 
 	@Override
@@ -408,63 +419,68 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		// double vertex[];
 
 		if (vertexCount == vertices.length) {
-			final double temp[][] = new double[vertexCount << 1][VERTEX_FIELD_COUNT];
+			final double temp[][] = new double[vertexCount << 1][PGraphics.VERTEX_FIELD_COUNT];
 			System.arraycopy(vertices, 0, temp, 0, vertexCount);
 			vertices = temp;
 			// message(CHATTER, "allocating more vertices " + vertices.length);
 		}
 		// not everyone needs this, but just easier to store rather
 		// than adding another moving part to the code...
-		vertices[vertexCount][X] = x;
-		vertices[vertexCount][Y] = y;
+		vertices[vertexCount][PConstants.X] = x;
+		vertices[vertexCount][PConstants.Y] = y;
 		vertexCount++;
 
 		switch (shape) {
 
 		case POINTS:
-			point(x, y);
+			this.point(x, y);
 			break;
 
 		case LINES:
 			if ((vertexCount % 2) == 0) {
-				line(vertices[vertexCount - 2][X], vertices[vertexCount - 2][Y], x, y);
+				this.line(vertices[vertexCount - 2][PConstants.X], vertices[vertexCount - 2][PConstants.Y], x, y);
 			}
 			break;
 
 		case TRIANGLES:
 			if ((vertexCount % 3) == 0) {
-				triangle(vertices[vertexCount - 3][X], vertices[vertexCount - 3][Y], vertices[vertexCount - 2][X],
-				        vertices[vertexCount - 2][Y], x, y);
+				triangle(vertices[vertexCount - 3][PConstants.X], vertices[vertexCount - 3][PConstants.Y],
+				        vertices[vertexCount - 2][PConstants.X], vertices[vertexCount - 2][PConstants.Y], x, y);
 			}
 			break;
 
 		case TRIANGLE_STRIP:
 			if (vertexCount >= 3) {
-				triangle(vertices[vertexCount - 2][X], vertices[vertexCount - 2][Y], vertices[vertexCount - 1][X],
-				        vertices[vertexCount - 1][Y], vertices[vertexCount - 3][X], vertices[vertexCount - 3][Y]);
+				triangle(vertices[vertexCount - 2][PConstants.X], vertices[vertexCount - 2][PConstants.Y],
+				        vertices[vertexCount - 1][PConstants.X], vertices[vertexCount - 1][PConstants.Y],
+				        vertices[vertexCount - 3][PConstants.X], vertices[vertexCount - 3][PConstants.Y]);
 			}
 			break;
 
 		case TRIANGLE_FAN:
 			if (vertexCount >= 3) {
-				// This is an unfortunate implementation because the stroke for an
-				// adjacent triangle will be repeated. However, if the stroke is not
+				// This is an unfortunate implementation because the stroke for
+				// an
+				// adjacent triangle will be repeated. However, if the stroke is
+				// not
 				// redrawn, it will replace the adjacent line (when it lines up
 				// perfectly) or show a faint line (when off by a small amount).
 				// The alternative would be to wait, then draw the shape as a
 				// polygon fill, followed by a series of vertices. But that's a
-				// poor method when used with PDF, DXF, or other recording objects,
+				// poor method when used with PDF, DXF, or other recording
+				// objects,
 				// since discrete triangles would likely be preferred.
-				triangle(vertices[0][X], vertices[0][Y], vertices[vertexCount - 2][X], vertices[vertexCount - 2][Y], x,
-				        y);
+				triangle(vertices[0][PConstants.X], vertices[0][PConstants.Y], vertices[vertexCount - 2][PConstants.X],
+				        vertices[vertexCount - 2][PConstants.Y], x, y);
 			}
 			break;
 
 		case QUAD:
 		case QUADS:
 			if ((vertexCount % 4) == 0) {
-				quad(vertices[vertexCount - 4][X], vertices[vertexCount - 4][Y], vertices[vertexCount - 3][X],
-				        vertices[vertexCount - 3][Y], vertices[vertexCount - 2][X], vertices[vertexCount - 2][Y], x, y);
+				quad(vertices[vertexCount - 4][PConstants.X], vertices[vertexCount - 4][PConstants.Y],
+				        vertices[vertexCount - 3][PConstants.X], vertices[vertexCount - 3][PConstants.Y],
+				        vertices[vertexCount - 2][PConstants.X], vertices[vertexCount - 2][PConstants.Y], x, y);
 			}
 			break;
 
@@ -473,8 +489,9 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 			// | | |
 			// 1---3---5
 			if ((vertexCount >= 4) && ((vertexCount % 2) == 0)) {
-				quad(vertices[vertexCount - 4][X], vertices[vertexCount - 4][Y], vertices[vertexCount - 2][X],
-				        vertices[vertexCount - 2][Y], x, y, vertices[vertexCount - 3][X], vertices[vertexCount - 3][Y]);
+				quad(vertices[vertexCount - 4][PConstants.X], vertices[vertexCount - 4][PConstants.Y],
+				        vertices[vertexCount - 2][PConstants.X], vertices[vertexCount - 2][PConstants.Y], x, y,
+				        vertices[vertexCount - 3][PConstants.X], vertices[vertexCount - 3][PConstants.Y]);
 			}
 			break;
 
@@ -494,22 +511,22 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void vertex(final double x, final double y, final double z) {
-		showDepthWarningXYZ("vertex");
+		PGraphics.showDepthWarningXYZ("vertex");
 	}
 
 	@Override
 	public void vertex(final double[] v) {
-		vertex(v[X], v[Y]);
+		this.vertex(v[PConstants.X], v[PConstants.Y]);
 	}
 
 	@Override
 	public void vertex(final double x, final double y, final double u, final double v) {
-		showVariationWarning("vertex(x, y, u, v)");
+		PGraphics.showVariationWarning("vertex(x, y, u, v)");
 	}
 
 	@Override
 	public void vertex(final double x, final double y, final double z, final double u, final double v) {
-		showDepthWarningXYZ("vertex");
+		PGraphics.showDepthWarningXYZ("vertex");
 	}
 
 	@Override
@@ -525,8 +542,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	@Override
 	public void endShape(final int mode) {
 		if (gpath != null) { // make sure something has been drawn
-			if (shape == POLYGON) {
-				if (mode == CLOSE) {
+			if (shape == PConstants.POLYGON) {
+				if (mode == PConstants.CLOSE) {
 					gpath.closePath();
 				}
 				drawShape(gpath);
@@ -563,7 +580,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	 */
 	@Override
 	public void blendMode(final int mode) {
-		if (mode == BLEND) {
+		if (mode == PConstants.BLEND) {
 			g2.setComposite(defaultComposite);
 
 		} else {
@@ -592,11 +609,13 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		}
 
 		public void compose(final Raster src, final Raster dstIn, final WritableRaster dstOut) {
-			// not sure if this is really necessary, since we control our buffers
+			// not sure if this is really necessary, since we control our
+			// buffers
 			if ((src.getSampleModel().getDataType() != DataBuffer.TYPE_INT)
 			        || (dstIn.getSampleModel().getDataType() != DataBuffer.TYPE_INT)
-			        || (dstOut.getSampleModel().getDataType() != DataBuffer.TYPE_INT)) { throw new IllegalStateException(
-			        "Source and destination must store pixels as INT."); }
+			        || (dstOut.getSampleModel().getDataType() != DataBuffer.TYPE_INT)) {
+				throw new IllegalStateException("Source and destination must store pixels as INT.");
+			}
 
 			final int width = Math.min(src.getWidth(), dstIn.getWidth());
 			final int height = Math.min(src.getHeight(), dstIn.getHeight());
@@ -608,7 +627,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 				src.getDataElements(0, y, width, 1, srcPixels);
 				dstIn.getDataElements(0, y, width, 1, dstPixels);
 				for (int x = 0; x < width; x++) {
-					dstPixels[x] = blendColor(srcPixels[x], dstPixels[x], mode);
+					dstPixels[x] = PImage.blendColor(srcPixels[x], dstPixels[x], mode);
 				}
 				dstOut.setDataElements(0, y, width, 1, dstPixels);
 			}
@@ -622,14 +641,14 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	@Override
 	public void bezierVertex(final double x1, final double y1, final double x2, final double y2, final double x3,
 	        final double y3) {
-		bezierVertexCheck();
+		this.bezierVertexCheck();
 		gpath.curveTo(x1, y1, x2, y2, x3, y3);
 	}
 
 	@Override
 	public void bezierVertex(final double x2, final double y2, final double z2, final double x3, final double y3,
 	        final double z3, final double x4, final double y4, final double z4) {
-		showDepthWarningXYZ("bezierVertex");
+		PGraphics.showDepthWarningXYZ("bezierVertex");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -638,20 +657,20 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void quadraticVertex(final double ctrlX, final double ctrlY, final double endX, final double endY) {
-		bezierVertexCheck();
+		this.bezierVertexCheck();
 		final Point2D cur = gpath.getCurrentPoint();
 
 		final double x1 = cur.getX();
 		final double y1 = cur.getY();
 
-		bezierVertex(x1 + (((ctrlX - x1) * 2) / 3.0f), y1 + (((ctrlY - y1) * 2) / 3.0f), endX
+		this.bezierVertex(x1 + (((ctrlX - x1) * 2) / 3.0f), y1 + (((ctrlY - y1) * 2) / 3.0f), endX
 		        + (((ctrlX - endX) * 2) / 3.0f), endY + (((ctrlY - endY) * 2) / 3.0f), endX, endY);
 	}
 
 	@Override
 	public void quadraticVertex(final double x2, final double y2, final double z2, final double x4, final double y4,
 	        final double z4) {
-		showDepthWarningXYZ("quadVertex");
+		PGraphics.showDepthWarningXYZ("quadVertex");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -700,7 +719,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void curveVertex(final double x, final double y, final double z) {
-		showDepthWarningXYZ("curveVertex");
+		PGraphics.showDepthWarningXYZ("curveVertex");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -717,7 +736,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	public void point(final double x, final double y) {
 		if (stroke) {
 			// if (strokeWeight > 1) {
-			line(x, y, x + EPSILON, y + EPSILON);
+			this.line(x, y, x + PConstants.EPSILON, y + PConstants.EPSILON);
 			// } else {
 			// set((int) screenX(x, y), (int) screenY(x, y), strokeColor);
 			// }
@@ -794,8 +813,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		// 0 to 90 in java would be 0 to -90 for p5 renderer
 		// but that won't work, so -90 to 0?
 
-		start = -start * RAD_TO_DEG;
-		stop = -stop * RAD_TO_DEG;
+		start = -start * PConstants.RAD_TO_DEG;
+		stop = -stop * PConstants.RAD_TO_DEG;
 
 		// ok to do this because already checked for NaN
 		// while (start < 0) {
@@ -809,20 +828,22 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		// }
 		final double sweep = stop - start;
 
-		// The defaults, before 2.0b7, were to stroke as Arc2D.OPEN, and then fill
-		// using Arc2D.PIE. That's a little wonky, but it's here for compatability.
+		// The defaults, before 2.0b7, were to stroke as Arc2D.OPEN, and then
+		// fill
+		// using Arc2D.PIE. That's a little wonky, but it's here for
+		// compatability.
 		int fillMode = Arc2D.PIE;
 		int strokeMode = Arc2D.OPEN;
 
-		if (mode == OPEN) {
+		if (mode == PConstants.OPEN) {
 			fillMode = Arc2D.OPEN;
 			// strokeMode = Arc2D.OPEN;
 
-		} else if (mode == PIE) {
+		} else if (mode == PConstants.PIE) {
 			// fillMode = Arc2D.PIE;
 			strokeMode = Arc2D.PIE;
 
-		} else if (mode == CHORD) {
+		} else if (mode == PConstants.CHORD) {
 			fillMode = Arc2D.CHORD;
 			strokeMode = Arc2D.CHORD;
 		}
@@ -888,7 +909,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void box(final double w, final double h, final double d) {
-		showMethodWarning("box");
+		PGraphics.showMethodWarning("box");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -901,16 +922,18 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void sphere(final double r) {
-		showMethodWarning("sphere");
+		PGraphics.showMethodWarning("sphere");
 	}
 
 	// ////////////////////////////////////////////////////////////
 
 	// BEZIER
 
-	// public double bezierPoint(double a, double b, double c, double d, double t)
+	// public double bezierPoint(double a, double b, double c, double d, double
+	// t)
 
-	// public double bezierTangent(double a, double b, double c, double d, double t)
+	// public double bezierTangent(double a, double b, double c, double d,
+	// double t)
 
 	// protected void bezierInitCheck()
 
@@ -935,9 +958,11 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	// CURVE
 
-	// public double curvePoint(double a, double b, double c, double d, double t)
+	// public double curvePoint(double a, double b, double c, double d, double
+	// t)
 
-	// public double curveTangent(double a, double b, double c, double d, double t)
+	// public double curveTangent(double a, double b, double c, double d, double
+	// t)
 
 	/** Ignored (not needed) in Java 2D. */
 	@Override
@@ -985,7 +1010,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		if (antialias == 0) {
 			noSmooth();
 		} else {
-			smooth();
+			this.smooth();
 		}
 	}
 
@@ -1017,7 +1042,9 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	protected void imageImpl(final PImage who, final double x1, final double y1, final double x2, final double y2,
 	        final int u1, final int v1, final int u2, final int v2) {
 		// Image not ready yet, or an error
-		if ((who.width <= 0) || (who.height <= 0)) { return; }
+		if ((who.width <= 0) || (who.height <= 0)) {
+			return;
+		}
 
 		if (getCache(who) == null) {
 			// System.out.println("making new image cache");
@@ -1042,7 +1069,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		g2.drawImage(((ImageCache) getCache(who)).image, (int) x1, (int) y1, (int) x2, (int) y2, u1, v1, u2, v2, null);
 
 		// every few years I think "nah, Java2D couldn't possibly be that
-		// f*king slow, why are we doing this by hand? then comes the affirmation.
+		// f*king slow, why are we doing this by hand? then comes the
+		// affirmation.
 		// Composite oldComp = null;
 		// if (false && tint) {
 		// oldComp = g2.getComposite();
@@ -1088,7 +1116,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		public void update(final boolean tint, final int tintColor) {
 			int bufferType = BufferedImage.TYPE_INT_ARGB;
 			final boolean opaque = (tintColor & 0xFF000000) == 0xFF000000;
-			if (source.format == RGB) {
+			if (source.format == PConstants.RGB) {
 				if (!tint || (tint && opaque)) {
 					bufferType = BufferedImage.TYPE_INT_RGB;
 				}
@@ -1109,7 +1137,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 				final int b2 = (tintColor) & 0xff;
 
 				if (bufferType == BufferedImage.TYPE_INT_RGB) {
-					// The target image is opaque, meaning that the source image has no
+					// The target image is opaque, meaning that the source image
+					// has no
 					// alpha (is not ARGB), and the tint has no alpha.
 					int index = 0;
 					for (int y = 0; y < source.height; y++) {
@@ -1131,7 +1160,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 					// op.filter(image, image);
 
 				} else if (bufferType == BufferedImage.TYPE_INT_ARGB) {
-					if ((source.format == RGB) && ((tintColor & 0xffffff) == 0xffffff)) {
+					if ((source.format == PConstants.RGB) && ((tintColor & 0xffffff) == 0xffffff)) {
 						final int hi = tintColor & 0xff000000;
 						int index = 0;
 						for (int y = 0; y < source.height; y++) {
@@ -1143,7 +1172,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 					} else {
 						int index = 0;
 						for (int y = 0; y < source.height; y++) {
-							if (source.format == RGB) {
+							if (source.format == PConstants.RGB) {
 								final int alpha = tintColor & 0xFF000000;
 								for (int x = 0; x < source.width; x++) {
 									final int argb1 = source.pixels[index++];
@@ -1153,7 +1182,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 									tintedPixels[x] = alpha | (((r2 * r1) & 0xff00) << 8) | ((g2 * g1) & 0xff00)
 									        | (((b2 * b1) & 0xff00) >> 8);
 								}
-							} else if (source.format == ARGB) {
+							} else if (source.format == PConstants.ARGB) {
 								for (int x = 0; x < source.width; x++) {
 									final int argb1 = source.pixels[index++];
 									final int a1 = (argb1 >> 24) & 0xff;
@@ -1163,7 +1192,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 									tintedPixels[x] = (((a2 * a1) & 0xff00) << 16) | (((r2 * r1) & 0xff00) << 8)
 									        | ((g2 * g1) & 0xff00) | (((b2 * b1) & 0xff00) >> 8);
 								}
-							} else if (source.format == ALPHA) {
+							} else if (source.format == PConstants.ALPHA) {
 								final int lower = tintColor & 0xFFFFFF;
 								for (int x = 0; x < source.width; x++) {
 									final int a1 = source.pixels[index++];
@@ -1205,7 +1234,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public PShape loadShape(final String filename) {
-		return loadShape(filename, null);
+		return this.loadShape(filename, null);
 	}
 
 	@Override
@@ -1243,11 +1272,12 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	@Override
 	public double textAscent() {
 		if (textFont == null) {
-			defaultFontOrDeath("textAscent");
+			this.defaultFontOrDeath("textAscent");
 		}
 
 		final Font font = (Font) textFont.getNative();
-		// if (font != null && (textFont.isStream() || hints[ENABLE_NATIVE_FONTS])) {
+		// if (font != null && (textFont.isStream() ||
+		// hints[ENABLE_NATIVE_FONTS])) {
 		if (font != null) {
 			final FontMetrics metrics = parent.getFontMetrics(font);
 			return metrics.getAscent();
@@ -1258,10 +1288,11 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	@Override
 	public double textDescent() {
 		if (textFont == null) {
-			defaultFontOrDeath("textAscent");
+			this.defaultFontOrDeath("textAscent");
 		}
 		final Font font = (Font) textFont.getNative();
-		// if (font != null && (textFont.isStream() || hints[ENABLE_NATIVE_FONTS])) {
+		// if (font != null && (textFont.isStream() ||
+		// hints[ENABLE_NATIVE_FONTS])) {
 		if (font != null) {
 			final FontMetrics metrics = parent.getFontMetrics(font);
 			return metrics.getDescent();
@@ -1279,7 +1310,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	protected boolean textModeCheck(final int mode) {
-		return mode == MODEL;
+		return mode == PConstants.MODEL;
 	}
 
 	/**
@@ -1290,7 +1321,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	@Override
 	public void textSize(final double size) {
 		if (textFont == null) {
-			defaultFontOrDeath("textAscent", size);
+			this.defaultFontOrDeath("textAscent", size);
 		}
 
 		// if a native version available, derive this font
@@ -1300,7 +1331,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		// textFontNativeMetrics = g2.getFontMetrics(textFontNative);
 		// }
 		final Font font = (Font) textFont.getNative();
-		// if (font != null && (textFont.isStream() || hints[ENABLE_NATIVE_FONTS])) {
+		// if (font != null && (textFont.isStream() ||
+		// hints[ENABLE_NATIVE_FONTS])) {
 		if (font != null) {
 			final Font dfont = font.deriveFont((float) size);
 			g2.setFont(dfont);
@@ -1320,7 +1352,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	@Override
 	protected double textWidthImpl(final char buffer[], final int start, final int stop) {
 		final Font font = (Font) textFont.getNative();
-		// if (font != null && (textFont.isStream() || hints[ENABLE_NATIVE_FONTS])) {
+		// if (font != null && (textFont.isStream() ||
+		// hints[ENABLE_NATIVE_FONTS])) {
 		if (font != null) {
 			// maybe should use one of the newer/fancier functions for this?
 			final int length = stop - start;
@@ -1332,8 +1365,10 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 			// g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
 			// RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 			// double m1 = metrics.charsWidth(buffer, start, length);
-			// //double m2 = (double) metrics.getStringBounds(buffer, start, stop, g2).getWidth();
-			// TextLayout tl = new TextLayout(new String(buffer, start, length), font,
+			// //double m2 = (double) metrics.getStringBounds(buffer, start,
+			// stop, g2).getWidth();
+			// TextLayout tl = new TextLayout(new String(buffer, start, length),
+			// font,
 			// g2.getFontRenderContext());
 			// double m2 = (double) tl.getBounds().getWidth();
 			// System.err.println(m1 + " " + m2);
@@ -1350,7 +1385,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	}
 
 	protected void endTextScreenMode() {
-		updatePixels();
+		this.updatePixels();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -1369,7 +1404,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	@Override
 	protected void textLineImpl(final char buffer[], final int start, final int stop, final double x, final double y) {
 		final Font font = (Font) textFont.getNative();
-		// if (font != null && (textFont.isStream() || hints[ENABLE_NATIVE_FONTS])) {
+		// if (font != null && (textFont.isStream() ||
+		// hints[ENABLE_NATIVE_FONTS])) {
 		if (font != null) {
 			/*
 			 * // save the current setting for text smoothing. note that this is // different from
@@ -1383,13 +1419,16 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 			 */
 			Object antialias = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
 			if (antialias == null) {
-				// if smooth() and noSmooth() not called, this will be null (0120)
+				// if smooth() and noSmooth() not called, this will be null
+				// (0120)
 				antialias = RenderingHints.VALUE_ANTIALIAS_DEFAULT;
 			}
 
 			// override the current smoothing setting based on the font
-			// also changes global setting for antialiasing, but this is because it's
-			// not possible to enable/disable them independently in some situations.
+			// also changes global setting for antialiasing, but this is because
+			// it's
+			// not possible to enable/disable them independently in some
+			// situations.
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, textFont.smooth ? RenderingHints.VALUE_ANTIALIAS_ON
 			        : RenderingHints.VALUE_ANTIALIAS_OFF);
 
@@ -1406,14 +1445,16 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 			// this didn't seem to help the scaling issue
 			// and creates garbage because of the new temporary object
 			// java.awt.font.GlyphVector gv =
-			// textFontNative.createGlyphVector(g2.getFontRenderContext(), new String(buffer, start,
+			// textFontNative.createGlyphVector(g2.getFontRenderContext(), new
+			// String(buffer, start,
 			// stop));
 			// g2.drawGlyphVector(gv, x, y);
 
 			// System.out.println("text() " + new String(buffer, start, stop));
 
 			// return to previous smoothing state if it was changed
-			// g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, textAntialias);
+			// g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+			// textAntialias);
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialias);
 
 			// textX = x + textWidthImpl(buffer, start, stop);
@@ -1431,15 +1472,18 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void pushMatrix() {
-		if (transformCount == transformStack.length) { throw new RuntimeException(
-		        "pushMatrix() cannot use push more than " + transformStack.length + " times"); }
+		if (transformCount == transformStack.length) {
+			throw new RuntimeException("pushMatrix() cannot use push more than " + transformStack.length + " times");
+		}
 		transformStack[transformCount] = g2.getTransform();
 		transformCount++;
 	}
 
 	@Override
 	public void popMatrix() {
-		if (transformCount == 0) { throw new RuntimeException("missing a pushMatrix() " + "to go with that popMatrix()"); }
+		if (transformCount == 0) {
+			throw new RuntimeException("missing a pushMatrix() " + "to go with that popMatrix()");
+		}
 		transformCount--;
 		g2.setTransform(transformStack[transformCount]);
 	}
@@ -1462,22 +1506,22 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void rotateX(final double angle) {
-		showDepthWarning("rotateX");
+		PGraphics.showDepthWarning("rotateX");
 	}
 
 	@Override
 	public void rotateY(final double angle) {
-		showDepthWarning("rotateY");
+		PGraphics.showDepthWarning("rotateY");
 	}
 
 	@Override
 	public void rotateZ(final double angle) {
-		showDepthWarning("rotateZ");
+		PGraphics.showDepthWarning("rotateZ");
 	}
 
 	@Override
 	public void rotate(final double angle, final double vx, final double vy, final double vz) {
-		showVariationWarning("rotate");
+		PGraphics.showVariationWarning("rotate");
 	}
 
 	@Override
@@ -1492,7 +1536,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void scale(final double sx, final double sy, final double sz) {
-		showDepthWarningXYZ("scale");
+		PGraphics.showDepthWarningXYZ("scale");
 	}
 
 	@Override
@@ -1520,7 +1564,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	public void applyMatrix(final double n00, final double n01, final double n02, final double n10, final double n11,
 	        final double n12) {
 		// System.out.println("PGraphicsJava2D.applyMatrix()");
-		// System.out.println(new AffineTransform(n00, n10, n01, n11, n02, n12));
+		// System.out.println(new AffineTransform(n00, n10, n01, n11, n02,
+		// n12));
 		g2.transform(new AffineTransform(n00, n10, n01, n11, n02, n12));
 		// g2.transform(new AffineTransform(n00, n01, n02, n10, n11, n12));
 	}
@@ -1531,7 +1576,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	public void applyMatrix(final double n00, final double n01, final double n02, final double n03, final double n10,
 	        final double n11, final double n12, final double n13, final double n20, final double n21, final double n22,
 	        final double n23, final double n30, final double n31, final double n32, final double n33) {
-		showVariationWarning("applyMatrix");
+		PGraphics.showVariationWarning("applyMatrix");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -1540,7 +1585,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public PMatrix getMatrix() {
-		return getMatrix((PMatrix2D) null);
+		return this.getMatrix((PMatrix2D) null);
 	}
 
 	@Override
@@ -1555,7 +1600,7 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public PMatrix3D getMatrix(final PMatrix3D target) {
-		showVariationWarning("getMatrix");
+		PGraphics.showVariationWarning("getMatrix");
 		return target;
 	}
 
@@ -1568,12 +1613,12 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void setMatrix(final PMatrix3D source) {
-		showVariationWarning("setMatrix");
+		PGraphics.showVariationWarning("setMatrix");
 	}
 
 	@Override
 	public void printMatrix() {
-		getMatrix((PMatrix2D) null).print();
+		this.getMatrix((PMatrix2D) null).print();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -1595,7 +1640,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	// double bottom, double top,
 	// double near, double far)
 	// public void perspective()
-	// public void perspective(double fov, double aspect, double near, double far)
+	// public void perspective(double fov, double aspect, double near, double
+	// far)
 	// public void frustum(double left, double right,
 	// double bottom, double top,
 	// double near, double far)
@@ -1619,19 +1665,19 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public double screenX(final double x, final double y, final double z) {
-		showDepthWarningXYZ("screenX");
+		PGraphics.showDepthWarningXYZ("screenX");
 		return 0;
 	}
 
 	@Override
 	public double screenY(final double x, final double y, final double z) {
-		showDepthWarningXYZ("screenY");
+		PGraphics.showDepthWarningXYZ("screenY");
 		return 0;
 	}
 
 	@Override
 	public double screenZ(final double x, final double y, final double z) {
-		showDepthWarningXYZ("screenZ");
+		PGraphics.showDepthWarningXYZ("screenZ");
 		return 0;
 	}
 
@@ -1671,16 +1717,16 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	protected void strokeImpl() {
 		int cap = BasicStroke.CAP_BUTT;
-		if (strokeCap == ROUND) {
+		if (strokeCap == PConstants.ROUND) {
 			cap = BasicStroke.CAP_ROUND;
-		} else if (strokeCap == PROJECT) {
+		} else if (strokeCap == PConstants.PROJECT) {
 			cap = BasicStroke.CAP_SQUARE;
 		}
 
 		int join = BasicStroke.JOIN_BEVEL;
-		if (strokeJoin == MITER) {
+		if (strokeJoin == PConstants.MITER) {
 			join = BasicStroke.JOIN_MITER;
-		} else if (strokeJoin == ROUND) {
+		} else if (strokeJoin == PConstants.ROUND) {
 			join = BasicStroke.JOIN_ROUND;
 		}
 
@@ -1761,7 +1807,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	// double x, double y, double z,
 	// double nx, double ny, double nz,
 	// double angle, double concentration)
-	// public void lightFalloff(double constant, double linear, double quadratic)
+	// public void lightFalloff(double constant, double linear, double
+	// quadratic)
 	// public void lightSpecular(double x, double y, double z)
 	// protected void lightPosition(int num, double x, double y, double z)
 	// protected void lightDirection(int num, double x, double y, double z)
@@ -1773,7 +1820,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	int[]	clearPixels;
 
 	protected void clearPixels(final int color) {
-		// Create a small array that can be used to set the pixels several times.
+		// Create a small array that can be used to set the pixels several
+		// times.
 		// Using a single-pixel line of length 'width' is a tradeoff between
 		// speed (setting each pixel individually is too slow) and memory
 		// (an array for width*height would waste lots of memory if it stayed
@@ -1860,12 +1908,12 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void beginRaw(final PGraphics recorderRaw) {
-		showMethodWarning("beginRaw");
+		PGraphics.showMethodWarning("beginRaw");
 	}
 
 	@Override
 	public void endRaw() {
-		showMethodWarning("endRaw");
+		PGraphics.showMethodWarning("endRaw");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -1895,7 +1943,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		if ((pixels == null) || (pixels.length != (width * height))) {
 			pixels = new int[width * height];
 		}
-		// ((BufferedImage) image).getRGB(0, 0, width, height, pixels, 0, width);
+		// ((BufferedImage) image).getRGB(0, 0, width, height, pixels, 0,
+		// width);
 		final WritableRaster raster = ((BufferedImage) (primarySurface ? offscreen : image)).getRaster();
 		// WritableRaster raster = image.getRaster();
 		raster.getDataElements(0, 0, width, height, pixels);
@@ -1926,9 +1975,9 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		// if ((x == 0) && (y == 0) && (c == width) && (d == height)) {
 		if ((x != 0) || (y != 0) || (c != width) || (d != height)) {
 			// Show a warning message, but continue anyway.
-			showVariationWarning("updatePixels(x, y, w, h)");
+			PGraphics.showVariationWarning("updatePixels(x, y, w, h)");
 		}
-		updatePixels();
+		this.updatePixels();
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -1939,12 +1988,14 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public int get(final int x, final int y) {
-		if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) { return 0; }
+		if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) {
+			return 0;
+		}
 		// return ((BufferedImage) image).getRGB(x, y);
 		final WritableRaster raster = ((BufferedImage) (primarySurface ? offscreen : image)).getRaster();
 		// WritableRaster raster = image.getRaster();
-		raster.getDataElements(x, y, getset);
-		return getset[0];
+		raster.getDataElements(x, y, PGraphicsJava2D.getset);
+		return PGraphicsJava2D.getset[0];
 	}
 
 	// public PImage get(int x, int y, int w, int h)
@@ -1961,7 +2012,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 			raster.getDataElements(sourceX, sourceY, sourceWidth, sourceHeight, target.pixels);
 
 		} else {
-			// TODO optimize, incredibly inefficient to reallocate this much memory
+			// TODO optimize, incredibly inefficient to reallocate this much
+			// memory
 			final int[] temp = new int[sourceWidth * sourceHeight];
 			raster.getDataElements(sourceX, sourceY, sourceWidth, sourceHeight, temp);
 
@@ -1978,17 +2030,19 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public PImage get() {
-		return get(0, 0, width, height);
+		return this.get(0, 0, width, height);
 	}
 
 	@Override
 	public void set(final int x, final int y, final int argb) {
-		if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) { return; }
+		if ((x < 0) || (y < 0) || (x >= width) || (y >= height)) {
+			return;
+		}
 		// ((BufferedImage) image).setRGB(x, y, argb);
-		getset[0] = argb;
+		PGraphicsJava2D.getset[0] = argb;
 		final WritableRaster raster = ((BufferedImage) (primarySurface ? offscreen : image)).getRaster();
 		// WritableRaster raster = image.getRaster();
-		raster.setDataElements(x, y, getset);
+		raster.setDataElements(x, y, PGraphicsJava2D.getset);
 	}
 
 	// protected void setImpl(int dx, int dy, int sx, int sy, int sw, int sh,
@@ -2002,7 +2056,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 		        && (sourceHeight == sourceImage.height)) {
 			raster.setDataElements(targetX, targetY, sourceImage.width, sourceImage.height, sourceImage.pixels);
 		} else {
-			// TODO optimize, incredibly inefficient to reallocate this much memory
+			// TODO optimize, incredibly inefficient to reallocate this much
+			// memory
 			final PImage temp = sourceImage.get(sourceX, sourceY, sourceWidth, sourceHeight);
 			raster.setDataElements(targetX, targetY, temp.width, temp.height, temp.pixels);
 		}
@@ -2014,12 +2069,12 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 
 	@Override
 	public void mask(final int alpha[]) {
-		showMethodWarning("mask");
+		PGraphics.showMethodWarning("mask");
 	}
 
 	@Override
 	public void mask(final PImage alpha) {
-		showMethodWarning("mask");
+		PGraphics.showMethodWarning("mask");
 	}
 
 	// ////////////////////////////////////////////////////////////
@@ -2041,7 +2096,8 @@ public class PGraphicsJava2D extends PGraphics /* PGraphics2D */{
 	public void copy(final int sx, final int sy, final int sw, final int sh, int dx, int dy, final int dw, final int dh) {
 		if ((sw != dw) || (sh != dh)) {
 			// Image img = primarySurface ? offscreen : image;
-			// g2.drawImage(img, dx, dy, dx + dw, dy + dh, sx, sy, sx + sw, sy + sh, null);
+			// g2.drawImage(img, dx, dy, dx + dw, dy + dh, sx, sy, sx + sw, sy +
+			// sh, null);
 			g2.drawImage(image, dx, dy, dx + dw, dy + dh, sx, sy, sx + sw, sy + sh, null);
 
 		} else {

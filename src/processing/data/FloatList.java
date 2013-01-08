@@ -47,7 +47,9 @@ public class FloatList {
 	}
 
 	public float calcMin() {
-		if (data.length == 0) { return Float.NaN; }
+		if (data.length == 0) {
+			return Float.NaN;
+		}
 		float m = Float.NaN;
 		for (int i = 0; i < data.length; i++) {
 			// find one good value to start
@@ -68,7 +70,9 @@ public class FloatList {
 	}
 
 	public float calcMax() {
-		if (data.length == 0) { return Float.NaN; }
+		if (data.length == 0) {
+			return Float.NaN;
+		}
 		float m = Float.NaN;
 		for (int i = 0; i < data.length; i++) {
 			// find one good value to start

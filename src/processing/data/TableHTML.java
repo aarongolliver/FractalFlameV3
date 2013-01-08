@@ -158,7 +158,7 @@ public class TableHTML extends Table {
 
 	void beginTableRow() {
 		// make sure we have enough room for these rows
-		addRow();
+		this.addRow();
 		// if (rowCount == data.length) {
 		// String[][] temp = new String[data.length << 1][];
 		// System.arraycopy(data, 0, temp, 0, rowCount);
@@ -185,14 +185,14 @@ public class TableHTML extends Table {
 
 	void setContent(final String what) {
 		// data[rowIndex][colIndex] = what;
-		String cell = getString(rowIndex, colIndex);
+		String cell = this.getString(rowIndex, colIndex);
 		if (cell != null) {
 			cell += what;
 		} else {
 			cell = what;
 		}
 		// setString(rowIndex, colIndex, what);
-		setString(rowIndex, colIndex, cell);
+		this.setString(rowIndex, colIndex, cell);
 	}
 
 	void endTableData() {

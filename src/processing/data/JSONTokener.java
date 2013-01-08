@@ -77,7 +77,9 @@ public class JSONTokener {
 	 * a digit or letter before attempting to parse the next number or identifier.
 	 */
 	public void back() {
-		if (usePrevious || (index <= 0)) { throw new RuntimeException("Stepping back two steps is not supported"); }
+		if (usePrevious || (index <= 0)) {
+			throw new RuntimeException("Stepping back two steps is not supported");
+		}
 		index -= 1;
 		character -= 1;
 		usePrevious = true;
@@ -92,9 +94,15 @@ public class JSONTokener {
 	 * @return An int between 0 and 15, or -1 if c was not a hex digit.
 	 */
 	public static int dehexchar(final char c) {
-		if ((c >= '0') && (c <= '9')) { return c - '0'; }
-		if ((c >= 'A') && (c <= 'F')) { return c - ('A' - 10); }
-		if ((c >= 'a') && (c <= 'f')) { return c - ('a' - 10); }
+		if ((c >= '0') && (c <= '9')) {
+			return c - '0';
+		}
+		if ((c >= 'A') && (c <= 'F')) {
+			return c - ('A' - 10);
+		}
+		if ((c >= 'a') && (c <= 'f')) {
+			return c - ('a' - 10);
+		}
 		return -1;
 	}
 
@@ -109,7 +117,9 @@ public class JSONTokener {
 	 */
 	public boolean more() {
 		this.next();
-		if (end()) { return false; }
+		if (end()) {
+			return false;
+		}
 		back();
 		return true;
 	}
@@ -161,7 +171,9 @@ public class JSONTokener {
 	 */
 	public char next(final char c) {
 		final char n = this.next();
-		if (n != c) { throw new RuntimeException("Expected '" + c + "' and instead saw '" + n + "'"); }
+		if (n != c) {
+			throw new RuntimeException("Expected '" + c + "' and instead saw '" + n + "'");
+		}
 		return n;
 	}
 
@@ -176,14 +188,18 @@ public class JSONTokener {
 	 *             string.
 	 */
 	public String next(final int n) {
-		if (n == 0) { return ""; }
+		if (n == 0) {
+			return "";
+		}
 
 		final char[] chars = new char[n];
 		int pos = 0;
 
 		while (pos < n) {
 			chars[pos] = this.next();
-			if (end()) { throw new RuntimeException("Substring bounds error"); }
+			if (end()) {
+				throw new RuntimeException("Substring bounds error");
+			}
 			pos += 1;
 		}
 		return new String(chars);
@@ -198,7 +214,9 @@ public class JSONTokener {
 	public char nextClean() {
 		for (;;) {
 			final char c = this.next();
-			if ((c == 0) || (c > ' ')) { return c; }
+			if ((c == 0) || (c > ' ')) {
+				return c;
+			}
 		}
 	}
 
@@ -208,8 +226,8 @@ public class JSONTokener {
 	 * to accept them.
 	 * 
 	 * @param quote
-	 *            The quoting character, either <code>"</code>&nbsp;<small>(double quote)</small> or
-	 *            <code>'</code>&nbsp;<small>(single quote)</small>.
+	 *            The quoting character, either <code>"</code> &nbsp;<small>(double quote)</small>
+	 *            or <code>'</code> &nbsp;<small>(single quote)</small>.
 	 * @return A String.
 	 * @throws JSONException
 	 *             Unterminated string.
@@ -256,7 +274,9 @@ public class JSONTokener {
 				}
 				break;
 			default:
-				if (c == quote) { return sb.toString(); }
+				if (c == quote) {
+					return sb.toString();
+				}
 				sb.append(c);
 			}
 		}
@@ -346,7 +366,9 @@ public class JSONTokener {
 		back();
 
 		string = sb.toString().trim();
-		if ("".equals(string)) { throw new RuntimeException("Missing value"); }
+		if ("".equals(string)) {
+			throw new RuntimeException("Missing value");
+		}
 		return JSONObject.stringToValue(string);
 	}
 

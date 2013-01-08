@@ -93,7 +93,9 @@ public class JSONArray {
 	 */
 	private JSONArray(final JSONTokener x) {
 		this();
-		if (x.nextClean() != '[') { throw new RuntimeException("A JSONArray text must start with '['"); }
+		if (x.nextClean() != '[') {
+			throw new RuntimeException("A JSONArray text must start with '['");
+		}
 		if (x.nextClean() != ']') {
 			x.back();
 			for (;;) {
@@ -107,7 +109,9 @@ public class JSONArray {
 				switch (x.nextClean()) {
 				case ';':
 				case ',':
-					if (x.nextClean() == ']') { return; }
+					if (x.nextClean() == ']') {
+						return;
+					}
 					x.back();
 					break;
 				case ']':
@@ -124,7 +128,7 @@ public class JSONArray {
 	 * 
 	 * @param source
 	 *            A string that begins with <code>[</code>&nbsp;<small>(left bracket)</small> and
-	 *            ends with <code>]</code>&nbsp;<small>(right bracket)</small>.
+	 *            ends with <code>]</code> &nbsp;<small>(right bracket)</small>.
 	 * @throws JSONException
 	 *             If there is a syntax error.
 	 */
@@ -177,7 +181,9 @@ public class JSONArray {
 	 * @return An object value, or null if there is no object at that index.
 	 */
 	private Object opt(final int index) {
-		if ((index < 0) || (index >= size())) { return null; }
+		if ((index < 0) || (index >= size())) {
+			return null;
+		}
 		return myArrayList.get(index);
 	}
 
@@ -192,7 +198,9 @@ public class JSONArray {
 	 */
 	private Object get(final int index) {
 		final Object object = opt(index);
-		if (object == null) { throw new RuntimeException("JSONArray[" + index + "] not found."); }
+		if (object == null) {
+			throw new RuntimeException("JSONArray[" + index + "] not found.");
+		}
 		return object;
 	}
 
@@ -207,7 +215,9 @@ public class JSONArray {
 	 */
 	public String getString(final int index) {
 		final Object object = get(index);
-		if (object instanceof String) { return (String) object; }
+		if (object instanceof String) {
+			return (String) object;
+		}
 		throw new RuntimeException("JSONArray[" + index + "] not a string.");
 	}
 
@@ -288,7 +298,9 @@ public class JSONArray {
 		if (object.equals(Boolean.FALSE) || ((object instanceof String) && ((String) object).equalsIgnoreCase("false"))) {
 			return false;
 		} else if (object.equals(Boolean.TRUE)
-		        || ((object instanceof String) && ((String) object).equalsIgnoreCase("true"))) { return true; }
+		        || ((object instanceof String) && ((String) object).equalsIgnoreCase("true"))) {
+			return true;
+		}
 		throw new RuntimeException("JSONArray[" + index + "] is not a boolean.");
 	}
 
@@ -303,7 +315,9 @@ public class JSONArray {
 	 */
 	public JSONArray getArray(final int index) {
 		final Object object = get(index);
-		if (object instanceof JSONArray) { return (JSONArray) object; }
+		if (object instanceof JSONArray) {
+			return (JSONArray) object;
+		}
 		throw new RuntimeException("JSONArray[" + index + "] is not a JSONArray.");
 	}
 
@@ -318,7 +332,9 @@ public class JSONArray {
 	 */
 	public JSONObject getObject(final int index) {
 		final Object object = get(index);
-		if (object instanceof JSONObject) { return (JSONObject) object; }
+		if (object instanceof JSONObject) {
+			return (JSONObject) object;
+		}
 		throw new RuntimeException("JSONArray[" + index + "] is not a JSONObject.");
 	}
 
@@ -533,7 +549,7 @@ public class JSONArray {
 	 * @return this.
 	 */
 	public JSONArray append(final float value) {
-		return append((double) value);
+		return this.append((double) value);
 	}
 
 	/**
@@ -744,7 +760,9 @@ public class JSONArray {
 	 */
 	private JSONArray set(final int index, final Object value) {
 		JSONObject.testValidity(value);
-		if (index < 0) { throw new RuntimeException("JSONArray[" + index + "] not found."); }
+		if (index < 0) {
+			throw new RuntimeException("JSONArray[" + index + "] not found.");
+		}
 		if (index < size()) {
 			myArrayList.set(index, value);
 		} else {
@@ -793,9 +811,11 @@ public class JSONArray {
 	// /**
 	// * Produce a JSONObject by combining a JSONArray of names with the values
 	// * of this JSONArray.
-	// * @param names A JSONArray containing a list of key strings. These will be
+	// * @param names A JSONArray containing a list of key strings. These will
+	// be
 	// * paired with the values.
-	// * @return A JSONObject, or null if there are no names or if this JSONArray
+	// * @return A JSONObject, or null if there are no names or if this
+	// JSONArray
 	// * has no values.
 	// * @throws JSONException If any of the names are null.
 	// */

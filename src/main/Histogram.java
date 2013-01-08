@@ -1,7 +1,5 @@
 package main;
 
-import static java.lang.Math.log;
-import static java.lang.Math.pow;
 import main.fractalGenome.FractalGenome;
 
 public class Histogram {
@@ -78,7 +76,7 @@ public class Histogram {
 		image = new double[swid * shei * 5];
 	}
 
-	public void updatePixels(final int[] pixels, FractalGenome genome) {
+	public void updatePixels(final int[] pixels, final FractalGenome genome) {
 		cameraXOffset = FractalGenome.cameraXOffset;
 		cameraYOffset = FractalGenome.cameraYOffset;
 		cameraXShrink = FractalGenome.cameraXShrink;
@@ -87,7 +85,7 @@ public class Histogram {
 		logScale = FractalGenome.logScale;
 		linearScale = FractalGenome.linearScale;
 
-		double gamma = FractalGenome.gamma;
+		final double gamma = FractalGenome.gamma;
 		double maxA = 0;
 
 		for (int hy = 0; hy < hhei; hy++) {
@@ -122,7 +120,7 @@ public class Histogram {
 					final double rAvg = image[index + 0] / image[index + 4];
 					final double gAvg = image[index + 1] / image[index + 4];
 					final double bAvg = image[index + 2] / image[index + 4];
-					final double colorScaleFactor = pow(log(image[index + 3]) / log(maxA), 1.0 / gamma);
+					final double colorScaleFactor = Math.pow(Math.log(image[index + 3]) / Math.log(maxA), 1.0 / gamma);
 
 					final int a = 0xFF;
 					final int r = ((int) ((rAvg * colorScaleFactor) * 0xFF));
@@ -146,7 +144,7 @@ public class Histogram {
 		final int x = (int) (((p.x + cameraXOffset) * (hwid / cameraXShrink)) + (hwid / 2));
 		final int y = (int) (((p.y + cameraYOffset) * (hhei / cameraYShrink)) + (hhei / 2));
 
-		hit(x, y, r, g, b);
+		this.hit(x, y, r, g, b);
 
 	}
 
@@ -154,7 +152,7 @@ public class Histogram {
 		final int x = (int) (((p.x + cameraXOffset) * (hwid / cameraXShrink)) + (hwid / 2));
 		final int y = (int) (((p.y + cameraYOffset) * (hhei / cameraYShrink)) + (hhei / 2));
 
-		hit(x, y, c.r, c.g, c.b);
+		this.hit(x, y, c.r, c.g, c.b);
 
 	}
 
@@ -162,7 +160,7 @@ public class Histogram {
 		final int ix = (int) (((x + cameraXOffset) * (hwid / cameraXShrink)) + (center ? (hwid / 2) : 0));
 		final int iy = (int) (((y + cameraYOffset) * (hhei / cameraYShrink)) + (center ? (hhei / 2) : 0));
 
-		hit(ix, iy, r, g, b);
+		this.hit(ix, iy, r, g, b);
 	}
 
 	private void hit(final int x, final int y, final double r, final double g, final double b) {

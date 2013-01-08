@@ -1,11 +1,5 @@
 package main.variations;
 
-import static java.lang.Math.PI;
-import static java.lang.Math.atan2;
-import static java.lang.Math.cos;
-import static java.lang.Math.exp;
-import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
 import main.Vec2D;
 import main.fractalGenome.FractalGenome;
 
@@ -20,15 +14,15 @@ public final class Exponential18 extends Variation {
 		final double x = pIn.x;
 		final double y = pIn.y;
 		final double rsq = (x * x) + (y * y);
-		final double r = sqrt(rsq);
-		final double t = atan2(x, y);
-		final double p = atan2(y, x);
+		final double r = Math.sqrt(rsq);
+		final double t = Math.atan2(x, y);
+		final double p = Math.atan2(y, x);
 
-		final double e = exp(x - 1);
-		final double piY = PI * y;
+		final double e = Math.exp(x - 1);
+		final double piY = Math.PI * y;
 
-		pOut.x = e * cos(piY);
-		pOut.y = e * sin(piY);
+		pOut.x = e * Math.cos(piY);
+		pOut.y = e * Math.sin(piY);
 
 		return pOut;
 	}
