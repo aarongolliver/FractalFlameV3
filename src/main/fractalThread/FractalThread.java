@@ -69,9 +69,15 @@ public final class FractalThread extends Thread {
 				}
 				pAffined.set(addVec);
 			}
-			if(genome.finalTransformToggle)
-			pAffined.set(affine(pAffined, genome.finalTransformMatrices[j]));
-			p.set(affine(pAffined, genome.finalTransformMatrices[j]));
+
+			// apply the final transformation
+			if (genome.finalTransformToggle) {
+				pAffined.set(affine(pAffined, genome.finalTransformMatrices[j]));
+				currentColor.hit(genome.finalColor[j]);
+			}
+
+
+			p.set(pAffined);
 
 			if (Double.isInfinite(p.x) || Double.isInfinite(p.y) || Double.isNaN(p.x) || Double.isNaN(p.y)) {
 				p.x = r.nextDouble(-1, 1);

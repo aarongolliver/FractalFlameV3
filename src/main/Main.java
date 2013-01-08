@@ -46,11 +46,11 @@ public class Main extends PApplet {
 	}
 
 	private FractalGenome newGenome() {
-		FractalGenome fg = new FractalGenome(6, 6);
+		FractalGenome fg = new FractalGenome(3, 6);
 		fg.variationToggle = true;
 		fg.finalTransformToggle = true;
 		fg.setLogScale();
-		fg.center = true;
+		FractalGenome.center = true;
 		return fg;
 	}
 
@@ -62,6 +62,7 @@ public class Main extends PApplet {
 	@Override
 	public void keyPressed() {
 		stopThreads();
+
 		if ('h' == Character.toLowerCase(key)) {
 			ss = (ss == 1) ? 10 : 1;
 			h = null;
@@ -86,18 +87,41 @@ public class Main extends PApplet {
 			h.reset();
 		}
 
+		if ('v' == Character.toLowerCase(key)) {
+			genome.variationToggle = !genome.variationToggle;
+			System.out.println("# VT\t|\t " + genome.variationToggle);
+			h.reset();
+		}
+
 		if ('+' == key || '=' == key) {
-			genome.cameraXShrink /= 1.01;
-			genome.cameraYShrink /= 1.01;
+			FractalGenome.cameraXShrink /= 1.01;
+			FractalGenome.cameraYShrink /= 1.01;
 			h.reset();
 		}
 
 		if ('-' == key || '_' == key) {
-			genome.cameraXShrink *= 1.01;
-			genome.cameraYShrink *= 1.01;
+			FractalGenome.cameraXShrink *= 1.01;
+			FractalGenome.cameraYShrink *= 1.01;
+			h.reset();
+		}
+		if (keyCode == UP) {
+			FractalGenome.cameraYOffset += .01 * FractalGenome.cameraYShrink;
+			h.reset();
+		}
+		if (keyCode == DOWN) {
+			FractalGenome.cameraYOffset -= .01 * FractalGenome.cameraYShrink;
 			h.reset();
 		}
 
+		if (keyCode == LEFT) {
+			FractalGenome.cameraXOffset += .01 * FractalGenome.cameraXShrink;
+			h.reset();
+		}
+
+		if (keyCode == RIGHT) {
+			FractalGenome.cameraXOffset -= .01 * FractalGenome.cameraXShrink;
+			h.reset();
+		}
 		startThreads();
 	}
 

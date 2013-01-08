@@ -54,7 +54,7 @@ public class Histogram {
 	private boolean	       logScale	     = false;
 	private boolean	       linearScale	 = false;
 
-	private final double	gamma	     = 1;
+	private final double	gamma	     = 2.2;
 
 	/**
 	 * @param swid
@@ -74,19 +74,19 @@ public class Histogram {
 		hhei = shei * ss;
 
 		h = new double[hwid * hhei * 4];
-		image = new double[swid * shei * 4];
+		image = new double[swid * shei * 5];
 	}
 
 	public void updatePixels(final int[] pixels, FractalGenome genome) {
-		cameraXOffset = genome.cameraXOffset;
-		cameraYOffset = genome.cameraYOffset;
-		cameraXShrink = genome.cameraXShrink;
-		cameraYShrink = genome.cameraYShrink;
-		center = genome.center;
-		logScale = genome.logScale;
-		linearScale = genome.linearScale;
+		cameraXOffset = FractalGenome.cameraXOffset;
+		cameraYOffset = FractalGenome.cameraYOffset;
+		cameraXShrink = FractalGenome.cameraXShrink;
+		cameraYShrink = FractalGenome.cameraYShrink;
+		center = FractalGenome.center;
+		logScale = FractalGenome.logScale;
+		linearScale = FractalGenome.linearScale;
 
-		double gamma = genome.gamma;
+		double gamma = FractalGenome.gamma;
 		double maxA = 0;
 
 		for (int hy = 0; hy < hhei; hy++) {
@@ -94,7 +94,7 @@ public class Histogram {
 				final int hi = 4 * (hx + (hy * hwid));
 				final int ix = hx / ss;
 				final int iy = hy / ss;
-				final int ii = 4 * (ix + (iy * swid));
+				final int ii = 5 * (ix + (iy * swid));
 
 				final double r = h[hi + 0];
 				final double g = h[hi + 1];
@@ -105,29 +105,28 @@ public class Histogram {
 				image[ii + 1] += g;
 				image[ii + 2] += b;
 				image[ii + 3] += a;
+				image[ii + 4] = (image[ii + 4] > a) ? image[ii + 4] : a;
 
-				final double imga = image[ii + 3];
-
-				maxA = (maxA > imga) ? maxA : imga;
+				maxA = (maxA > a) ? maxA : a;
 			}
 		}
 
-		final double logMaxA = Math.log(maxA / ssSquared);
+		final double logMaxA = Math.log(maxA);
 
 		for (int iy = 0; iy < shei; iy++) {
 			for (int ix = 0; ix < swid; ix++) {
 				final int pixels_index = (ix + (iy * swid));
-				final int index = 4 * pixels_index;
-				final double aAvg = image[index + 3] / ssSquared;
-
-				if ((aAvg > 1) || !logScale) {
+				final int index = 5 * pixels_index;
+				final double cellAMax = (double) image[index + 4];
+				if (cellAMax > 1) {
 					final double rAvg = image[index + 0] / ssSquared;
 					final double gAvg = image[index + 1] / ssSquared;
 					final double bAvg = image[index + 2] / ssSquared;
 					double colorScaleFactor = 1;
 					if (logScale) {
-						colorScaleFactor = pow(log(aAvg) / logMaxA, 1.0 / gamma);
+						colorScaleFactor = pow(log(cellAMax) / logMaxA, 1.0 / gamma);
 					} else if (linearScale) {
+						final double aAvg = (double) image[index + 3] / ssSquared;
 						colorScaleFactor = aAvg / (maxA / ss);
 					}
 
@@ -138,12 +137,13 @@ public class Histogram {
 
 					pixels[pixels_index] = (a << 24) | (r << 16) | (g << 8) | (b << 0);
 				} else {
-					pixels[pixels_index] = (0xFF << 24);
+					pixels[pixels_index] = 0xFF000000;
 				}
 				image[index + 0] = 0;
 				image[index + 1] = 0;
 				image[index + 2] = 0;
 				image[index + 3] = 0;
+				image[index + 4] = 0;
 			}
 		}
 	}
