@@ -63,46 +63,43 @@ public final class FractalGenome {
 	static public double	   cameraYShrink	    = 10;
 	static public boolean	   center	            = false;
 	static public boolean	   logScale	            = false;
-	static public boolean	   linearScale	        = false;
 
 	static public double	   gamma	            = 1;
 
 	public void setLogScale() {
 		FractalGenome.logScale = true;
-		FractalGenome.linearScale = false;
-	}
-
-	public void setLinearScale() {
-		FractalGenome.logScale = false;
-		FractalGenome.linearScale = true;
 	}
 
 	public FractalGenome(final int minAffineTransforms, final int maxAffineTransforms) {
-
 		FractalGenome.cameraXOffset = 0;
 		FractalGenome.cameraYOffset = 0;
 		FractalGenome.cameraXShrink = 10;
 		FractalGenome.cameraYShrink = 10;
 		FractalGenome.center = false;
 		FractalGenome.logScale = false;
-		FractalGenome.linearScale = false;
 
 		FractalGenome.gamma = 1;
 
 		nAffineTransformatioins = resetNAffineTransformations(minAffineTransforms, maxAffineTransforms);
 		affineProbabilities = resetAffineProbabilities(nAffineTransformatioins);
 
-		affineMatrices = resetAffineMatricies(nAffineTransformatioins);
-		finalTransformMatrices = resetAffineMatricies(nAffineTransformatioins);
-		affineColor = resetAffineColor(nAffineTransformatioins);
-		finalColor = resetAffineColor(nAffineTransformatioins);
+		affineMatrices = newAffineMatrix(nAffineTransformatioins);
+		finalTransformMatrices = newAffineMatrix(nAffineTransformatioins);
+		affineColor = newColorArray(nAffineTransformatioins);
+		finalColor = newColorArray(nAffineTransformatioins);
 
-		variationParameters = resetVariationParameters();
+		variationParameters = newVariationParamaters();
 
 		resetVariations();
 	}
 
-	private double[][] resetVariationParameters() {
+	/**
+	 * returns a new array of paramaters to be used by variations variations access their paramaters
+	 * by using accessing the array like so: paramaters[Variation.ID][paramater number]
+	 * 
+	 * @return
+	 */
+	private double[][] newVariationParamaters() {
 		final double[][] p = new double[Variation.NUMBER_OF_VARIATIONS + 1][4];
 		for (final double[] row : p) {
 			for (final int i : Utils.range(row.length)) {
@@ -112,6 +109,11 @@ public final class FractalGenome {
 		return p;
 	}
 
+	/**
+	 * constructs a copy of the input genome
+	 * 
+	 * @param genome
+	 */
 	public FractalGenome(final FractalGenome genome) {
 		nAffineTransformatioins = genome.nAffineTransformatioins;
 		affineProbabilities = genome.affineProbabilities;
@@ -141,17 +143,36 @@ public final class FractalGenome {
 		}
 	}
 
-	public ColorSet[] resetAffineColor(final int nAffineTransformatioins) {
-		final ColorSet[] cs = new ColorSet[nAffineTransformatioins];
+	/**
+	 * returns nColorSets length array of ColorSets
+	 * 
+	 * @param nColorSets
+	 *            number of color sets
+	 */
+	public ColorSet[] newColorArray(final int nColorSets) {
+		final ColorSet[] cs = new ColorSet[nColorSets];
 
-		for (final int i : Utils.range(nAffineTransformatioins)) {
+		for (final int i : Utils.range(nColorSets)) {
 			cs[i] = new ColorSet(Math.random(), Math.random(), Math.random());
 		}
 
 		return cs;
 	}
 
-	private double[][][] resetAffineMatricies(final int nAffineTransformatioins) {
+	/**
+	 * returns a new array of affine matricies. They are indexed as such:
+	 * 
+	 * matrix[which matrix][2][3]
+	 * 
+	 * "which matrix" corrosponds to which affine matrix you want, so running matrix[0] will give
+	 * you the 0th affine matrix. It will be in the form of a 2x3 2D array addressed as such:
+	 * 
+	 * [ [a, b, c] [d, e, f] ]
+	 * 
+	 * @param nAffineTransformatioins
+	 * @return new array of affine matricies
+	 */
+	private double[][][] newAffineMatrix(final int nAffineTransformatioins) {
 		final double[][][] matrices = new double[nAffineTransformatioins][2][3];
 		for (int i = 0; i < matrices.length; i++) {
 			for (int j = 0; j < matrices[i].length; j++) {
@@ -163,17 +184,39 @@ public final class FractalGenome {
 		return matrices;
 	}
 
+	/**
+	 * picks a random between min and max. The number must be greater than 3 if max < min, max is
+	 * set to min
+	 * 
+	 * @param minAffineTransforms
+	 *            minimum number of affine transformations
+	 * @param maxAffineTransforms
+	 *            maximum number of affine transformations
+	 * @return chosen number of affine transformations
+	 */
 	private int resetNAffineTransformations(int minAffineTransforms, int maxAffineTransforms) {
 		// there must be 3 or more transformations to work properly
-		minAffineTransforms = (minAffineTransforms >= 3) ? minAffineTransforms : 3;
+		minAffineTransforms = Utils.max(minAffineTransforms, 3);
 
 		// makes sure max is > than min
-		maxAffineTransforms = (maxAffineTransforms >= minAffineTransforms) ? maxAffineTransforms : minAffineTransforms;
+		maxAffineTransforms = Utils.max(maxAffineTransforms, minAffineTransforms);
 
 		// picks a random number between max and min
-		return (int) (Math.random() * (maxAffineTransforms - minAffineTransforms)) + minAffineTransforms;
+		return (int) Utils.map(Math.random(), 0, 1, minAffineTransforms, maxAffineTransforms);
 	}
 
+	/**
+	 * returns a new jump table where each index refers to a specific affine transformation.
+	 * 
+	 * The idea is you pick a random number between (0) and (jumpTable.length) and retrive the
+	 * number at that index. The retrieved number corrosponds to the affine matrix picked. By making
+	 * the jump table larger, you allow for more fine-grained probabilities. Right now the least
+	 * number of times a matrix can be picked is 1/1000
+	 * 
+	 * @param nAffineTransformatioins
+	 *            number of affine transformations
+	 * @return
+	 */
 	private int[] resetAffineProbabilities(final int nAffineTransformatioins) {
 		final double[] affineProbabilities = new double[nAffineTransformatioins];
 
@@ -199,6 +242,13 @@ public final class FractalGenome {
 		return jumpTable;
 	}
 
+	/**
+	 * returns a list of variation function objects based on the provided genome
+	 * 
+	 * @param genome
+	 *            genome of the variation functions
+	 * @return array of Variation objects
+	 */
 	public Variation[] getVariationObjects(final FractalGenome genome) {
 		final Variation[] variations = new Variation[this.variations.size()];
 		int i = 0;
@@ -304,7 +354,8 @@ public final class FractalGenome {
 				break;
 			default:
 				while (true) {
-					System.out.println("MISTAKE");
+					// temporary "error" if you ask for a function that doesn't exist
+					System.out.println("MISTAKE: variation " + variation + " does not exist!");
 				}
 			}
 		}

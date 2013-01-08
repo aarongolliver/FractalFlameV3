@@ -83,7 +83,6 @@ public class Histogram {
 		cameraYShrink = FractalGenome.cameraYShrink;
 		center = FractalGenome.center;
 		logScale = FractalGenome.logScale;
-		linearScale = FractalGenome.linearScale;
 
 		final double gamma = FractalGenome.gamma;
 		double maxA = 0;

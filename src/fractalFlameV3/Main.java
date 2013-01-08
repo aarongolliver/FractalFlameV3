@@ -101,10 +101,10 @@ public class Main extends PApplet {
 			System.out.println("# VT\t|\t " + genome.variationToggle);
 			h.reset();
 		}
-		
+
 		if ('s' == Character.toLowerCase(key)) {
 			saveFrame("######.bmp");
-			
+
 		}
 
 		if (('+' == key) || ('=' == key)) {
