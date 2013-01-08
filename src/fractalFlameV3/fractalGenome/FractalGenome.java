@@ -39,7 +39,6 @@ import fractalFlameV3.variations.Swirl3;
 import fractalFlameV3.variations.Variation;
 import fractalFlameV3.variations.Waves15;
 
-
 public final class FractalGenome {
 	final public int	       nAffineTransformatioins;
 	final public int[]	       affineProbabilities;
