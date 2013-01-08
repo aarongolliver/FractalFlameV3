@@ -43,8 +43,9 @@ public final class Vec2D {
 		y = v.y;
 	}
 
-	public void set(final int x, final int y) {
+	public Vec2D set(double x, double y) {
 		this.x = x;
 		this.y = y;
+		return this;
 	}
 }
