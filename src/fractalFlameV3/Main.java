@@ -1,5 +1,15 @@
 package fractalFlameV3;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import javax.imageio.stream.FileImageInputStream;
+
+import com.google.gson.GsonBuilder;
+
 import fractalFlameV3.fractalGenome.FractalGenome;
 import fractalFlameV3.fractalThread.FractalThread;
 import fractalFlameV3.fractalThread.ThreadSignal;
@@ -19,8 +29,6 @@ public class Main extends PApplet {
 	FractalGenome	genome;
 	FractalThread[]	threads;
 	ThreadSignal	threadSignal;
-
-	double	        seed;
 
 	final int	    SYSTEM_THREADS	= Runtime.getRuntime().availableProcessors();
 
@@ -46,12 +54,34 @@ public class Main extends PApplet {
 
 		h = newHistogram();
 
-		seed = this.random(0, 1);
-		genome = newGenome();
+		genome = loadLastGenome();
 		threads = new FractalThread[1];
 		threadSignal = new ThreadSignal();
 		startThreads();
 
+	}
+
+	private FractalGenome loadLastGenome() {
+		String fullGenomeString = "";
+		GsonBuilder gb = new GsonBuilder();
+		try {
+			FileReader fileReader = new FileReader("images/last.fractalgenome");
+			BufferedReader lastGenomeReader = new BufferedReader(fileReader);
+
+			String line;
+			while ((line = lastGenomeReader.readLine()) != null) {
+				fullGenomeString += line;
+			}
+
+			lastGenomeReader.close();
+			fileReader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(fullGenomeString);
+		return gb.create().fromJson(fullGenomeString, new FractalGenome(3, 3).getClass());
 	}
 
 	private FractalGenome newGenome() {
@@ -59,7 +89,7 @@ public class Main extends PApplet {
 		fg.variationToggle = true;
 		fg.finalTransformToggle = true;
 		fg.setLogScale();
-		FractalGenome.center = true;
+		genome.center = true;
 		return fg;
 	}
 
@@ -103,37 +133,39 @@ public class Main extends PApplet {
 		}
 
 		if ('s' == Character.toLowerCase(key)) {
-			saveFrame("######.bmp");
+			String fileName = "images/" + genome.hashCode() + "_#####.bmp";
+			saveFrame(fileName);
+			genome.saveGsonRepresentation();
 
 		}
 
 		if (('+' == key) || ('=' == key)) {
-			FractalGenome.cameraXShrink /= 1.01;
-			FractalGenome.cameraYShrink /= 1.01;
+			genome.cameraXShrink /= 1.01;
+			genome.cameraYShrink /= 1.01;
 			h.reset();
 		}
 
 		if (('-' == key) || ('_' == key)) {
-			FractalGenome.cameraXShrink *= 1.01;
-			FractalGenome.cameraYShrink *= 1.01;
+			genome.cameraXShrink *= 1.01;
+			genome.cameraYShrink *= 1.01;
 			h.reset();
 		}
 		if (keyCode == PConstants.UP) {
-			FractalGenome.cameraYOffset += .01 * FractalGenome.cameraYShrink;
+			genome.cameraYOffset += .01 * genome.cameraYShrink;
 			h.reset();
 		}
 		if (keyCode == PConstants.DOWN) {
-			FractalGenome.cameraYOffset -= .01 * FractalGenome.cameraYShrink;
+			genome.cameraYOffset -= .01 * genome.cameraYShrink;
 			h.reset();
 		}
 
 		if (keyCode == PConstants.LEFT) {
-			FractalGenome.cameraXOffset += .01 * FractalGenome.cameraXShrink;
+			genome.cameraXOffset += .01 * genome.cameraXShrink;
 			h.reset();
 		}
 
 		if (keyCode == PConstants.RIGHT) {
-			FractalGenome.cameraXOffset -= .01 * FractalGenome.cameraXShrink;
+			genome.cameraXOffset -= .01 * genome.cameraXShrink;
 			h.reset();
 		}
 		startThreads();

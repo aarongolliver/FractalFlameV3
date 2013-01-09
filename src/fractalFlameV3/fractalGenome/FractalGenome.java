@@ -1,8 +1,14 @@
 package fractalFlameV3.fractalGenome;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import fractalFlameV3.ColorSet;
 import fractalFlameV3.Utils;
@@ -57,26 +63,26 @@ public final class FractalGenome {
 	final public double[][]	   variationParameters;
 	public boolean	           finalTransformToggle	= true;
 
-	static public double	   cameraXOffset	    = 0;
-	static public double	   cameraYOffset	    = 0;
-	static public double	   cameraXShrink	    = 10;
-	static public double	   cameraYShrink	    = 10;
-	static public boolean	   center	            = false;
-	static public boolean	   logScale	            = false;
+	public double	   cameraXOffset	    = 0;
+	public double	   cameraYOffset	    = 0;
+	public double	   cameraXShrink	    = 10;
+	public double	   cameraYShrink	    = 10;
+	public boolean	   center	            = false;
+	public boolean	   logScale	            = false;
 
 	static public double	   gamma	            = 1;
 
 	public void setLogScale() {
-		FractalGenome.logScale = true;
+		logScale = true;
 	}
 
 	public FractalGenome(final int minAffineTransforms, final int maxAffineTransforms) {
-		FractalGenome.cameraXOffset = 0;
-		FractalGenome.cameraYOffset = 0;
-		FractalGenome.cameraXShrink = 10;
-		FractalGenome.cameraYShrink = 10;
-		FractalGenome.center = false;
-		FractalGenome.logScale = false;
+		cameraXOffset = 0;
+		cameraYOffset = 0;
+		cameraXShrink = 10;
+		cameraYShrink = 10;
+		center = false;
+		logScale = false;
 
 		FractalGenome.gamma = 1;
 
@@ -91,6 +97,30 @@ public final class FractalGenome {
 		variationParameters = newVariationParamaters();
 
 		resetVariations();
+	}
+
+	public void saveGsonRepresentation() {
+		GsonBuilder gb = new GsonBuilder();
+		gb.setPrettyPrinting();
+		System.out.println(gb.create().toJson(this));
+		FractalGenome fg = gb.create().fromJson(gb.create().toJson(this), this.getClass());
+		String filename = "images/" + this.hashCode() + ".fractalgenome";
+
+		try {
+			FileWriter genomeWriter = new FileWriter(filename);
+			genomeWriter.write(gb.create().toJson(this));
+			genomeWriter.close();
+
+			FileWriter previousGenomeWriter = new FileWriter("images/last.fractalgenome");
+			previousGenomeWriter.write(gb.create().toJson(this));
+			previousGenomeWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String toString() {
+		return new Gson().toJson(this);
 	}
 
 	/**

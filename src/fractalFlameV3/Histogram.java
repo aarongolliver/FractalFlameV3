@@ -77,12 +77,12 @@ public class Histogram {
 	}
 
 	public void updatePixels(final int[] pixels, final FractalGenome genome) {
-		cameraXOffset = FractalGenome.cameraXOffset;
-		cameraYOffset = FractalGenome.cameraYOffset;
-		cameraXShrink = FractalGenome.cameraXShrink;
-		cameraYShrink = FractalGenome.cameraYShrink;
-		center = FractalGenome.center;
-		logScale = FractalGenome.logScale;
+		cameraXOffset = genome.cameraXOffset;
+		cameraYOffset = genome.cameraYOffset;
+		cameraXShrink = genome.cameraXShrink;
+		cameraYShrink = genome.cameraYShrink;
+		center = genome.center;
+		logScale = genome.logScale;
 
 		final double gamma = FractalGenome.gamma;
 		double maxA = 0;
