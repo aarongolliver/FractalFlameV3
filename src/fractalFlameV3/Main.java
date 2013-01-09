@@ -80,7 +80,6 @@ public class Main extends PApplet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(fullGenomeString);
 		return gb.create().fromJson(fullGenomeString, new FractalGenome(3, 3).getClass());
 	}
 
