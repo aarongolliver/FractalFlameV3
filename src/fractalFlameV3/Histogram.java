@@ -82,7 +82,6 @@ public class Histogram {
 		cameraXShrink = genome.cameraXShrink;
 		cameraYShrink = genome.cameraYShrink;
 		center = genome.center;
-		logScale = genome.logScale;
 
 		final double gamma = FractalGenome.gamma;
 		double maxA = 0;
@@ -148,10 +147,7 @@ public class Histogram {
 	}
 
 	public void hit(final Vec2D p, final ColorSet c) {
-		final int x = (int) (((p.x + cameraXOffset) * (hwid / cameraXShrink)) + (hwid / 2));
-		final int y = (int) (((p.y + cameraYOffset) * (hhei / cameraYShrink)) + (hhei / 2));
-
-		this.hit(x, y, c.r, c.g, c.b);
+		this.hit(p.x, p.y, c.r, c.g, c.b);
 
 	}
 

@@ -22,6 +22,7 @@ public class Main extends PApplet {
 	int	            swid	        = 512;
 	int	            shei	        = 512;
 	int	            ss	            = 1;
+	int	            SS_MAX	        = 12;
 
 	int	            fr	            = 60;
 
@@ -87,7 +88,6 @@ public class Main extends PApplet {
 		final FractalGenome fg = new FractalGenome(3, 10);
 		fg.variationToggle = true;
 		fg.finalTransformToggle = true;
-		fg.setLogScale();
 		genome.center = true;
 		return fg;
 	}
@@ -102,7 +102,7 @@ public class Main extends PApplet {
 		stopThreads();
 
 		if ('h' == Character.toLowerCase(key)) {
-			ss = (ss == 1) ? 15 : 1;
+			ss = (ss == 1) ? SS_MAX : 1;
 			h = null;
 			System.gc();
 			h = newHistogram();

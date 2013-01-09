@@ -62,26 +62,21 @@ public final class FractalGenome {
 	final public double[][]	   variationParameters;
 	public boolean	           finalTransformToggle	= true;
 
-	public double	           cameraXOffset	    = 0;
-	public double	           cameraYOffset	    = 0;
-	public double	           cameraXShrink	    = 10;
-	public double	           cameraYShrink	    = 10;
+	public double	           cameraXOffset;
+	public double	           cameraYOffset;
+	public double	           cameraXShrink;
+	public double	           cameraYShrink;
 	public boolean	           center	            = false;
-	public boolean	           logScale	            = false;
 
 	static public double	   gamma	            = 1;
 
-	public void setLogScale() {
-		logScale = true;
-	}
 
 	public FractalGenome(final int minAffineTransforms, final int maxAffineTransforms) {
 		cameraXOffset = 0;
 		cameraYOffset = 0;
-		cameraXShrink = 10;
-		cameraYShrink = 10;
-		center = false;
-		logScale = false;
+		cameraXShrink = 5;
+		cameraYShrink = 5;
+		center = true;
 
 		FractalGenome.gamma = 1;
 
@@ -169,6 +164,15 @@ public final class FractalGenome {
 		for (final int i : Utils.range(variationWeights.length)) {
 			variationWeights[i] = Math.random();
 		}
+
+		double sum = 0;
+		for (final int i : variations) {
+			sum += variationWeights[i];
+		}
+		for (final int i : Utils.range(variationWeights.length)) {
+			variationWeights[i] /= sum;
+		}
+
 	}
 
 	/**
