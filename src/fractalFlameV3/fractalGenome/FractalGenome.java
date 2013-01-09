@@ -2,7 +2,6 @@ package fractalFlameV3.fractalGenome;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
@@ -63,12 +62,12 @@ public final class FractalGenome {
 	final public double[][]	   variationParameters;
 	public boolean	           finalTransformToggle	= true;
 
-	public double	   cameraXOffset	    = 0;
-	public double	   cameraYOffset	    = 0;
-	public double	   cameraXShrink	    = 10;
-	public double	   cameraYShrink	    = 10;
-	public boolean	   center	            = false;
-	public boolean	   logScale	            = false;
+	public double	           cameraXOffset	    = 0;
+	public double	           cameraYOffset	    = 0;
+	public double	           cameraXShrink	    = 10;
+	public double	           cameraYShrink	    = 10;
+	public boolean	           center	            = false;
+	public boolean	           logScale	            = false;
 
 	static public double	   gamma	            = 1;
 
@@ -100,21 +99,20 @@ public final class FractalGenome {
 	}
 
 	public void saveGsonRepresentation() {
-		GsonBuilder gb = new GsonBuilder();
+		final GsonBuilder gb = new GsonBuilder();
 		gb.setPrettyPrinting();
-		System.out.println(gb.create().toJson(this));
-		FractalGenome fg = gb.create().fromJson(gb.create().toJson(this), this.getClass());
-		String filename = "images/" + this.hashCode() + ".fractalgenome";
+		final String filename = "images/" + hashCode() + ".fractalgenome";
 
 		try {
-			FileWriter genomeWriter = new FileWriter(filename);
-			genomeWriter.write(gb.create().toJson(this));
+			final String gsonString = gb.create().toJson(this);
+			final FileWriter genomeWriter = new FileWriter(filename);
+			genomeWriter.write(gsonString);
 			genomeWriter.close();
 
-			FileWriter previousGenomeWriter = new FileWriter("images/last.fractalgenome");
-			previousGenomeWriter.write(gb.create().toJson(this));
+			final FileWriter previousGenomeWriter = new FileWriter("images/last.fractalgenome");
+			previousGenomeWriter.write(gsonString);
 			previousGenomeWriter.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}

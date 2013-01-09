@@ -17,7 +17,7 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 
 public class Main extends PApplet {
-	static boolean	fullscreen	    = false;
+	static boolean	fullscreen	    = true;
 
 	int	            swid	        = 512;
 	int	            shei	        = 512;
