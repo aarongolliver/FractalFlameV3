@@ -85,13 +85,17 @@ public final class FractalGenome {
 
 		affineMatrices = newAffineMatrix(nAffineTransformatioins);
 		finalTransformMatrices = newAffineMatrix(nAffineTransformatioins);
-		affineColor = newColorArray(nAffineTransformatioins);
-		finalColor = newColorArray(nAffineTransformatioins);
+		resetColors();
 
 		variationParameters = newVariationParamaters();
 
 		resetVariations();
 	}
+
+	public void resetColors() {
+	    affineColor = newColorArray(nAffineTransformatioins);
+		finalColor = newColorArray(nAffineTransformatioins);
+    }
 
 	public void saveGsonRepresentation() {
 		final GsonBuilder gb = new GsonBuilder();

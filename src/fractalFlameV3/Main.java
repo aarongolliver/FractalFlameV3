@@ -100,74 +100,91 @@ public class Main extends PApplet {
 	@Override
 	public void keyPressed() {
 		stopThreads();
-
-		if ('h' == Character.toLowerCase(key)) {
+		switch (key) {
+		case 'h':
+		case 'H':
 			ss = (ss == 1) ? SS_MAX : 1;
 			h = null;
 			System.gc();
 			h = newHistogram();
 			System.out.println("# SS\t|\t " + ss);
-		}
+			break;
 
-		if ('r' == Character.toLowerCase(key)) {
+		case 'r':
+		case 'R':
 			genome = newGenome();
 			h.reset();
-		}
+			break;
 
-		if ('t' == Character.toLowerCase(key)) {
+		case 't':
+		case 'T':
 			threads = new FractalThread[(threads.length == 8) ? 1 : 8];
 			System.out.println("# TH\t|\t " + threads.length);
-		}
+			break;
 
-		if ('f' == Character.toLowerCase(key)) {
+		case 'f':
+		case 'F':
 			genome.finalTransformToggle = !genome.finalTransformToggle;
 			System.out.println("# FT\t|\t " + genome.finalTransformToggle);
 			h.reset();
-		}
+			break;
 
-		if ('v' == Character.toLowerCase(key)) {
+		case 'v':
+		case 'V':
 			genome.variationToggle = !genome.variationToggle;
 			System.out.println("# VT\t|\t " + genome.variationToggle);
 			h.reset();
-		}
+			break;
 
-		if ('s' == Character.toLowerCase(key)) {
+		case 's':
+		case 'S':
 			String fileName = "images/" + genome.hashCode() + "_#####.bmp";
 			saveFrame(fileName);
 			genome.saveGsonRepresentation();
+			break;
 
-		}
-
-		if (('+' == key) || ('=' == key)) {
+		case 'c':
+		case 'C':
+			genome.resetColors();
+			h.reset();
+			break;
+			
+		case '+':
+		case '=':
 			genome.cameraXShrink /= 1.01;
 			genome.cameraYShrink /= 1.01;
 			h.reset();
-		}
-
-		if (('-' == key) || ('_' == key)) {
+			break;
+			
+		case '-':
+		case '_':
 			genome.cameraXShrink *= 1.01;
 			genome.cameraYShrink *= 1.01;
 			h.reset();
-		}
-		if (keyCode == PConstants.UP) {
+			break;
+			
+		case (char) PConstants.UP:
 			genome.cameraYOffset += .01 * genome.cameraYShrink;
 			h.reset();
-		}
-		if (keyCode == PConstants.DOWN) {
+			break;
+			
+		case (char) PConstants.DOWN:
 			genome.cameraYOffset -= .01 * genome.cameraYShrink;
 			h.reset();
-		}
-
-		if (keyCode == PConstants.LEFT) {
+			break;
+			
+		case (char) PConstants.LEFT:
 			genome.cameraXOffset += .01 * genome.cameraXShrink;
 			h.reset();
-		}
-
-		if (keyCode == PConstants.RIGHT) {
+			break;
+			
+		case (char) PConstants.RIGHT:
 			genome.cameraXOffset -= .01 * genome.cameraXShrink;
 			h.reset();
+			break;
 		}
 		startThreads();
+		System.out.println('c' == 27);
 	}
 
 	private void stopThreads() {
