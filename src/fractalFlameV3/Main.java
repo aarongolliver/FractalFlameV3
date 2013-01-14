@@ -100,7 +100,7 @@ public class Main extends PApplet {
 	@Override
 	public void keyPressed() {
 		stopThreads();
-		switch (key) {
+		switch (keyCode) {
 		case 'h':
 		case 'H':
 			ss = (ss == 1) ? SS_MAX : 1;
@@ -138,7 +138,7 @@ public class Main extends PApplet {
 
 		case 's':
 		case 'S':
-			String fileName = "images/" + genome.hashCode() + "_#####.bmp";
+			String fileName = "images/" + genome.hashCode() + ".bmp";
 			saveFrame(fileName);
 			genome.saveGsonRepresentation();
 			break;
@@ -163,28 +163,27 @@ public class Main extends PApplet {
 			h.reset();
 			break;
 			
-		case (char) PConstants.UP:
+		case PConstants.UP:
 			genome.cameraYOffset += .01 * genome.cameraYShrink;
 			h.reset();
 			break;
 			
-		case (char) PConstants.DOWN:
+		case PConstants.DOWN:
 			genome.cameraYOffset -= .01 * genome.cameraYShrink;
 			h.reset();
 			break;
 			
-		case (char) PConstants.LEFT:
+		case PConstants.LEFT:
 			genome.cameraXOffset += .01 * genome.cameraXShrink;
 			h.reset();
 			break;
 			
-		case (char) PConstants.RIGHT:
+		case PConstants.RIGHT:
 			genome.cameraXOffset -= .01 * genome.cameraXShrink;
 			h.reset();
 			break;
 		}
 		startThreads();
-		System.out.println('c' == 27);
 	}
 
 	private void stopThreads() {
