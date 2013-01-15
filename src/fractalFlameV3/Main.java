@@ -33,9 +33,9 @@ public class Main extends PApplet {
 
 	final int	    SYSTEM_THREADS	= Runtime.getRuntime().availableProcessors();
 
-	// by running SYSTEM_THREADS - 2 threads we can hopefully avoid making the system unusalbe while
-	// the flame is generating. There is of course a tradeoff in generation speed, which doesn't
-	// really matter to me as I have a 12 thread system.
+	// by running (SYSTEM_THREADS - 2) threads we can hopefully avoid making the system unusalbe
+	// while the flame is generating. There is of course a tradeoff in generation speed, which
+	// doesn't really matter to me as I have a 12 thread system.
 	final int	    maxFlameThreads	= (SYSTEM_THREADS > 3) ? SYSTEM_THREADS - 2 : 1;
 
 	public static final void main(final String args[]) {
@@ -148,36 +148,36 @@ public class Main extends PApplet {
 			genome.resetColors();
 			h.reset();
 			break;
-			
+
 		case '+':
 		case '=':
 			genome.cameraXShrink /= 1.01;
 			genome.cameraYShrink /= 1.01;
 			h.reset();
 			break;
-			
+
 		case '-':
 		case '_':
 			genome.cameraXShrink *= 1.01;
 			genome.cameraYShrink *= 1.01;
 			h.reset();
 			break;
-			
+
 		case PConstants.UP:
 			genome.cameraYOffset += .01 * genome.cameraYShrink;
 			h.reset();
 			break;
-			
+
 		case PConstants.DOWN:
 			genome.cameraYOffset -= .01 * genome.cameraYShrink;
 			h.reset();
 			break;
-			
+
 		case PConstants.LEFT:
 			genome.cameraXOffset += .01 * genome.cameraXShrink;
 			h.reset();
 			break;
-			
+
 		case PConstants.RIGHT:
 			genome.cameraXOffset -= .01 * genome.cameraXShrink;
 			h.reset();
