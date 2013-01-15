@@ -50,6 +50,8 @@ public final class FractalGenome {
 	final public double[][][]	affineMatrices;
 	final public double[][][]	finalTransformMatrices;
 
+	final private int	       JUMP_TABLE_SIZE	    = 1000;
+
 	public ColorSet[]	       affineColor;
 	public ColorSet[]	       finalColor;
 	public int	               currentMatrix	    = -1;
@@ -70,7 +72,6 @@ public final class FractalGenome {
 
 	static public double	   gamma	            = 1;
 
-
 	public FractalGenome(final int minAffineTransforms, final int maxAffineTransforms) {
 		cameraXOffset = 0;
 		cameraYOffset = 0;
@@ -81,7 +82,7 @@ public final class FractalGenome {
 		FractalGenome.gamma = 1;
 
 		nAffineTransformatioins = resetNAffineTransformations(minAffineTransforms, maxAffineTransforms);
-		affineProbabilities = resetAffineProbabilities(nAffineTransformatioins);
+		affineProbabilities = newAffineJumpTable(nAffineTransformatioins, JUMP_TABLE_SIZE);
 
 		affineMatrices = newAffineMatrix(nAffineTransformatioins);
 		finalTransformMatrices = newAffineMatrix(nAffineTransformatioins);
@@ -93,9 +94,9 @@ public final class FractalGenome {
 	}
 
 	public void resetColors() {
-	    affineColor = newColorArray(nAffineTransformatioins);
+		affineColor = newColorArray(nAffineTransformatioins);
 		finalColor = newColorArray(nAffineTransformatioins);
-    }
+	}
 
 	public void saveGsonRepresentation() {
 		final GsonBuilder gb = new GsonBuilder();
@@ -116,6 +117,7 @@ public final class FractalGenome {
 		}
 	}
 
+	@Override
 	public String toString() {
 		return new Gson().toJson(this);
 	}
@@ -123,8 +125,8 @@ public final class FractalGenome {
 	/**
 	 * returns a new array of paramaters to be used by variations variations access their paramaters
 	 * by using accessing the array like so: paramaters[Variation.ID][paramater number]
-	 * 
-	 * @return
+	 *
+	 * @return paramaters for variations
 	 */
 	private double[][] newVariationParamaters() {
 		final double[][] p = new double[Variation.NUMBER_OF_VARIATIONS + 1][4];
@@ -138,7 +140,7 @@ public final class FractalGenome {
 
 	/**
 	 * constructs a copy of the input genome
-	 * 
+	 *
 	 * @param genome
 	 */
 	public FractalGenome(final FractalGenome genome) {
@@ -181,9 +183,10 @@ public final class FractalGenome {
 
 	/**
 	 * returns nColorSets length array of ColorSets
-	 * 
+	 *
 	 * @param nColorSets
 	 *            number of color sets
+	 * @return array of ColorSets
 	 */
 	public ColorSet[] newColorArray(final int nColorSets) {
 		final ColorSet[] cs = new ColorSet[nColorSets];
@@ -196,15 +199,11 @@ public final class FractalGenome {
 	}
 
 	/**
-	 * returns a new array of affine matricies. They are indexed as such:
-	 * 
-	 * matrix[which matrix][2][3]
-	 * 
+	 * returns a new array of affine matricies. They are indexed as such: matrix[which matrix][2][3]
 	 * "which matrix" corrosponds to which affine matrix you want, so running matrix[0] will give
-	 * you the 0th affine matrix. It will be in the form of a 2x3 2D array addressed as such:
-	 * 
-	 * [ [a, b, c] [d, e, f] ]
-	 * 
+	 * you the 0th affine matrix. It will be in the form of a 2x3 2D array addressed as such: [ [a,
+	 * b, c] [d, e, f] ]
+	 *
 	 * @param nAffineTransformatioins
 	 * @return new array of affine matricies
 	 */
@@ -223,7 +222,7 @@ public final class FractalGenome {
 	/**
 	 * picks a random between min and max. The number must be greater than 3 if max < min, max is
 	 * set to min
-	 * 
+	 *
 	 * @param minAffineTransforms
 	 *            minimum number of affine transformations
 	 * @param maxAffineTransforms
@@ -242,18 +241,17 @@ public final class FractalGenome {
 	}
 
 	/**
-	 * returns a new jump table where each index refers to a specific affine transformation.
-	 * 
-	 * The idea is you pick a random number between (0) and (jumpTable.length) and retrive the
-	 * number at that index. The retrieved number corrosponds to the affine matrix picked. By making
-	 * the jump table larger, you allow for more fine-grained probabilities. Right now the least
-	 * number of times a matrix can be picked is 1/1000
-	 * 
+	 * returns a new jump table where each index refers to a specific affine transformation. The
+	 * idea is you pick a random number between (0) and (jumpTable.length) and retrive the number at
+	 * that index. The retrieved number corrosponds to the affine matrix picked. By making the jump
+	 * table larger, you allow for more fine-grained probabilities. Right now the least number of
+	 * times a matrix can be picked is 1/1000
+	 *
 	 * @param nAffineTransformatioins
 	 *            number of affine transformations
-	 * @return
+	 * @return the generated jumptable
 	 */
-	private int[] resetAffineProbabilities(final int nAffineTransformatioins) {
+	private int[] newAffineJumpTable(final int nAffineTransformatioins, final int jumpTableSize) {
 		final double[] affineProbabilities = new double[nAffineTransformatioins];
 
 		for (final int i : Utils.range(nAffineTransformatioins)) {
@@ -261,7 +259,7 @@ public final class FractalGenome {
 		}
 		Arrays.sort(affineProbabilities);
 
-		final int[] jumpTable = new int[1000];
+		final int[] jumpTable = new int[jumpTableSize];
 		int jumpPosition = 0;
 		int affPosition = 0;
 		while ((jumpPosition < jumpTable.length) && (affPosition < affineProbabilities.length)) {
@@ -280,120 +278,126 @@ public final class FractalGenome {
 
 	/**
 	 * returns a list of variation function objects based on the provided genome
-	 * 
+	 *
 	 * @param genome
 	 *            genome of the variation functions
 	 * @return array of Variation objects
 	 */
 	public Variation[] getVariationObjects(final FractalGenome genome) {
 		final Variation[] variations = new Variation[this.variations.size()];
-		int i = 0;
-		for (final int variation : genome.variations) {
-			switch (variation) {
-			case 0:
-				variations[i++] = new Linear0(genome);
-				break;
-			case 1:
-				variations[i++] = new Sinusodial1(genome);
-				break;
-			case 2:
-				variations[i++] = new Spherical2(genome);
-				break;
-			case 3:
-				variations[i++] = new Swirl3(genome);
-				break;
-			case 4:
-				variations[i++] = new Horseshoe4(genome);
-				break;
-			case 5:
-				variations[i++] = new Polar5(genome);
-				break;
-			case 6:
-				variations[i++] = new Handkerchief6(genome);
-				break;
-			case 7:
-				variations[i++] = new Heart7(genome);
-				break;
-			case 8:
-				variations[i++] = new Disc8(genome);
-				break;
-			case 9:
-				variations[i++] = new Spiral9(genome);
-				break;
-			case 10:
-				variations[i++] = new Hyperbolic10(genome);
-				break;
-			case 11:
-				variations[i++] = new Diamond11(genome);
-				break;
-			case 12:
-				variations[i++] = new Ex12(genome);
-				break;
-			case 13:
-				variations[i++] = new Julia13(genome);
-				break;
-			case 14:
-				variations[i++] = new Bent14(genome);
-				break;
-			case 15:
-				variations[i++] = new Waves15(genome);
-				break;
-			case 16:
-				variations[i++] = new Fisheye16(genome);
-				break;
-			case 17:
-				variations[i++] = new Popcorn17(genome);
-				break;
-			case 18:
-				variations[i++] = new Exponential18(genome);
-				break;
-			case 19:
-				variations[i++] = new Power19(genome);
-				break;
-			case 20:
-				variations[i++] = new Cosine20(genome);
-				break;
-			case 21:
-				variations[i++] = new Rings21(genome);
-				break;
-			case 22:
-				variations[i++] = new Fan22(genome);
-				break;
-			case 23:
-				variations[i++] = new Blob23(genome);
-				break;
-			case 24:
-				variations[i++] = new PDJ24(genome);
-				break;
-			case 25:
-				variations[i++] = new FanTwo25(genome);
-				break;
-			case 26:
-				variations[i++] = new RingsTwo26(genome);
-				break;
-			case 27:
-				variations[i++] = new Eyefish27(genome);
-				break;
-			case 28:
-				variations[i++] = new Bubble28(genome);
-				break;
-			case 29:
-				variations[i++] = new Cylinder29(genome);
-				break;
-			case 30:
-				variations[i++] = new Perspective30(genome);
-				break;
-			case 31:
-				// I disabled Noise because it's always ugly
-				// variations[i++] = new Noise31(genome);
-				variations[i++] = new Rings21(genome);
-				break;
-			default:
-				while (true) {
-					// temporary "error" if you ask for a function that doesn't exist
-					System.out.println("MISTAKE: variation " + variation + " does not exist!");
+		int iv = 0;
+		int previousVariationID = -1;
+		Variation currentVaritionObject = null;
+		for (int currentVariationID : genome.variations) {
+			if (currentVariationID != previousVariationID) {
+				switch (currentVariationID) {
+				case 0:
+					currentVaritionObject = new Linear0(genome);
+					break;
+				case 1:
+					currentVaritionObject = new Sinusodial1(genome);
+					break;
+				case 2:
+					currentVaritionObject = new Spherical2(genome);
+					break;
+				case 3:
+					currentVaritionObject = new Swirl3(genome);
+					break;
+				case 4:
+					currentVaritionObject = new Horseshoe4(genome);
+					break;
+				case 5:
+					currentVaritionObject = new Polar5(genome);
+					break;
+				case 6:
+					currentVaritionObject = new Handkerchief6(genome);
+					break;
+				case 7:
+					currentVaritionObject = new Heart7(genome);
+					break;
+				case 8:
+					currentVaritionObject = new Disc8(genome);
+					break;
+				case 9:
+					currentVaritionObject = new Spiral9(genome);
+					break;
+				case 10:
+					currentVaritionObject = new Hyperbolic10(genome);
+					break;
+				case 11:
+					currentVaritionObject = new Diamond11(genome);
+					break;
+				case 12:
+					currentVaritionObject = new Ex12(genome);
+					break;
+				case 13:
+					currentVaritionObject = new Julia13(genome);
+					break;
+				case 14:
+					currentVaritionObject = new Bent14(genome);
+					break;
+				case 15:
+					currentVaritionObject = new Waves15(genome);
+					break;
+				case 16:
+					currentVaritionObject = new Fisheye16(genome);
+					break;
+				case 17:
+					currentVaritionObject = new Popcorn17(genome);
+					break;
+				case 18:
+					currentVaritionObject = new Exponential18(genome);
+					break;
+				case 19:
+					currentVaritionObject = new Power19(genome);
+					break;
+				case 20:
+					currentVaritionObject = new Cosine20(genome);
+					break;
+				case 21:
+					currentVaritionObject = new Rings21(genome);
+					break;
+				case 22:
+					currentVaritionObject = new Fan22(genome);
+					break;
+				case 23:
+					currentVaritionObject = new Blob23(genome);
+					break;
+				case 24:
+					currentVaritionObject = new PDJ24(genome);
+					break;
+				case 25:
+					currentVaritionObject = new FanTwo25(genome);
+					break;
+				case 26:
+					currentVaritionObject = new RingsTwo26(genome);
+					break;
+				case 27:
+					currentVaritionObject = new Eyefish27(genome);
+					break;
+				case 28:
+					currentVaritionObject = new Bubble28(genome);
+					break;
+				case 29:
+					currentVaritionObject = new Cylinder29(genome);
+					break;
+				case 30:
+					currentVaritionObject = new Perspective30(genome);
+					break;
+				case 31:
+					// I disabled Noise because it's always ugly
+					// variations[i++] = new Noise31(genome);
+					currentVaritionObject = new Rings21(genome);
+					break;
+				default:
+					while (true) {
+						// temporary "error" if you ask for a function that doesn't exist
+						System.out.println("MISTAKE: variation " + currentVariationID + " does not exist!");
+					}
 				}
+				previousVariationID = currentVariationID;
 			}
+			variations[iv++] = currentVaritionObject;
 		}
 		return variations;
 	}
