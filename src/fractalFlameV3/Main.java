@@ -17,10 +17,10 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 
 public class Main extends PApplet {
-	static boolean	fullscreen	    = true;
+	static boolean	fullscreen	    = false;
 
-	int	            swid	        = 512;
-	int	            shei	        = 512;
+	int	            swid	        = 1920;
+	int	            shei	        = 1080;
 	int	            ss	            = 1;
 	int	            SS_MAX	        = 12;
 
@@ -215,5 +215,7 @@ public class Main extends PApplet {
 			h.updatePixels(pixels, genome);
 			this.updatePixels();
 		}
+		if (frameCount % 10 == 0)
+			System.out.println("#FPS: " + frameRate);
 	}
 }

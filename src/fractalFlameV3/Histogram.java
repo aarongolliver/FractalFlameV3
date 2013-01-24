@@ -2,7 +2,7 @@ package fractalFlameV3;
 
 import fractalFlameV3.fractalGenome.FractalGenome;
 
-public class Histogram {
+public final class Histogram {
 	/**
 	 * width of screen
 	 */
@@ -48,9 +48,6 @@ public class Histogram {
 	private double	       cameraYOffset	= 0;
 	private double	       cameraXShrink	= 10;
 	private double	       cameraYShrink	= 10;
-	private boolean	       center	     = true;
-	private boolean	       logScale	     = false;
-	private boolean	       linearScale	 = false;
 
 	private final double	gamma	     = 1;
 
@@ -76,12 +73,11 @@ public class Histogram {
 		image = new double[swid * shei * 5];
 	}
 
-	public void updatePixels(final int[] pixels, final FractalGenome genome) {
+	public final void updatePixels(final int[] pixels, final FractalGenome genome) {
 		cameraXOffset = genome.cameraXOffset;
 		cameraYOffset = genome.cameraYOffset;
 		cameraXShrink = genome.cameraXShrink;
 		cameraYShrink = genome.cameraYShrink;
-		center = genome.center;
 
 		final double gamma = FractalGenome.gamma;
 		double maxA = 0;
@@ -108,7 +104,7 @@ public class Histogram {
 			}
 		}
 
-		// final double logMaxA = Math.log(maxA);
+		 final double logMaxA = Math.log(maxA);
 
 		for (int iy = 0; iy < shei; iy++) {
 			for (int ix = 0; ix < swid; ix++) {
@@ -118,7 +114,7 @@ public class Histogram {
 					final double rAvg = image[index + 0] / image[index + 4];
 					final double gAvg = image[index + 1] / image[index + 4];
 					final double bAvg = image[index + 2] / image[index + 4];
-					final double colorScaleFactor = Math.pow(Math.log(image[index + 3]) / Math.log(maxA), 1.0 / gamma);
+					final double colorScaleFactor = Math.pow(Math.log(image[index + 3]) / logMaxA, 1.0 / gamma);
 
 					final int a = 0xFF;
 					final int r = ((int) ((rAvg * colorScaleFactor) * 0xFF));
@@ -138,7 +134,7 @@ public class Histogram {
 		}
 	}
 
-	public void hit(final Vec2D p, final double r, final double g, final double b) {
+	public final synchronized void hit(final Vec2D p, final double r, final double g, final double b) {
 		final int x = (int) (((p.x + cameraXOffset) * (hwid / cameraXShrink)) + (hwid / 2));
 		final int y = (int) (((p.y + cameraYOffset) * (hhei / cameraYShrink)) + (hhei / 2));
 
@@ -146,19 +142,19 @@ public class Histogram {
 
 	}
 
-	public void hit(final Vec2D p, final ColorSet c) {
+	public final synchronized void hit(final Vec2D p, final ColorSet c) {
 		this.hit(p.x, p.y, c.r, c.g, c.b);
 
 	}
 
-	public void hit(final double x, final double y, final double r, final double g, final double b) {
-		final int ix = (int) (((x + cameraXOffset) * (hwid / cameraXShrink)) + (center ? (hwid / 2) : 0));
-		final int iy = (int) (((y + cameraYOffset) * (hhei / cameraYShrink)) + (center ? (hhei / 2) : 0));
+	public final synchronized void hit(final double x, final double y, final double r, final double g, final double b) {
+		final int ix = (int) (((x + cameraXOffset) * (hwid / cameraXShrink)) + (hwid / 2));
+		final int iy = (int) (((y + cameraYOffset) * (hhei / cameraYShrink)) + (hhei / 2));
 
 		this.hit(ix, iy, r, g, b);
 	}
 
-	private void hit(final int x, final int y, final double r, final double g, final double b) {
+	private final synchronized void hit(final int x, final int y, final double r, final double g, final double b) {
 		if ((x >= 0) && (x < hwid) && (y >= 0) && (y < hhei)) {
 			final int index = 4 * (x + (y * hwid));
 
