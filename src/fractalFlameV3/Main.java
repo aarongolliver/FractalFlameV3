@@ -1,42 +1,43 @@
 package fractalFlameV3;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.imageio.stream.FileImageInputStream;
+import processing.core.PApplet;
+import processing.core.PConstants;
 
 import com.google.gson.GsonBuilder;
 
 import fractalFlameV3.fractalGenome.FractalGenome;
 import fractalFlameV3.fractalThread.FractalThread;
 import fractalFlameV3.fractalThread.ThreadSignal;
-import processing.core.PApplet;
-import processing.core.PConstants;
 
 public class Main extends PApplet {
-	static boolean	fullscreen	    = false;
+	static boolean	         fullscreen	        = false;
 
-	int	            swid	        = 1920;
-	int	            shei	        = 1080;
-	int	            ss	            = 1;
-	int	            SS_MAX	        = 12;
+	int	                     swid	            = 1920;
+	int	                     shei	            = 1080;
+	int	                     ss	                = 1;
+	int	                     SS_MAX	            = 12;
 
-	int	            fr	            = 60;
+	int	                     fr	                = 60;
 
-	Histogram	    h;
-	FractalGenome	genome;
-	FractalThread[]	threads;
-	ThreadSignal	threadSignal;
+	Histogram	             h;
+	ArrayList<FractalGenome>	genomeList;
+	int	                     genomeListPosition	= 0;
+	FractalGenome	         currentGenome;
+	FractalThread[]	         threads;
+	ThreadSignal	         threadSignal;
 
-	final int	    SYSTEM_THREADS	= Runtime.getRuntime().availableProcessors();
+	final int	             SYSTEM_THREADS	    = Runtime.getRuntime().availableProcessors();
 
 	// by running (SYSTEM_THREADS - 2) threads we can hopefully avoid making the system unusalbe
 	// while the flame is generating. There is of course a tradeoff in generation speed, which
 	// doesn't really matter to me as I have a 12 thread system.
-	final int	    maxFlameThreads	= (SYSTEM_THREADS > 3) ? SYSTEM_THREADS - 2 : 1;
+	final int	             maxFlameThreads	= (SYSTEM_THREADS > 3) ? SYSTEM_THREADS - 2 : 1;
 
 	public static final void main(final String args[]) {
 		if (Main.fullscreen) {
@@ -48,14 +49,15 @@ public class Main extends PApplet {
 
 	@Override
 	public void setup() {
-		swid = (fullscreen) ? displayWidth : swid;
-		shei = (fullscreen) ? displayHeight : shei;
+		swid = (Main.fullscreen) ? displayWidth : swid;
+		shei = (Main.fullscreen) ? displayHeight : shei;
 		this.size(swid, shei);
 		frameRate(fr);
 
 		h = newHistogram();
-
-		genome = loadLastGenome();
+		currentGenome = loadLastGenome();
+		genomeList = new ArrayList<FractalGenome>();
+		genomeList.add(currentGenome);
 		threads = new FractalThread[1];
 		threadSignal = new ThreadSignal();
 		startThreads();
@@ -64,10 +66,10 @@ public class Main extends PApplet {
 
 	private FractalGenome loadLastGenome() {
 		String fullGenomeString = "";
-		GsonBuilder gb = new GsonBuilder();
+		final GsonBuilder gb = new GsonBuilder();
 		try {
-			FileReader fileReader = new FileReader("images/last.fractalgenome");
-			BufferedReader lastGenomeReader = new BufferedReader(fileReader);
+			final FileReader fileReader = new FileReader("images/last.fractalgenome");
+			final BufferedReader lastGenomeReader = new BufferedReader(fileReader);
 
 			String line;
 			while ((line = lastGenomeReader.readLine()) != null) {
@@ -76,19 +78,23 @@ public class Main extends PApplet {
 
 			lastGenomeReader.close();
 			fileReader.close();
-		} catch (FileNotFoundException e) {
+		} catch (final FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 		return gb.create().fromJson(fullGenomeString, new FractalGenome(3, 3).getClass());
 	}
 
 	private FractalGenome newGenome() {
+		genomeList.remove(genomeListPosition);
+		genomeList.add(genomeListPosition, currentGenome);
 		final FractalGenome fg = new FractalGenome(3, 10);
 		fg.variationToggle = true;
 		fg.finalTransformToggle = true;
-		genome.center = true;
+		currentGenome.center = true;
+		genomeList.add(fg);
+		genomeListPosition = genomeList.size() - 1;
 		return fg;
 	}
 
@@ -112,7 +118,7 @@ public class Main extends PApplet {
 
 		case 'r':
 		case 'R':
-			genome = newGenome();
+			currentGenome = newGenome();
 			h.reset();
 			break;
 
@@ -124,62 +130,78 @@ public class Main extends PApplet {
 
 		case 'f':
 		case 'F':
-			genome.finalTransformToggle = !genome.finalTransformToggle;
-			System.out.println("# FT\t|\t " + genome.finalTransformToggle);
+			currentGenome.finalTransformToggle = !currentGenome.finalTransformToggle;
+			System.out.println("# FT\t|\t " + currentGenome.finalTransformToggle);
 			h.reset();
 			break;
 
 		case 'v':
 		case 'V':
-			genome.variationToggle = !genome.variationToggle;
-			System.out.println("# VT\t|\t " + genome.variationToggle);
+			currentGenome.variationToggle = !currentGenome.variationToggle;
+			System.out.println("# VT\t|\t " + currentGenome.variationToggle);
 			h.reset();
 			break;
 
 		case 's':
 		case 'S':
-			String fileName = "images/" + genome.hashCode() + ".bmp";
+			final String fileName = "images/" + currentGenome.hashCode() + ".bmp";
 			saveFrame(fileName);
-			genome.saveGsonRepresentation();
+			currentGenome.saveGsonRepresentation();
 			break;
 
 		case 'c':
 		case 'C':
-			genome.resetColors();
+			currentGenome.resetColors();
 			h.reset();
 			break;
 
 		case '+':
 		case '=':
-			genome.cameraXShrink /= 1.01;
-			genome.cameraYShrink /= 1.01;
+			currentGenome.cameraXShrink /= 1.01;
+			currentGenome.cameraYShrink /= 1.01;
 			h.reset();
 			break;
 
 		case '-':
 		case '_':
-			genome.cameraXShrink *= 1.01;
-			genome.cameraYShrink *= 1.01;
+			currentGenome.cameraXShrink *= 1.01;
+			currentGenome.cameraYShrink *= 1.01;
 			h.reset();
+			break;
+		case '>':
+		case '.':
+			if (genomeListPosition < (genomeList.size() - 1)) {
+				genomeListPosition++;
+				currentGenome = genomeList.get(genomeListPosition);
+				h.reset();
+			}
+			break;
+		case '<':
+		case ',':
+			if (genomeListPosition > 0) {
+				genomeListPosition--;
+				currentGenome = genomeList.get(genomeListPosition);
+				h.reset();
+			}
 			break;
 
 		case PConstants.UP:
-			genome.cameraYOffset += .01 * genome.cameraYShrink;
+			currentGenome.cameraYOffset += .01 * currentGenome.cameraYShrink;
 			h.reset();
 			break;
 
 		case PConstants.DOWN:
-			genome.cameraYOffset -= .01 * genome.cameraYShrink;
+			currentGenome.cameraYOffset -= .01 * currentGenome.cameraYShrink;
 			h.reset();
 			break;
 
 		case PConstants.LEFT:
-			genome.cameraXOffset += .01 * genome.cameraXShrink;
+			currentGenome.cameraXOffset += .01 * currentGenome.cameraXShrink;
 			h.reset();
 			break;
 
 		case PConstants.RIGHT:
-			genome.cameraXOffset -= .01 * genome.cameraXShrink;
+			currentGenome.cameraXOffset -= .01 * currentGenome.cameraXShrink;
 			h.reset();
 			break;
 		}
@@ -200,7 +222,7 @@ public class Main extends PApplet {
 	private void startThreads() {
 		threadSignal.running = true;
 		for (final int i : Utils.range(threads.length)) {
-			threads[i] = new FractalThread(genome, threadSignal, h);
+			threads[i] = new FractalThread(currentGenome, threadSignal, h);
 		}
 		for (final Thread t : threads) {
 			t.start();
@@ -212,10 +234,11 @@ public class Main extends PApplet {
 		if (frameCount == 1) {
 			loadPixels();
 		} else {
-			h.updatePixels(pixels, genome);
+			h.updatePixels(pixels, currentGenome);
 			this.updatePixels();
 		}
-		if (frameCount % 10 == 0)
-			System.out.println("#FPS: " + frameRate);
+		if ((frameCount % 10) == 0) {
+			// System.out.println("#FPS: " + frameRate);
+		}
 	}
 }
